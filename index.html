@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=DM+Mono:wght@400;500&family=Lexend:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Jersey+20&family=Lexend:wght@100..900&family=Questrial&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Squada+One&family=Zalando+Sans+Expanded:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+<title>AMS | M4F</title>
+<style>
+
+:root {
+--bg: #f8f9fb;
+--surface: #ffffff;
+--border: #e2e6ea;
+--text-primary: #1a1d23;
+--text-secondary: #6b7280;
+--text-muted: #9ca3af;
+--accent: #3b82f6;
+--accent-light: #eff6ff;
+--present: #10b981;
+--present-light: #ecfdf5;
+--late: #f59e0b;
+--late-light: #fffbeb;
+--absent: #ef4444;
+--absent-light: #fef2f2;
+--current: #DC4848;
+--current-light: #fff0f0;
+--brand: #DC4848;
+--shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+--shadow-md: 0 4px 16px rgba(0,0,0,0.10);
+--shadow-lg: 0 8px 32px rgba(0,0,0,0.14);
+--radius: 12px;
+--radius-sm: 8px;
+}
+
+- { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+body {
+font-family: ‘Noto Sans JP’, sans-serif;
+background: var(--bg);
+color: var(--text-primary);
+min-height: 100vh;
+overscroll-behavior: none;
+margin:0px;
+}
+
+/* ───────────────────────────────────────────
+HEADER — redesigned
+─────────────────────────────────────────── */
+.header {
+position: sticky;
+top: 0;
+z-index: 100;
+background: var(--surface);
+border-bottom: 1.5px solid var(--border);
+box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+padding:10px 0 0 0;
+}
+
+/* ── top strip: brand bar ── */
+.header-brand-bar {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 10px 18px 0;
+}
+
+.header-brand {
+display: flex;
+align-items: baseline;
+gap: 8px;
+}
+
+.brand-logo {
+font-family: "Roboto Condensed", sans-serif;
+font-weight: 400;
+font-size: 26px;
+color: var(--brand);
+letter-spacing: -1px;
+line-height: 1;
+}
+
+.brand-dot {
+width: 5px;
+height: 5px;
+background: var(--brand);
+border-radius: 50%;
+margin-bottom: 2px;
+flex-shrink: 0;
+animation: pulse-dot 2.4s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+0%, 100% { opacity: 1; transform: scale(1); }
+50%       { opacity: 0.4; transform: scale(0.7); }
+}
+
+.brand-sep {
+width: 1px;
+height: 14px;
+background: var(--border);
+margin-bottom: 2px;
+}
+
+.brand-subtitle {
+font-family: ‘Noto Sans JP’, sans-serif;
+font-size: 10px;
+font-weight: 400;
+color: var(--text-muted);
+letter-spacing: 0.6px;
+}
+
+/* ── bottom strip: class label + datetime ── */
+.header-info-bar {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 6px 18px 12px;
+gap: 12px;
+}
+
+.header-class-name {
+font-size: 17px;
+font-weight: 700;
+letter-spacing: -0.3px;
+color: var(--text-primary);
+}
+
+.header-datetime {
+display: flex;
+flex-direction: column;
+align-items: flex-end;
+gap: 1px;
+}
+
+.header-clock {
+font-family: ‘DM Mono’, monospace;
+font-size: 18px;
+font-weight: 500;
+color: var(--brand);
+letter-spacing: 1px;
+line-height: 1;
+}
+
+.header-date {
+font-family: ‘DM Mono’, monospace;
+font-size: 10px;
+font-weight: 400;
+color: var(--text-muted);
+letter-spacing: 0.3px;
+}
+
+/* ── Timetable ── */
+.timetable-wrap { padding: 12px 10px 80px; }
+.day-labels {
+display: grid; grid-template-columns: repeat(5,1fr);
+gap: 4px; margin-bottom: 6px; padding: 0 2px;
+}
+.day-label {
+text-align: center; font-size: 13px; font-weight: 600;
+color: var(--text-secondary); padding: 6px 0;
+background: var(--surface); border-radius: var(--radius-sm);
+border: 1px solid var(--border);
+}
+.day-label.today { color: var(--brand); background: #fff0f0; border-color: var(--brand); }
+
+.period-row { display: flex; gap: 4px; margin-bottom: 4px; align-items: stretch; }
+.period-cells { display: grid; grid-template-columns: repeat(5,1fr); gap: 4px; flex: 1; }
+
+.cell {
+background: var(--surface);
+border: 1px solid var(--border);
+border-radius: var(--radius-sm);
+padding: 6px 5px 5px;
+min-height: 82px;
+cursor: pointer;
+transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+display: flex; flex-direction: column; justify-content: space-between;
+position: relative; overflow: hidden;
+-webkit-user-select: none; user-select: none;
+}
+.cell:active { transform: scale(0.96); }
+.cell.empty { background: transparent; border-color: transparent; cursor: default; pointer-events: none; }
+.cell.current-class {
+border: 1.5px solid var(--current);
+background: var(--current-light);
+
+}
+.cell.current-class::before {
+content: ‘’; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+background: var(--current); border-radius: 0 0 2px 2px;
+}
+
+.cell-name { font-size: 10.5px; font-weight: 600; line-height: 1.35; color: var(--text-primary); }
+.cell-teacher { font-size: 9px; color: var(--text-secondary); margin-top: 2px; }
+.cell-room { font-size: 8.5px; color: var(--text-muted); }
+
+.cell-stats {
+margin-top: 4px;
+display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+gap: 2px;
+align-items: center;
+}
+.stat-chip {
+font-size: 8px; font-weight: 700; border-radius: 4px;
+padding: 1px 4px; line-height: 1.4;
+}
+.stat-chip.p { background: var(--present-light); color: var(--present); }
+.stat-chip.l { background: var(--late-light); color: var(--late); }
+.stat-chip.a { background: var(--absent-light); color: var(--absent); }
+
+.eta-chip {
+font-size: 7.5px; font-weight: 600;
+background: #f1f5f9; color: #64748b;
+border-radius: 4px; padding: 1px 4px; line-height: 1.5;
+white-space: nowrap;
+}
+.eta-chip.soon { background: #fef9c3; color: #a16207; }
+.eta-chip.now  { background: var(--present-light); color: var(--present); }
+
+/* ── Modal Overlay ── */
+.overlay {
+position: fixed; inset: 0; z-index: 200;
+background: rgba(0,0,0,0.45);
+backdrop-filter: blur(4px);
+-webkit-backdrop-filter: blur(4px);
+display: flex; align-items: flex-end; justify-content: center;
+opacity: 0; pointer-events: none;
+transition: opacity 0.25s;
+}
+.overlay.open { opacity: 1; pointer-events: all; }
+
+.modal {
+background: var(--surface);
+border-radius: 20px 20px 0 0;
+width: 100%; max-width: 540px;
+max-height: 90vh; overflow-y: auto;
+padding: 0 0 env(safe-area-inset-bottom,16px);
+transform: translateY(100%);
+transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
+-webkit-overflow-scrolling: touch;
+}
+.overlay.open .modal { transform: translateY(0); }
+
+.modal-handle {
+width: 36px; height: 4px; background: #d1d5db;
+border-radius: 2px; margin: 12px auto 0;
+}
+.modal-header {
+padding: 16px 20px 12px;
+border-bottom: 1px solid var(--border);
+}
+.modal-title { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; }
+.modal-sub { font-size: 13px; color: var(--text-secondary); margin-top: 3px; }
+
+.modal-body { padding: 16px 20px; }
+
+.section-label {
+font-size: 11px; font-weight: 700; color: var(--text-muted);
+text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px;
+}
+
+.record-row {
+display: flex; gap: 8px; align-items: center;
+background: var(--bg); border-radius: var(--radius-sm);
+padding: 10px 12px; margin-bottom: 10px;
+}
+.record-row label { font-size: 12px; color: var(--text-secondary); white-space: nowrap; }
+.record-row input[type=“date”],
+.record-row input[type=“time”] {
+border: 1px solid var(--border); border-radius: var(--radius-sm);
+padding: 6px 10px; font-size: 13px; font-family: inherit;
+background: var(--surface); color: var(--text-primary);
+outline: none; flex: 1;
+}
+.record-row input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,130,246,0.12); }
+
+.action-btns { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 20px; }
+.action-btn {
+border: none; border-radius: var(--radius-sm); padding: 12px 6px;
+font-family: inherit; font-size: 14px; font-weight: 700;
+cursor: pointer; transition: transform 0.12s, opacity 0.12s;
+display: flex; flex-direction: column; align-items: center; gap: 3px;
+}
+.action-btn:active { transform: scale(0.96); opacity: 0.85; }
+.btn-present { background: var(--present-light); color: var(--present); }
+.btn-late    { background: var(--late-light);    color: var(--late);    }
+.btn-absent  { background: var(--absent-light);  color: var(--absent);  }
+.action-btn .btn-icon { font-size: 20px; }
+.action-btn .btn-label { font-size: 12px; }
+
+.stats-summary {
+display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 20px;
+}
+.stat-box {
+border-radius: var(--radius-sm); padding: 12px 8px; text-align: center;
+}
+.stat-box .s-num { font-size: 24px; font-weight: 700; line-height: 1; }
+.stat-box .s-lbl { font-size: 11px; margin-top: 3px; font-weight: 500; }
+.stat-box.present { background: var(--present-light); color: var(--present); }
+.stat-box.late    { background: var(--late-light);    color: var(--late);    }
+.stat-box.absent  { background: var(--absent-light);  color: var(--absent);  }
+
+.chart-container { margin-bottom: 20px; }
+.chart-canvas-wrap {
+background: var(--bg); border-radius: var(--radius-sm);
+padding: 12px; overflow-x: auto;
+}
+canvas.timeline-chart { width: 100%; height: 140px; display: block; }
+
+.records-table { width: 100%; border-collapse: collapse; }
+.records-table th {
+font-size: 11px; font-weight: 600; color: var(--text-muted);
+text-align: left; padding: 6px 8px; border-bottom: 2px solid var(--border);
+}
+.records-table td {
+font-size: 12px; padding: 8px 8px;
+border-bottom: 1px solid var(--border); vertical-align: middle;
+}
+.records-table tr:last-child td { border-bottom: none; }
+.status-badge {
+display: inline-block; border-radius: 5px; padding: 2px 7px;
+font-size: 11px; font-weight: 700;
+}
+.status-badge.p { background: var(--present-light); color: var(--present); }
+.status-badge.l { background: var(--late-light);    color: var(--late);    }
+.status-badge.a { background: var(--absent-light);  color: var(--absent);  }
+.delete-btn {
+border: none; background: none; color: var(--absent); font-size: 14px;
+cursor: pointer; padding: 2px 6px; border-radius: 4px;
+}
+.delete-btn:hover { background: var(--absent-light); }
+
+.no-records { text-align: center; color: var(--text-muted); font-size: 13px; padding: 24px 0; }
+
+.toast {
+position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(20px);
+background: #1a1d23; color: #fff; border-radius: 20px; padding: 10px 20px;
+font-size: 13px; font-weight: 500; z-index: 999;
+opacity: 0; transition: opacity 0.2s, transform 0.2s;
+pointer-events: none; white-space: nowrap;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+
+</head>
+<body>
+
+<!-- ══════════════════════════════
+     HEADER
+══════════════════════════════ -->
+
+<div class="header">
+  <div class="header-brand-bar">
+    <div class="header-brand">
+      <span class="brand-logo">AMS</span>
+      
+      <span class="brand-subtitle">出席管理システム</span>
+    </div></div>
+  </div>
+  <div class="header-info-bar">
+    <div class="header-class-name">M4F</div>
+    <div class="header-datetime">
+      <div class="header-clock" id="clockBadge">--:--:--</div>
+      <div class="header-date" id="dateBadge">----/--/--</div>
+    </div>
+  </div>
+
+
+<!-- ══════════════════════════════
+     TIMETABLE
+══════════════════════════════ -->
+
+<div class="timetable-wrap">
+  <div class="day-labels" id="dayLabels">
+    <div class="day-label" data-day="1">月</div>
+    <div class="day-label" data-day="2">火</div>
+    <div class="day-label" data-day="3">水</div>
+    <div class="day-label" data-day="4">木</div>
+    <div class="day-label" data-day="5">金</div>
+  </div>
+  <div id="timetableGrid"></div>
+</div>
+
+<!-- Modal -->
+
+<div class="overlay" id="overlay">
+  <div class="modal" id="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">授業名</div>
+      <div class="modal-sub" id="modalSub">教員 / 教室</div>
+    </div>
+    <div class="modal-body">
+      <div class="section-label">出席を記録</div>
+      <div class="record-row">
+        <label>日付</label>
+        <input type="date" id="inputDate">
+        <label>時刻</label>
+        <input type="time" id="inputTime" placeholder="--:--">
+      </div>
+      <div class="action-btns">
+        <button class="action-btn btn-present" onclick="recordAttendance('present')">
+          <span class="btn-icon">✓</span><span class="btn-label">出席</span>
+        </button>
+        <button class="action-btn btn-late" onclick="recordAttendance('late')">
+          <span class="btn-icon">⏱</span><span class="btn-label">遅刻</span>
+        </button>
+        <button class="action-btn btn-absent" onclick="recordAttendance('absent')">
+          <span class="btn-icon">✕</span><span class="btn-label">欠席</span>
+        </button>
+      </div>
+
+```
+  <div class="section-label">集計</div>
+  <div class="stats-summary">
+    <div class="stat-box present"><div class="s-num" id="cntPresent">0</div><div class="s-lbl">出席</div></div>
+    <div class="stat-box late"><div class="s-num" id="cntLate">0</div><div class="s-lbl">遅刻</div></div>
+    <div class="stat-box absent"><div class="s-num" id="cntAbsent">0</div><div class="s-lbl">欠席</div></div>
+  </div>
+
+  <div class="chart-container">
+    <div class="section-label">出席確認時刻の推移</div>
+    <div class="chart-canvas-wrap">
+      <canvas id="timelineChart" class="timeline-chart"></canvas>
+    </div>
+  </div>
+
+  <div class="section-label">記録一覧</div>
+  <div id="recordsTableWrap"></div>
+</div>
+```
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const PERIODS = [
+  { id: 1, label: '1限', start: '08:50', end: '10:20' },
+  { id: 2, label: '2限', start: '10:30', end: '12:00' },
+  { id: 3, label: '3限', start: '13:00', end: '14:30' },
+  { id: 4, label: '4限', start: '14:40', end: '16:10' },
+  { id: 5, label: '5限', start: '16:20', end: '17:50' },
+];
+
+const CLASSES = [
+  { id:'mon1', day:1, period:1, name:'腎臓病学',       teacher:'岸',   room:'臨床講義棟３' },
+  { id:'tue1', day:2, period:1, name:'乳腺',           teacher:'増田', room:'臨床講義棟３' },
+  { id:'wed1', day:3, period:1, name:'神経精神科学',   teacher:'藪井', room:'実習棟１' },
+  { id:'thu1', day:4, period:1, name:'産婦人科学',     teacher:'永井', room:'臨床講義棟３' },
+  { id:'fri1', day:5, period:1, name:'消化器科学',     teacher:'瀬尾', room:'臨床講義棟３' },
+  { id:'mon2', day:1, period:2, name:'放射線医学',     teacher:'木村', room:'臨床講義棟３' },
+  { id:'tue2', day:2, period:2, name:'呼吸器科学',     teacher:'上月', room:'臨床講義棟３' },
+  { id:'wed2', day:3, period:2, name:'法医学',         teacher:'古宮', room:'実習棟１' },
+  { id:'thu2', day:4, period:2, name:'麻酔科学',       teacher:'河野', room:'臨床講義棟３' },
+  { id:'fri2', day:5, period:2, name:'歯科口腔外科学', teacher:'山縣', room:'臨床講義棟３' },
+  { id:'mon3', day:1, period:3, name:'循環器科学',     teacher:'久保', room:'臨床講義棟３' },
+  { id:'tue3', day:2, period:3, name:'医療コミュニケーション学', teacher:'盛實', room:'臨床講義棟３' },
+  { id:'wed3', day:3, period:3, name:'救急医学総論',   teacher:'宮内', room:'臨床講義棟３' },
+  { id:'thu3', day:4, period:3, name:'移植医学',       teacher:'藤本', room:'非同期' },
+  { id:'fri3', day:5, period:3, name:'呼吸器科学',     teacher:'上月', room:'臨床講義棟３' },
+  { id:'mon4', day:1, period:4, name:'統合医学Ⅳ', teacher:'盛實', room:'臨床講義棟３' },
+  { id:'tue4', day:2, period:4, name:'医療コミュニケーション学', teacher:'盛實', room:'臨床講義棟３' },
+  { id:'wed4', day:3, period:4, name:'消化器科学',     teacher:'瀬尾', room:'臨床講義棟３' },
+  { id:'thu4', day:4, period:4, name:'内分泌科学',     teacher:'藤本', room:'臨床講義棟３' },
+  { id:'mon5', day:1, period:5, name:'統合医学Ⅳ', teacher:'盛實', room:'臨床講義棟３' },
+  { id:'tue5', day:2, period:5, name:'泌尿器科学',     teacher:'井上', room:'臨床講義棟３' },
+  { id:'wed5', day:3, period:5, name:'神経精神科学',   teacher:'藪井', room:'臨床講義棟３' },
+  { id:'thu5', day:4, period:5, name:'耳鼻咽喉科学',  teacher:'手島', room:'臨床講義棟３' },
+];
+
+const DAYS = ['月','火','水','木','金'];
+const STATUS_LABELS = { present:'出席', late:'遅刻', absent:'欠席' };
+const STATUS_CLASS  = { present:'p',    late:'l',    absent:'a' };
+const STATUS_ICONS  = { present:'○',   late:'△',   absent:'✕' };
+
+let currentClassId = null;
+
+function loadRecords(classId) {
+  try { return JSON.parse(localStorage.getItem('att_' + classId)) || []; }
+  catch { return []; }
+}
+function saveRecords(classId, records) {
+  localStorage.setItem('att_' + classId, JSON.stringify(records));
+}
+function timeToMinutes(t) {
+  const [h,m] = t.split(':').map(Number);
+  return h*60 + m;
+}
+function nowMinutes() {
+  const n = new Date();
+  return n.getHours()*60 + n.getMinutes();
+}
+function todayStr() {
+  const d = new Date();
+  return d.toISOString().slice(0,10);
+}
+function formatTime(t) { return t || '--:--'; }
+function jsDay() {
+  const d = new Date().getDay();
+  if (d===0||d===6) return 0;
+  return d;
+}
+function avgCheckInMinutes(classId) {
+  const recs = loadRecords(classId).filter(r => r.time);
+  if (!recs.length) return null;
+  const mins = recs.map(r => timeToMinutes(r.time));
+  return Math.round(mins.reduce((a,b)=>a+b,0) / mins.length);
+}
+function etaText(cls) {
+  const avg = avgCheckInMinutes(cls.id);
+  if (avg === null) return null;
+  const now = nowMinutes();
+  const diff = avg - now;
+  const todayDay = jsDay();
+  if (todayDay !== cls.day) return null;
+  const pStart = timeToMinutes(PERIODS[cls.period-1].start);
+  const pEnd   = timeToMinutes(PERIODS[cls.period-1].end);
+  if (now > pEnd + 10) return null;
+  if (diff < -5) return { label:'済', cls:'now' };
+  if (diff <= 10) return { label:`約${Math.max(0,diff)}分後`, cls:'soon' };
+  return { label:`約${diff}分後`, cls:'' };
+}
+
+function buildTimetable() {
+  const grid = document.getElementById('timetableGrid');
+  grid.innerHTML = '';
+  const today = jsDay();
+  document.querySelectorAll('.day-label').forEach(el => {
+    el.classList.toggle('today', +el.dataset.day === today);
+  });
+
+  PERIODS.forEach(period => {
+    const row = document.createElement('div');
+    row.className = 'period-row';
+    const cells = document.createElement('div');
+    cells.className = 'period-cells';
+
+    for (let day=1; day<=5; day++) {
+      const cls = CLASSES.find(c => c.day===day && c.period===period.id);
+      const cell = document.createElement('div');
+      if (!cls) {
+        cell.className = 'cell empty';
+      } else {
+        cell.className = 'cell';
+        if (day === today) {
+          const nm = nowMinutes();
+          const pStart = timeToMinutes(period.start);
+          const pEnd   = timeToMinutes(period.end);
+          if (nm >= pStart && nm <= pEnd) cell.classList.add('current-class');
+        }
+        const recs = loadRecords(cls.id);
+        const cntP = recs.filter(r=>r.status==='present').length;
+        const cntL = recs.filter(r=>r.status==='late').length;
+        const cntA = recs.filter(r=>r.status==='absent').length;
+        const eta = etaText(cls);
+        const etaHtml = eta ? `<span class="eta-chip ${eta.cls}">${eta.label}</span>` : '';
+        cell.innerHTML = `
+          <div>
+            <div class="cell-name">${cls.name}</div>
+            <div class="cell-teacher">${cls.teacher}</div>
+            <div class="cell-room">${cls.room}</div>
+          </div>
+          <div class="cell-stats">
+            <span class="stat-chip p">${cntP}</span>
+            <span class="stat-chip l">${cntL}</span>
+            <span class="stat-chip a">${cntA}</span>
+            ${etaHtml}
+          </div>`;
+        cell.addEventListener('click', () => openModal(cls.id));
+      }
+      cells.appendChild(cell);
+    }
+    row.appendChild(cells);
+    grid.appendChild(row);
+  });
+}
+
+function updateClock() {
+  const n = new Date();
+  const h  = String(n.getHours()).padStart(2,'0');
+  const mi = String(n.getMinutes()).padStart(2,'0');
+  const s  = String(n.getSeconds()).padStart(2,'0');
+  document.getElementById('clockBadge').textContent = h + ':' + mi + ':' + s;
+
+  const y  = n.getFullYear();
+  const mo = String(n.getMonth()+1).padStart(2,'0');
+  const d  = String(n.getDate()).padStart(2,'0');
+  const dayNames = ['日','月','火','水','木','金','土'];
+  document.getElementById('dateBadge').textContent = `${y}/${mo}/${d}（${dayNames[n.getDay()]}）`;
+}
+
+function openModal(classId) {
+  currentClassId = classId;
+  const cls = CLASSES.find(c => c.id === classId);
+  document.getElementById('modalTitle').textContent = cls.name;
+  document.getElementById('modalSub').textContent = cls.teacher + '　/　' + cls.room;
+  document.getElementById('inputDate').value = todayStr();
+  const n = new Date();
+  document.getElementById('inputTime').value = String(n.getHours()).padStart(2,'0') + ':' + String(n.getMinutes()).padStart(2,'0');
+  refreshModal();
+  document.getElementById('overlay').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('overlay').classList.remove('open');
+  currentClassId = null;
+}
+
+document.getElementById('overlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('overlay')) closeModal();
+});
+
+function refreshModal() {
+  if (!currentClassId) return;
+  const recs = loadRecords(currentClassId);
+  document.getElementById('cntPresent').textContent = recs.filter(r=>r.status==='present').length;
+  document.getElementById('cntLate').textContent    = recs.filter(r=>r.status==='late').length;
+  document.getElementById('cntAbsent').textContent  = recs.filter(r=>r.status==='absent').length;
+  renderChart(recs);
+  renderTable(recs);
+}
+
+function recordAttendance(status) {
+  if (!currentClassId) return;
+  const date = document.getElementById('inputDate').value;
+  const time = document.getElementById('inputTime').value;
+  if (!date) { showToast('日付を入力してください'); return; }
+  const recs = loadRecords(currentClassId);
+  recs.push({ id: Date.now(), date, time, status });
+  recs.sort((a,b) => (a.date+a.time).localeCompare(b.date+b.time));
+  saveRecords(currentClassId, recs);
+  refreshModal();
+  buildTimetable();
+  showToast(STATUS_ICONS[status] + ' ' + STATUS_LABELS[status] + ' を記録しました');
+}
+
+function deleteRecord(classId, recId) {
+  const recs = loadRecords(classId).filter(r => r.id !== recId);
+  saveRecords(classId, recs);
+  refreshModal();
+  buildTimetable();
+  showToast('削除しました');
+}
+
+function renderChart(recs) {
+  const canvas = document.getElementById('timelineChart');
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const data = recs.filter(r => r.time).map(r => ({
+    date: r.date, time: r.time,
+    mins: timeToMinutes(r.time),
+    status: r.status
+  }));
+  canvas.style.width = '100%';
+  canvas.style.height = '140px';
+  const W = canvas.parentElement.clientWidth - 24;
+  canvas.width  = W * dpr;
+  canvas.height = 140 * dpr;
+  ctx.scale(dpr, dpr);
+  const w = W, h = 140;
+  ctx.clearRect(0,0,w,h);
+  if (data.length === 0) {
+    ctx.fillStyle = '#9ca3af';
+    ctx.font = '13px Noto Sans JP, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('まだ記録がありません', w/2, h/2);
+    return;
+  }
+  const minMins = Math.min(...data.map(d=>d.mins));
+  const maxMins = Math.max(...data.map(d=>d.mins));
+  const pad = data.length === 1 ? 10 : 5;
+  const yMin = minMins - pad, yMax = maxMins + pad;
+  const marginL = 42, marginR = 12, marginT = 12, marginB = 28;
+  const plotW = w - marginL - marginR;
+  const plotH = h - marginT - marginB;
+  function xPos(i) { return marginL + (data.length===1 ? plotW/2 : i/(data.length-1)*plotW); }
+  function yPos(m) { return marginT + plotH - (m-yMin)/(yMax-yMin)*plotH; }
+  ctx.strokeStyle = '#e5e7eb'; ctx.lineWidth = 1;
+  const steps = 4;
+  for (let i=0; i<=steps; i++) {
+    const m = yMin + (yMax-yMin)*i/steps;
+    const y = yPos(m);
+    ctx.beginPath(); ctx.moveTo(marginL, y); ctx.lineTo(w-marginR, y); ctx.stroke();
+    const hh = Math.floor(m/60), mm = Math.round(m%60);
+    ctx.fillStyle = '#9ca3af'; ctx.font = '9px DM Mono, monospace';
+    ctx.textAlign = 'right';
+    ctx.fillText(`${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}`, marginL-4, y+3);
+  }
+  if (data.length > 1) {
+    const avgM = data.reduce((s,d)=>s+d.mins,0)/data.length;
+    const yA = yPos(avgM);
+    ctx.strokeStyle = '#3b82f6'; ctx.lineWidth = 1;
+    ctx.setLineDash([4,3]);
+    ctx.beginPath(); ctx.moveTo(marginL, yA); ctx.lineTo(w-marginR, yA); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#3b82f6'; ctx.font = '8px DM Mono, monospace'; ctx.textAlign = 'left';
+    ctx.fillText('平均', w-marginR+2, yA+3);
+  }
+  if (data.length > 1) {
+    ctx.strokeStyle = '#93c5fd'; ctx.lineWidth = 2; ctx.setLineDash([]);
+    ctx.beginPath();
+    data.forEach((d,i) => {
+      const x = xPos(i), y = yPos(d.mins);
+      i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+    });
+    ctx.stroke();
+  }
+  const colorMap = { present:'#10b981', late:'#f59e0b', absent:'#ef4444' };
+  data.forEach((d,i) => {
+    const x = xPos(i), y = yPos(d.mins);
+    ctx.beginPath();
+    ctx.arc(x, y, 5, 0, Math.PI*2);
+    ctx.fillStyle = colorMap[d.status] || '#6b7280';
+    ctx.fill();
+    ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5;
+    ctx.stroke();
+    const parts = d.date.split('-');
+    const label = parts[1]+'/'+parts[2];
+    ctx.fillStyle = '#9ca3af'; ctx.font = '8px Noto Sans JP, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(label, x, h - marginB + 14);
+  });
+}
+
+function renderTable(recs) {
+  const wrap = document.getElementById('recordsTableWrap');
+  if (!recs.length) {
+    wrap.innerHTML = '<div class="no-records">記録がありません</div>';
+    return;
+  }
+  const sorted = [...recs].reverse();
+  const rows = sorted.map(r => `
+    <tr>
+      <td>${r.date}</td>
+      <td style="font-family:DM Mono,monospace;font-size:12px">${formatTime(r.time)}</td>
+      <td><span class="status-badge ${STATUS_CLASS[r.status]}">${STATUS_ICONS[r.status]} ${STATUS_LABELS[r.status]}</span></td>
+      <td><button class="delete-btn" onclick="deleteRecord('${currentClassId}',${r.id})">🗑</button></td>
+    </tr>`).join('');
+  wrap.innerHTML = `
+    <table class="records-table">
+      <thead><tr><th>日付</th><th>時刻</th><th>状態</th><th></th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2000);
+}
+
+buildTimetable();
+updateClock();
+setInterval(updateClock, 1000);
+setInterval(buildTimetable, 30000);
+</script>
+
+</body>
+</html>
