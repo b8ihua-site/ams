@@ -1,98 +1,114 @@
 <!DOCTYPE html>
+
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=DM+Mono:wght@400;500&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
-<title>KMSAMS | M4F</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Roboto+Condensed:wght@400;700&family=Lexend:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+<title>KMSAMS</title>
 <style>
+a {color:var(--brand);}
+
 :root {
-  --bg: #f8f9fb;
-  --surface: #ffffff;
-  --border: #e2e6ea;
-  --text-primary: #1a1d23;
-  --text-secondary: #6b7280;
-  --text-muted: #9ca3af;
-  --accent: #3b82f6;
-  --accent-light: #eff6ff;
-  --present: #10b981;
-  --present-light: #ecfdf5;
-  --late: #f59e0b;
-  --late-light: #fffbeb;
-  --absent: #ef4444;
-  --absent-light: #fef2f2;
-  --current: #DC4848;
-  --current-light: #fff0f0;
-  --brand: #DC4848;
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
-  --shadow-md: 0 4px 16px rgba(0,0,0,0.10);
-  --shadow-lg: 0 8px 32px rgba(0,0,0,0.14);
-  --radius: 12px;
-  --radius-sm: 8px;
+--bg: #f8f9fb;
+--surface: #ffffff;
+--border: #e2e6ea;
+--text-primary: #1a1d23;
+--text-secondary: #6b7280;
+--text-muted: #9ca3af;
+--accent: #3b82f6;
+--accent-light: #eff6ff;
+--present: #10b981;
+--present-light: #ecfdf5;
+--late: #f59e0b;
+--late-light: #fffbeb;
+--absent: #ef4444;
+--absent-light: #fef2f2;
+--current: #DC4848;
+--current-light: #fff0f0;
+--brand: #DC4848;
+--shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+--shadow-md: 0 4px 16px rgba(0,0,0,0.10);
+--shadow-lg: 0 8px 32px rgba(0,0,0,0.14);
+--radius: 12px;
+--radius-sm: 8px;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text-primary); min-height: 100vh; overscroll-behavior: none; }
+
+- { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text-primary); min-height: 100vh; overscroll-behavior: none; margin:0; }
+
+/* Material Icons sizing helpers */
+.mi { font-family: 'Material Icons Round'; font-style: normal; font-weight: normal; line-height: 1; letter-spacing: normal; text-transform: none; display: inline-block; white-space: nowrap; word-wrap: normal; direction: ltr; -webkit-font-smoothing: antialiased; }
+.mi-18 { font-size: 18px; }
+.mi-20 { font-size: 20px; }
+.mi-22 { font-size: 22px; }
+.mi-24 { font-size: 24px; }
+.mi-28 { font-size: 28px; }
 
 /* ─── HEADER ─── */
 .header {
-  position: sticky; top: 0; z-index: 100;
-  background: var(--surface);
-  border-bottom: 1.5px solid var(--border);
-  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-  padding: 10px 0 0;
+position: sticky; top: 0; z-index: 100;
+background: var(--surface);
+border-bottom: 1.5px solid var(--border);
+box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+padding: 0px 0 0;
 }
 .header-brand-bar {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 5px 18px 15px;
+display: flex; align-items: center; justify-content: space-between;background-color: var(--brand);
+padding: 10px 18px 10px 18px;
 }
 .header-brand { display: flex; align-items: baseline; gap: 8px; }
-.brand-logo { font-family: "Roboto Condensed", sans-serif; font-weight: 400; font-size: 26px; color: var(--brand); letter-spacing: -1px; line-height: 1; }
-.brand-subtitle { font-size: 10px; font-weight: 400; color: var(--text-muted); letter-spacing: 0.6px; }
+.brand-logo { font-family: "Roboto Condensed", sans-serif; font-weight: 400; font-size: 26px; color:white; letter-spacing: -1px; line-height: 1; }
+.brand-subtitle { font-size: 10px; font-weight: 400; color: rgb(255, 255, 255); letter-spacing: 0.6px; }
 .brand-dot { width: 5px; height: 5px; background: var(--brand); border-radius: 50%; margin-bottom: 2px; flex-shrink: 0; animation: pulse-dot 2.4s ease-in-out infinite; }
 @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
 
 /* hamburger */
 .hamburger-btn {
-  width: 38px; height: 38px; border: none; background: transparent; cursor: pointer;
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
-  border-radius: 10px; transition: background 0.2s;
+position: relative;
+z-index: 1000;
+width: 38px; height: 38px; border: none; background: transparent; cursor: pointer;
+display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+border-radius: 10px; transition: background 0.2s;
 }
 .hamburger-btn:active { background: var(--bg); }
-.hb-line { width: 22px; height: 2px; background: var(--text-secondary); border-radius: 2px; transition: transform 0.3s, opacity 0.3s; transform-origin: center; }
+.hb-line { width: 22px; height: 2px; background: rgb(255, 255, 255); border-radius: 2px; transition: transform 0.3s, opacity 0.3s; transform-origin: center; z-index:10000;}
 .hamburger-btn.open .hb-line:nth-child(1) { transform: translateY(7px) rotate(45deg); }
 .hamburger-btn.open .hb-line:nth-child(2) { opacity: 0; transform: scaleX(0); }
 .hamburger-btn.open .hb-line:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.hamburger-btn.open .hb-line { background: var(--brand); }
 
 .header-info-bar { display: flex; align-items: center; justify-content: space-between; padding: 6px 18px 12px; gap: 12px; }
-.header-class-name { font-size: 17px; font-weight: 700; letter-spacing: -0.3px; color: var(--text-primary); }
+.header-class-name { font-size: 17px; font-weight: 700; letter-spacing: -0.3px; color: var(--text-primary); font-family:"Lexend"; font-weight:100;}
 .header-datetime { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; }
-.header-clock { font-family: 'Roboto Condensed', monospace; font-size: 18px; font-weight: 500; color: var(--brand); letter-spacing: 1px; line-height: 1; }
+.header-clock { font-family: 'Roboto Condensed', monospace; font-size: 18px; font-weight: 500; color: var(--brand); letter-spacing: 1px; line-height: 1; margin-top:10px;}
 .header-date { font-family: 'Roboto Condensed', monospace; font-size: 10px; font-weight: 400; color: var(--text-muted); letter-spacing: 0.3px; }
 
 /* ─── DRAWER MENU ─── */
 .drawer-overlay {
-  position: fixed; inset: 0; z-index: 300;
-  background: rgba(0,0,0,0.4); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
-  opacity: 0; pointer-events: none; transition: opacity 0.25s;
+position: fixed; inset: 0; z-index: 300;
+background: rgba(0,0,0,0.4); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
+opacity: 0; pointer-events: none; transition: opacity 0.25s;
 }
 .drawer-overlay.open { opacity: 1; pointer-events: all; }
 
 .drawer {
-  position: fixed; top: 0; right: 0; bottom: 0; z-index: 301;
-  width: min(320px, 85vw);
-  background: var(--surface);
-  box-shadow: -8px 0 40px rgba(0,0,0,0.18);
-  transform: translateX(100%);
-  transition: transform 0.32s cubic-bezier(0.32,0.72,0,1);
-  display: flex; flex-direction: column;
-  overflow-y: auto; -webkit-overflow-scrolling: touch;
+position: fixed; top: 0; right: 0; bottom: 0; z-index: 301;
+width: min(320px, 85vw);
+background: var(--surface);
+box-shadow: -8px 0 40px rgba(0,0,0,0.18);
+transform: translateX(100%);
+transition: transform 0.32s cubic-bezier(0.32,0.72,0,1);
+display: flex; flex-direction: column;
+overflow-y: auto; -webkit-overflow-scrolling: touch;
 }
 .drawer-overlay.open .drawer { transform: translateX(0); }
 
 .drawer-header {
-  padding: 54px 20px 18px;
-  border-bottom: 1px solid var(--border);
-  background: linear-gradient(135deg, #fff5f5 0%, #fff 100%);
+padding: 54px 20px 18px;
+border-bottom: 1px solid var(--border);
+background: linear-gradient(135deg, #fff5f5 0%, #fff 100%);
 }
 .drawer-title { font-size: 22px; font-weight: 700; color: var(--brand); font-family: "Roboto Condensed", sans-serif; }
 .drawer-sub { font-size: 11px; color: var(--text-muted); margin-top: 3px; letter-spacing: 0.5px; }
@@ -100,14 +116,14 @@ body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: va
 .drawer-section { padding: 12px 0; border-bottom: 1px solid var(--border); }
 .drawer-section-label { font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; padding: 4px 20px 8px; }
 .drawer-item {
-  display: flex; align-items: center; gap: 14px;
-  padding: 13px 20px; cursor: pointer;
-  transition: background 0.15s;
-  font-size: 14px; font-weight: 500; color: var(--text-primary);
-  border: none; background: none; width: 100%; text-align: left;
+display: flex; align-items: center; gap: 14px;
+padding: 13px 20px; cursor: pointer;
+transition: background 0.15s;
+font-size: 14px; font-weight: 500; color: var(--text-primary);
+border: none; background: none; width: 100%; text-align: left;
 }
 .drawer-item:active { background: var(--bg); }
-.drawer-item .di-icon { font-size: 20px; width: 28px; text-align: center; flex-shrink: 0; }
+.drawer-item .di-icon { font-size: 22px; width: 28px; text-align: center; flex-shrink: 0; color: var(--text-secondary); display: flex; align-items: center; justify-content: center; }
 .drawer-item .di-badge { margin-left: auto; background: var(--brand); color: #fff; font-size: 10px; font-weight: 700; border-radius: 10px; padding: 2px 7px; }
 
 .drawer-footer { padding: 20px; margin-top: auto; }
@@ -121,12 +137,12 @@ body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: va
 .period-row { display: flex; gap: 4px; margin-bottom: 4px; align-items: stretch; }
 .period-cells { display: grid; grid-template-columns: repeat(5,1fr); gap: 4px; flex: 1; }
 .cell {
-  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm);
-  padding: 6px 5px 5px; min-height: 82px; cursor: pointer;
-  transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
-  display: flex; flex-direction: column; justify-content: space-between;
-  position: relative; overflow: hidden;
-  -webkit-user-select: none; user-select: none;
+background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm);
+padding: 6px 5px 5px; min-height: 82px; cursor: pointer;
+transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+display: flex; flex-direction: column; justify-content: space-between;
+position: relative; overflow: hidden;
+-webkit-user-select: none; user-select: none;
 }
 .cell:active { transform: scale(0.96); }
 .cell.empty { background: transparent; border-color: transparent; cursor: default; pointer-events: none; }
@@ -134,6 +150,8 @@ body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: va
 .cell.current-class::before { content:''; position:absolute; top:0; left:0; right:0; height:0px; background:var(--current); border-radius:0 0 2px 2px; }
 .cell.hidden-class { opacity: 0.35; }
 .cell-name { font-size: 10.5px; font-weight: 600; line-height: 1.35; color: var(--text-primary); }
+/* アラートがある科目名はブランドカラー */
+.cell-name.alerted { color: var(--brand); }
 .cell-teacher { font-size: 9px; color: var(--text-secondary); margin-top: 2px; }
 .cell-room { font-size: 8.5px; color: var(--text-muted); }
 .cell-stats { margin-top: 4px; display: flex; flex-direction: row; flex-wrap: wrap; gap: 2px; align-items: center; }
@@ -147,21 +165,21 @@ body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: va
 
 /* ─── BOTTOM NAV ─── */
 .bottom-nav {
-  position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
-  background: var(--surface); border-top: 1px solid var(--border);
-  display: flex; padding: 8px 0 env(safe-area-inset-bottom, 8px);
-  box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+background: var(--surface); border-top: 1px solid var(--border);
+display: flex; padding: 8px 0 env(safe-area-inset-bottom, 8px);
+box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
 }
 .nav-item {
-  flex: 1; display: flex; flex-direction: column; align-items: center;
-  gap: 3px; padding: 4px 0; cursor: pointer;
-  border: none; background: none; font-family: inherit;
-  transition: color 0.15s;
+flex: 1; display: flex; flex-direction: column; align-items: center;
+gap: 3px; padding: 4px 0px 20px 0px; cursor: pointer;
+border: none; background: none; font-family: inherit;
+transition: color 0.15s;
 }
-.nav-item .ni-icon { font-size: 22px; line-height: 1; }
+.nav-item .ni-icon { font-size: 24px; line-height: 1; color: var(--text-muted); }
 .nav-item .ni-label { font-size: 9px; font-weight: 600; letter-spacing: 0.3px; color: var(--text-muted); }
 .nav-item.active .ni-label { color: var(--brand); }
-.nav-item.active .ni-icon { filter: none; }
+.nav-item.active .ni-icon { color: var(--brand); }
 
 /* ─── VIEWS ─── */
 .view { display: none; animation: fadeIn 0.2s ease; }
@@ -193,6 +211,8 @@ body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: va
 .subject-rank-row { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--border); }
 .subject-rank-row:last-child { border-bottom: none; }
 .sr-name { font-size: 12px; font-weight: 600; flex: 1; }
+/* アラート付き科目名 */
+.sr-name.alerted { color: var(--brand); }
 .sr-bar-wrap { width: 80px; height: 6px; background: #f1f5f9; border-radius: 99px; overflow: hidden; }
 .sr-bar-fill { height: 100%; border-radius: 99px; background: var(--present); }
 .sr-rate { font-family: 'Roboto Condensed', monospace; font-size: 11px; color: var(--text-secondary); width: 36px; text-align: right; }
@@ -200,7 +220,7 @@ body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: va
 .calendar-wrap { background: var(--surface); border-radius: var(--radius); padding: 14px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); }
 .cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
 .cal-title { font-size: 15px; font-weight: 700; }
-.cal-nav { border: none; background: var(--bg); border-radius: 8px; width: 30px; height: 30px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; }
+.cal-nav { border: none; background: var(--bg); border-radius: 8px; width: 30px; height: 30px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; color: var(--text-secondary); }
 .cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 2px; }
 .cal-day-lbl { text-align: center; font-size: 10px; font-weight: 600; color: var(--text-muted); padding: 4px 0; }
 .cal-cell { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-size: 11px; cursor: pointer; position: relative; transition: background 0.15s; }
@@ -213,61 +233,61 @@ body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: va
 .settings-wrap { padding: 16px 14px 100px; }
 .settings-section { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; box-shadow: var(--shadow-sm); margin-bottom: 20px; }
 .settings-row {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 14px 16px; border-bottom: 1px solid var(--border); gap: 12px;
+display: flex; align-items: center; justify-content: space-between;
+padding: 14px 16px; border-bottom: 1px solid var(--border); gap: 12px;
 }
 .settings-row:last-child { border-bottom: none; }
 .settings-row-left { display: flex; flex-direction: column; gap: 2px; }
 .settings-row-title { font-size: 14px; font-weight: 500; }
 .settings-row-sub { font-size: 11px; color: var(--text-muted); }
 .toggle {
-  position: relative; width: 44px; height: 26px; flex-shrink: 0;
+position: relative; width: 44px; height: 26px; flex-shrink: 0;
 }
 .toggle input { opacity: 0; width: 0; height: 0; }
 .toggle-slider {
-  position: absolute; inset: 0; background: #d1d5db; border-radius: 13px; cursor: pointer;
-  transition: background 0.2s;
+position: absolute; inset: 0; background: #d1d5db; border-radius: 13px; cursor: pointer;
+transition: background 0.2s;
 }
 .toggle-slider::before {
-  content: ''; position: absolute; left: 3px; top: 3px;
-  width: 20px; height: 20px; background: white; border-radius: 50%;
-  transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+content: ''; position: absolute; left: 3px; top: 3px;
+width: 20px; height: 20px; background: white; border-radius: 50%;
+transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
 .toggle input:checked + .toggle-slider { background: var(--present); }
 .toggle input:checked + .toggle-slider::before { transform: translateX(18px); }
 
 .settings-btn {
-  border: 1px solid var(--border); background: var(--surface); border-radius: var(--radius-sm);
-  padding: 10px 16px; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer;
-  color: var(--text-primary); transition: background 0.15s;
+border: 1px solid var(--border); background: var(--surface); border-radius: var(--radius-sm);
+padding: 10px 16px; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer;
+color: var(--text-primary); transition: background 0.15s; display: flex; align-items: center; gap: 6px;
 }
 .settings-btn:active { background: var(--bg); }
 .settings-btn.danger { color: var(--absent); border-color: var(--absent-light); }
 
 .name-input {
-  border: 1px solid var(--border); border-radius: var(--radius-sm);
-  padding: 8px 10px; font-size: 13px; font-family: inherit;
-  background: var(--bg); color: var(--text-primary);
-  outline: none; width: 150px;
+border: 1px solid var(--border); border-radius: var(--radius-sm);
+padding: 8px 10px; font-size: 13px; font-family: inherit;
+background: var(--bg); color: var(--text-primary);
+outline: none; width: 150px;
 }
 .name-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
 
 /* ─── MODAL ─── */
 .overlay {
-  position: fixed; inset: 0; z-index: 200;
-  background: rgba(0,0,0,0.45); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
-  display: flex; align-items: flex-end; justify-content: center;
-  opacity: 0; pointer-events: none; transition: opacity 0.25s;
+position: fixed; inset: 0; z-index: 200;
+background: rgba(0,0,0,0.45); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+display: flex; align-items: flex-end; justify-content: center;
+opacity: 0; pointer-events: none; transition: opacity 0.25s;
 }
 .overlay.open { opacity: 1; pointer-events: all; }
 .modal {
-  background: var(--surface); border-radius: 20px 20px 0 0;
-  width: 100%; max-width: 540px;
-  max-height: 90vh; overflow-y: auto;
-  padding: 0 0 env(safe-area-inset-bottom,16px);
-  transform: translateY(100%);
-  transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
-  -webkit-overflow-scrolling: touch;
+background: var(--surface); border-radius: 20px 20px 0 0;
+width: 100%; max-width: 540px;
+max-height: 90vh; overflow-y: auto;
+padding: 0 0 env(safe-area-inset-bottom,16px);
+transform: translateY(100%);
+transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
+-webkit-overflow-scrolling: touch;
 }
 .overlay.open .modal { transform: translateY(0); }
 .modal-handle { width: 36px; height: 4px; background: #d1d5db; border-radius: 2px; margin: 12px auto 0; }
@@ -280,24 +300,24 @@ body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: va
 .record-row { display: flex; gap: 8px; align-items: center; background: var(--bg); border-radius: var(--radius-sm); padding: 10px 12px; margin-bottom: 10px; }
 .record-row label { font-size: 12px; color: var(--text-secondary); white-space: nowrap; }
 .record-row input[type="date"], .record-row input[type="time"] {
-  border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 6px 10px;
-  font-size: 13px; font-family: inherit; background: var(--surface); color: var(--text-primary);
-  outline: none; flex: 1;
+border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 6px 10px;
+font-size: 13px; font-family: inherit; background: var(--surface); color: var(--text-primary);
+outline: none; flex: 1;
 }
 .record-row input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,130,246,0.12); }
 
 .action-btns { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 20px; }
 .action-btn {
-  border: none; border-radius: var(--radius-sm); padding: 12px 6px;
-  font-family: inherit; font-size: 14px; font-weight: 700;
-  cursor: pointer; transition: transform 0.12s, opacity 0.12s;
-  display: flex; flex-direction: column; align-items: center; gap: 3px;
+border: none; border-radius: var(--radius-sm); padding: 12px 6px;
+font-family: inherit; font-size: 14px; font-weight: 700;
+cursor: pointer; transition: transform 0.12s, opacity 0.12s;
+display: flex; flex-direction: column; align-items: center; gap: 3px;
 }
 .action-btn:active { transform: scale(0.96); opacity: 0.85; }
 .btn-present { background: var(--present-light); color: var(--present); }
 .btn-late    { background: var(--late-light);    color: var(--late);    }
 .btn-absent  { background: var(--absent-light);  color: var(--absent);  }
-.action-btn .btn-icon { font-size: 20px; }
+.action-btn .btn-icon { font-size: 24px; line-height: 1; }
 .action-btn .btn-label { font-size: 12px; }
 
 .stats-summary { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 20px; }
@@ -316,33 +336,34 @@ canvas.timeline-chart { width: 100%; height: 140px; display: block; }
 .records-table th { font-size: 11px; font-weight: 600; color: var(--text-muted); text-align: left; padding: 6px 8px; border-bottom: 2px solid var(--border); }
 .records-table td { font-size: 12px; padding: 8px 8px; border-bottom: 1px solid var(--border); vertical-align: middle; }
 .records-table tr:last-child td { border-bottom: none; }
-.status-badge { display: inline-block; border-radius: 5px; padding: 2px 7px; font-size: 11px; font-weight: 700; }
+.status-badge { display: inline-flex; align-items: center; gap: 3px; border-radius: 5px; padding: 2px 7px; font-size: 11px; font-weight: 700; }
 .status-badge.p { background: var(--present-light); color: var(--present); }
 .status-badge.l { background: var(--late-light); color: var(--late); }
 .status-badge.a { background: var(--absent-light); color: var(--absent); }
-.delete-btn { border: none; background: none; color: var(--absent); font-size: 14px; cursor: pointer; padding: 2px 6px; border-radius: 4px; }
+.delete-btn { border: none; background: none; color: var(--absent); font-size: 14px; cursor: pointer; padding: 2px 6px; border-radius: 4px; display: flex; align-items: center; }
+
 .no-records { text-align: center; color: var(--text-muted); font-size: 13px; padding: 24px 0; }
 
 /* ─── EDIT TIMETABLE MODAL ─── */
 .edit-overlay {
-  position: fixed; inset: 0; z-index: 400;
-  background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
-  opacity: 0; pointer-events: none; transition: opacity 0.25s;
-  display: flex; align-items: flex-end; justify-content: center;
+position: fixed; inset: 0; z-index: 400;
+background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+opacity: 0; pointer-events: none; transition: opacity 0.25s;
+display: flex; align-items: flex-end; justify-content: center;
 }
 .edit-overlay.open { opacity: 1; pointer-events: all; }
 .edit-modal {
-  background: var(--surface); border-radius: 20px 20px 0 0;
-  width: 100%; max-width: 540px;
-  max-height: 92vh; overflow-y: auto;
-  padding: 0 0 env(safe-area-inset-bottom,16px);
-  transform: translateY(100%);
-  transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
+background: var(--surface); border-radius: 20px 20px 0 0;
+width: 100%; max-width: 540px;
+max-height: 92vh; overflow-y: auto;
+padding: 0 0 env(safe-area-inset-bottom,16px);
+transform: translateY(100%);
+transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
 }
 .edit-overlay.open .edit-modal { transform: translateY(0); }
 .edit-modal-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-.edit-modal-title { font-size: 17px; font-weight: 700; }
-.edit-close-btn { border: none; background: var(--bg); border-radius: 8px; width: 32px; height: 32px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; }
+.edit-modal-title { font-size: 17px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+.edit-close-btn { border: none; background: var(--bg); border-radius: 8px; width: 32px; height: 32px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; color: var(--text-secondary); }
 .edit-modal-body { padding: 16px 20px; }
 .edit-class-card { background: var(--bg); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 8px; border: 1px solid var(--border); }
 .edit-class-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
@@ -352,36 +373,37 @@ canvas.timeline-chart { width: 100%; height: 140px; display: block; }
 .edit-field { display: flex; flex-direction: column; gap: 3px; }
 .edit-field label { font-size: 10px; color: var(--text-muted); font-weight: 600; }
 .edit-field input, .edit-field select {
-  border: 1px solid var(--border); border-radius: 6px; padding: 6px 8px;
-  font-size: 12px; font-family: inherit; background: var(--surface); color: var(--text-primary);
-  outline: none;
+border: 1px solid var(--border); border-radius: 6px; padding: 6px 8px;
+font-size: 12px; font-family: inherit; background: var(--surface); color: var(--text-primary);
+outline: none;
 }
 .edit-field input:focus, .edit-field select:focus { border-color: var(--accent); }
 .edit-field.full { grid-column: 1 / -1; }
 .add-class-btn {
-  width: 100%; border: 2px dashed var(--border); background: transparent;
-  border-radius: var(--radius-sm); padding: 14px; font-family: inherit;
-  font-size: 13px; font-weight: 600; color: var(--text-muted);
-  cursor: pointer; transition: border-color 0.15s, color 0.15s; margin-top: 4px;
+width: 100%; border: 2px dashed var(--border); background: transparent;
+border-radius: var(--radius-sm); padding: 14px; font-family: inherit;
+font-size: 13px; font-weight: 600; color: var(--text-muted);
+cursor: pointer; transition: border-color 0.15s, color 0.15s; margin-top: 4px;
+display: flex; align-items: center; justify-content: center; gap: 8px;
 }
 .add-class-btn:active { border-color: var(--brand); color: var(--brand); }
 
 /* ─── LOG / EXPORT ─── */
 .log-wrap { padding: 14px 14px 100px; }
 .export-btns { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
-.export-btn {
-  flex: 1; min-width: 100px; border: 1px solid var(--border); background: var(--surface);
-  border-radius: var(--radius-sm); padding: 10px 12px;
-  font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer;
-  display: flex; align-items: center; gap: 7px; justify-content: center;
-  transition: background 0.15s;
+.export-btn { color:var(--brand);
+flex: 1; min-width: 100px; border: 1px solid var(--border); background: var(--surface);
+border-radius: var(--radius-sm); padding: 10px 12px;
+font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer;
+display: flex; align-items: center; gap: 7px; justify-content: center;
+transition: background 0.15s;
 }
 .export-btn:active { background: var(--bg); }
 .log-filter { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
-.log-filter-btn {
-  border: 1px solid var(--border); background: var(--surface); border-radius: 20px;
-  padding: 5px 12px; font-size: 11px; font-weight: 600; cursor: pointer;
-  font-family: inherit; transition: all 0.15s;
+.log-filter-btn { color:var(--brand);
+border: 1px solid var(--border); background: var(--surface); border-radius: 20px;
+padding: 5px 12px; font-size: 11px; font-weight: 600; cursor: pointer;
+font-family: inherit; transition: all 0.15s;
 }
 .log-filter-btn.active { background: var(--brand); color: white; border-color: var(--brand); }
 .log-all-table { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; box-shadow: var(--shadow-sm); }
@@ -400,7 +422,7 @@ canvas.timeline-chart { width: 100%; height: 140px; display: block; }
 .alert-row { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: var(--radius-sm); margin-bottom: 6px; }
 .alert-row.warn { background: var(--absent-light); }
 .alert-row.caution { background: var(--late-light); }
-.alert-row .ar-icon { font-size: 18px; }
+.alert-row .ar-icon { font-size: 22px; display: flex; align-items: center; }
 .alert-row .ar-text { font-size: 12px; font-weight: 500; flex: 1; }
 .alert-row .ar-val { font-family: 'Roboto Condensed', monospace; font-size: 12px; font-weight: 700; }
 .alert-row.warn .ar-val { color: var(--absent); }
@@ -408,37 +430,38 @@ canvas.timeline-chart { width: 100%; height: 140px; display: block; }
 
 /* ─── SEND MODAL ─── */
 .send-overlay {
-  position: fixed; inset: 0; z-index: 500;
-  background: rgba(0,0,0,0.45); backdrop-filter: blur(4px);
-  opacity: 0; pointer-events: none; transition: opacity 0.25s;
-  display: flex; align-items: center; justify-content: center; padding: 20px;
+position: fixed; inset: 0; z-index: 500;
+background: rgba(0,0,0,0.45); backdrop-filter: blur(4px);
+opacity: 0; pointer-events: none; transition: opacity 0.25s;
+display: flex; align-items: center; justify-content: center; padding: 20px;
 }
 .send-overlay.open { opacity: 1; pointer-events: all; }
 .send-modal {
-  background: var(--surface); border-radius: 20px;
-  width: 100%; max-width: 400px;
-  padding: 24px 20px; box-shadow: var(--shadow-lg);
-  transform: scale(0.94); transition: transform 0.25s cubic-bezier(0.32,0.72,0,1);
+background: var(--surface); border-radius: 20px;
+width: 100%; max-width: 400px;
+padding: 24px 20px; box-shadow: var(--shadow-lg);
+transform: scale(0.94); transition: transform 0.25s cubic-bezier(0.32,0.72,0,1);
 }
 .send-overlay.open .send-modal { transform: scale(1); }
-.send-modal h3 { font-size: 17px; font-weight: 700; margin-bottom: 16px; }
+.send-modal h3 { font-size: 17px; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
 .send-textarea {
-  width: 100%; height: 160px; border: 1px solid var(--border); border-radius: var(--radius-sm);
-  padding: 10px 12px; font-family: 'Roboto Condensed', monospace; font-size: 11px;
-  background: var(--bg); color: var(--text-primary); outline: none; resize: none;
-  margin-bottom: 14px;
+width: 100%; height: 160px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+padding: 10px 12px; font-family: 'Roboto Condensed', monospace; font-size: 11px;
+background: var(--bg); color: var(--text-primary); outline: none; resize: none;
+margin-bottom: 14px;
 }
 .send-footer { display: flex; gap: 8px; }
 .send-cancel-btn { flex: 1; border: 1px solid var(--border); background: var(--surface); border-radius: var(--radius-sm); padding: 11px; font-family: inherit; font-size: 13px; cursor: pointer; }
-.send-copy-btn { flex: 2; border: none; background: var(--brand); color: white; border-radius: var(--radius-sm); padding: 11px; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
+.send-copy-btn { flex: 2; border: none; background: var(--brand); color: white; border-radius: var(--radius-sm); padding: 11px; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
 
 /* ─── TOAST ─── */
 .toast {
-  position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(20px);
-  background: #1a1d23; color: #fff; border-radius: 20px; padding: 10px 20px;
-  font-size: 13px; font-weight: 500; z-index: 999;
-  opacity: 0; transition: opacity 0.2s, transform 0.2s;
-  pointer-events: none; white-space: nowrap;
+position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(20px);
+background: #1a1d23; color: #fff; border-radius: 20px; padding: 10px 20px;
+font-size: 13px; font-weight: 500; z-index: 999;
+opacity: 0; transition: opacity 0.2s, transform 0.2s;
+pointer-events: none; white-space: nowrap;
+display: flex; align-items: center; gap: 6px;
 }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
@@ -453,22 +476,24 @@ canvas.timeline-chart { width: 100%; height: 140px; display: block; }
 
 /* next class banner */
 .next-class-banner {
-  background: linear-gradient(135deg, #fff5f5 0%, #fff 60%);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
-  padding: 12px 16px; margin-bottom: 16px;
-  display: flex; align-items: center; gap: 12px;
+background: linear-gradient(135deg, #fff5f5 0%, #fff 60%);
+border: 1.5px solid var(--border);
+border-radius: var(--radius);
+padding: 12px 16px; margin-bottom: 16px;
+display: flex; align-items: center; gap: 12px;
 }
-.ncb-icon { font-size: 22px; flex-shrink: 0; }
+.ncb-icon { font-size: 22px; flex-shrink: 0; color: var(--brand); display: flex; align-items: center; }
 .ncb-text { flex: 1; }
 .ncb-title { font-size: 13px; font-weight: 700; }
 .ncb-sub { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
 .ncb-time { font-family: 'Roboto Condensed', monospace; font-size: 13px; font-weight: 700; color: var(--brand); }
 </style>
+
 </head>
 <body>
 
 <!-- HEADER -->
+
 <div class="header">
   <div class="header-brand-bar">
     <div class="header-brand">
@@ -482,7 +507,7 @@ canvas.timeline-chart { width: 100%; height: 140px; display: block; }
     </button>
   </div>
   <div class="header-info-bar">
-    <div class="header-class-name">M4F</div>
+    <div class="header-class-name" id="headerClassName">M4F</div>
     <div class="header-datetime">
       <div class="header-clock" id="clockBadge">--:--:--</div>
       <div class="header-date" id="dateBadge">----/--/--</div>
@@ -491,65 +516,68 @@ canvas.timeline-chart { width: 100%; height: 140px; display: block; }
 </div>
 
 <!-- DRAWER -->
+
 <div class="drawer-overlay" id="drawerOverlay" onclick="handleDrawerOverlayClick(event)">
   <div class="drawer" id="drawer">
     <div class="drawer-header">
       <div class="drawer-title">AMS</div>
-      <div class="drawer-sub">出席管理システム — M4F</div>
+      <div class="drawer-sub" id="drawerSub">出席研究会</div>
     </div>
 
-    <div class="drawer-section">
-      <div class="drawer-section-label">表示</div>
-      <button class="drawer-item" onclick="switchView('timetable'); closeDrawer()">
-        <span class="di-icon">📅</span> 時間割
-      </button>
-      <button class="drawer-item" onclick="switchView('dashboard'); closeDrawer()">
-        <span class="di-icon">📊</span> ダッシュボード
-      </button>
-      <button class="drawer-item" onclick="switchView('log'); closeDrawer()">
-        <span class="di-icon">📋</span> ログ一覧
-      </button>
-    </div>
+<div class="drawer-section">
+  <div class="drawer-section-label">表示</div>
+  <button class="drawer-item" onclick="switchView('timetable'); closeDrawer()">
+    <span class="di-icon"><span class="mi mi-22">calendar_month</span></span> 時間割
+  </button>
+  <button class="drawer-item" onclick="switchView('dashboard'); closeDrawer()">
+    <span class="di-icon"><span class="mi mi-22">bar_chart</span></span> ダッシュボード
+  </button>
+  <button class="drawer-item" onclick="switchView('log'); closeDrawer()">
+    <span class="di-icon"><span class="mi mi-22">list_alt</span></span> ログ一覧
+  </button>
+</div>
 
-    <div class="drawer-section">
-      <div class="drawer-section-label">管理</div>
-      <button class="drawer-item" onclick="openEditTimetable(); closeDrawer()">
-        <span class="di-icon">✏️</span> 時間割を編集
-      </button>
-      <button class="drawer-item" onclick="switchView('alerts'); closeDrawer()">
-        <span class="di-icon">🔔</span> 出席アラート
-      </button>
-    </div>
+<div class="drawer-section">
+  <div class="drawer-section-label">管理</div>
+  <button class="drawer-item" onclick="openEditTimetable(); closeDrawer()">
+    <span class="di-icon"><span class="mi mi-22">edit</span></span> 時間割を編集
+  </button>
+  <button class="drawer-item" onclick="switchView('alerts'); closeDrawer()">
+    <span class="di-icon"><span class="mi mi-22">notifications</span></span> 出席アラート
+  </button>
+</div>
 
-    <div class="drawer-section">
-      <div class="drawer-section-label">データ</div>
-      <button class="drawer-item" onclick="openSendLog(); closeDrawer()">
-        <span class="di-icon">📤</span> ログを送信
-      </button>
-      <button class="drawer-item" onclick="exportCSV(); closeDrawer()">
-        <span class="di-icon">⬇️</span> CSV エクスポート
-      </button>
-      <button class="drawer-item" onclick="importBackup(); closeDrawer()">
-        <span class="di-icon">⬆️</span> バックアップを読み込む
-      </button>
-    </div>
+<div class="drawer-section">
+  <div class="drawer-section-label">データ</div>
+  <button class="drawer-item" onclick="openSendLog(); closeDrawer()">
+    <span class="di-icon"><span class="mi mi-22">upload</span></span> ログを送信
+  </button>
+  <button class="drawer-item" onclick="exportCSV(); closeDrawer()">
+    <span class="di-icon"><span class="mi mi-22">download</span></span> CSV エクスポート
+  </button>
+  <button class="drawer-item" onclick="importBackup(); closeDrawer()">
+    <span class="di-icon"><span class="mi mi-22">restore</span></span> バックアップを読み込む
+  </button>
+</div>
 
-    <div class="drawer-section">
-      <div class="drawer-section-label">設定</div>
-      <button class="drawer-item" onclick="switchView('settings'); closeDrawer()">
-        <span class="di-icon">⚙️</span> 設定
-      </button>
-    </div>
+<div class="drawer-section">
+  <div class="drawer-section-label">設定</div>
+  <button class="drawer-item" onclick="switchView('settings'); closeDrawer()">
+    <span class="di-icon"><span class="mi mi-22">settings</span></span> 設定
+  </button>
+</div>
 
-    <div class="drawer-footer">
-      <div class="drawer-version">AMS v2.0 — M4F / 2025</div>
-    </div>
+<div class="drawer-footer">
+  <div class="drawer-version" id="drawerVersion">AMS | 出席管理システム</div>
+</div>
+
   </div>
 </div>
 
 <!-- VIEWS -->
 
 <!-- TIMETABLE VIEW -->
+
 <div class="view active" id="view-timetable">
   <div class="timetable-wrap">
     <div class="day-labels" id="dayLabels">
@@ -564,6 +592,7 @@ canvas.timeline-chart { width: 100%; height: 140px; display: block; }
 </div>
 
 <!-- DASHBOARD VIEW -->
+
 <div class="view" id="view-dashboard">
   <div class="dashboard-wrap">
     <div id="nextClassBanner"></div>
@@ -580,9 +609,9 @@ canvas.timeline-chart { width: 100%; height: 140px; display: block; }
     <div class="dash-section-title">出席カレンダー</div>
     <div class="calendar-wrap">
       <div class="cal-header">
-        <button class="cal-nav" onclick="calPrev()">‹</button>
+        <button class="cal-nav" onclick="calPrev()"><span class="mi mi-20">chevron_left</span></button>
         <div class="cal-title" id="calTitle"></div>
-        <button class="cal-nav" onclick="calNext()">›</button>
+        <button class="cal-nav" onclick="calNext()"><span class="mi mi-20">chevron_right</span></button>
       </div>
       <div class="cal-grid" id="calGrid"></div>
     </div>
@@ -590,12 +619,13 @@ canvas.timeline-chart { width: 100%; height: 140px; display: block; }
 </div>
 
 <!-- LOG VIEW -->
+
 <div class="view" id="view-log">
   <div class="log-wrap">
     <div class="export-btns">
-      <button class="export-btn" onclick="openSendLog()">📤 ログ送信</button>
-      <button class="export-btn" onclick="exportCSV()">📊 CSV出力</button>
-      <button class="export-btn" onclick="exportJSON()">💾 JSONバックアップ</button>
+      <button class="export-btn" onclick="openSendLog()"><span class="mi mi-18">upload</span> ログ送信</button>
+      <button class="export-btn" onclick="exportCSV()"><span class="mi mi-18">table_chart</span> CSV出力</button>
+      <button class="export-btn" onclick="exportJSON()"><span class="mi mi-18">save</span> JSONバックアップ</button>
     </div>
     <div class="log-filter" id="logFilter">
       <button class="log-filter-btn active" onclick="setLogFilter('all',this)">すべて</button>
@@ -608,6 +638,7 @@ canvas.timeline-chart { width: 100%; height: 140px; display: block; }
 </div>
 
 <!-- ALERTS VIEW -->
+
 <div class="view" id="view-alerts">
   <div class="settings-wrap">
     <div class="dash-section-title">アラートしきい値</div>
@@ -639,6 +670,7 @@ canvas.timeline-chart { width: 100%; height: 140px; display: block; }
 </div>
 
 <!-- SETTINGS VIEW -->
+
 <div class="view" id="view-settings">
   <div class="settings-wrap">
     <div class="dash-section-title">プロフィール</div>
@@ -648,13 +680,23 @@ canvas.timeline-chart { width: 100%; height: 140px; display: block; }
           <div class="settings-row-title">名前</div>
           <div class="settings-row-sub">ログ送信時に使用</div>
         </div>
-        <input class="name-input" type="text" id="settingName" placeholder="例: 高橋 俊介" oninput="saveSetting('name',this.value)">
+        <input class="name-input" type="text" id="settingName" placeholder="出席 花子" oninput="saveSetting('name',this.value)">
       </div>
       <div class="settings-row">
         <div class="settings-row-left">
           <div class="settings-row-title">学籍番号</div>
         </div>
-        <input class="name-input" type="text" id="settingStudentId" placeholder="例: M4F-XXX" oninput="saveSetting('studentId',this.value)">
+        <input class="name-input" type="text" id="settingStudentId" placeholder="B235A000R" oninput="saveSetting('studentId',this.value)">
+      </div>
+    </div>
+    <div class="dash-section-title">時間割名</div>
+    <div class="settings-section">
+      <div class="settings-row">
+        <div class="settings-row-left">
+          <div class="settings-row-title">時間割名</div>
+          <div class="settings-row-sub">ヘッダーやログに表示されます</div>
+        </div>
+        <input class="name-input" type="text" id="settingClassName" placeholder="M4F" oninput="saveClassName(this.value)">
       </div>
     </div>
     <div class="dash-section-title">表示</div>
@@ -686,51 +728,53 @@ canvas.timeline-chart { width: 100%; height: 140px; display: block; }
           <div class="settings-row-title">JSONバックアップを保存</div>
           <div class="settings-row-sub">全データをファイルとして書き出す</div>
         </div>
-        <button class="settings-btn" onclick="exportJSON()">📥 保存</button>
+        <button class="settings-btn" onclick="exportJSON()"><span class="mi mi-18">download</span> 保存</button>
       </div>
       <div class="settings-row">
         <div class="settings-row-left">
           <div class="settings-row-title">バックアップから復元</div>
           <div class="settings-row-sub">JSONファイルを読み込む</div>
         </div>
-        <button class="settings-btn" onclick="importBackup()">📂 読込</button>
+        <button class="settings-btn" onclick="importBackup()"><span class="mi mi-18">folder_open</span> 読込</button>
       </div>
       <div class="settings-row">
         <div class="settings-row-left">
           <div class="settings-row-title">全データをリセット</div>
           <div class="settings-row-sub">出席記録をすべて削除</div>
         </div>
-        <button class="settings-btn danger" onclick="resetAllData()">🗑 リセット</button>
+        <button class="settings-btn danger" onclick="resetAllData()"><span class="mi mi-18">delete</span> リセット</button>
       </div>
     </div>
   </div>
 </div>
 
 <!-- BOTTOM NAV -->
+
 <div class="bottom-nav">
   <button class="nav-item active" id="nav-timetable" onclick="switchView('timetable')">
-    <span class="ni-icon">📅</span>
+    <span class="ni-icon mi">calendar_month</span>
     <span class="ni-label">時間割</span>
   </button>
   <button class="nav-item" id="nav-dashboard" onclick="switchView('dashboard')">
-    <span class="ni-icon">📊</span>
+    <span class="ni-icon mi">bar_chart</span>
     <span class="ni-label">統計</span>
   </button>
   <button class="nav-item" id="nav-log" onclick="switchView('log')">
-    <span class="ni-icon">📋</span>
+    <span class="ni-icon mi">list_alt</span>
     <span class="ni-label">ログ</span>
   </button>
   <button class="nav-item" id="nav-alerts" onclick="switchView('alerts')">
-    <span class="ni-icon">🔔</span>
+    <span class="ni-icon mi">notifications</span>
     <span class="ni-label">アラート</span>
   </button>
   <button class="nav-item" id="nav-settings" onclick="switchView('settings')">
-    <span class="ni-icon">⚙️</span>
+    <span class="ni-icon mi">settings</span>
     <span class="ni-label">設定</span>
   </button>
 </div>
 
 <!-- ATTENDANCE MODAL -->
+
 <div class="overlay" id="overlay">
   <div class="modal" id="modal">
     <div class="modal-handle"></div>
@@ -748,13 +792,13 @@ canvas.timeline-chart { width: 100%; height: 140px; display: block; }
       </div>
       <div class="action-btns">
         <button class="action-btn btn-present" onclick="recordAttendance('present')">
-          <span class="btn-icon">✓</span><span class="btn-label">出席</span>
+          <span class="btn-icon mi">check_circle</span><span class="btn-label">出席</span>
         </button>
         <button class="action-btn btn-late" onclick="recordAttendance('late')">
-          <span class="btn-icon">⏱</span><span class="btn-label">遅刻</span>
+          <span class="btn-icon mi">schedule</span><span class="btn-label">遅刻</span>
         </button>
         <button class="action-btn btn-absent" onclick="recordAttendance('absent')">
-          <span class="btn-icon">✕</span><span class="btn-label">欠席</span>
+          <span class="btn-icon mi">cancel</span><span class="btn-label">欠席</span>
         </button>
       </div>
       <div class="section-label">集計</div>
@@ -776,24 +820,26 @@ canvas.timeline-chart { width: 100%; height: 140px; display: block; }
 </div>
 
 <!-- EDIT TIMETABLE -->
+
 <div class="edit-overlay" id="editOverlay">
   <div class="edit-modal" id="editModal">
     <div class="edit-modal-header">
-      <div class="edit-modal-title">✏️ 時間割を編集</div>
-      <button class="edit-close-btn" onclick="closeEditTimetable()">✕</button>
+      <div class="edit-modal-title"><span class="mi mi-20">edit</span> 時間割を編集</div>
+      <button class="edit-close-btn" onclick="closeEditTimetable()"><span class="mi mi-20">close</span></button>
     </div>
     <div class="edit-modal-body" id="editModalBody"></div>
   </div>
 </div>
 
 <!-- SEND LOG MODAL -->
+
 <div class="send-overlay" id="sendOverlay">
   <div class="send-modal">
-    <h3>📤 ログを送信</h3>
+    <h3><span class="mi mi-22">upload</span> ログを送信</h3>
     <textarea class="send-textarea" id="sendTextarea" readonly></textarea>
     <div class="send-footer">
       <button class="send-cancel-btn" onclick="closeSendLog()">キャンセル</button>
-      <button class="send-copy-btn" onclick="copyLog()">📋 コピー</button>
+      <button class="send-copy-btn" onclick="copyLog()"><span class="mi mi-18">content_copy</span> コピー</button>
     </div>
   </div>
 </div>
@@ -839,7 +885,7 @@ const DEFAULT_CLASSES = [
 
 const STATUS_LABELS = { present:'出席', late:'遅刻', absent:'欠席' };
 const STATUS_CLASS  = { present:'p', late:'l', absent:'a' };
-const STATUS_ICONS  = { present:'○', late:'△', absent:'✕' };
+const STATUS_ICONS_MI = { present:'check_circle', late:'schedule', absent:'cancel' };
 const DAY_NAMES = ['日','月','火','水','木','金','土'];
 
 let currentClassId = null;
@@ -863,6 +909,67 @@ function getSetting(k, def) {
   return v;
 }
 function saveSetting(k, v) { localStorage.setItem('ams_set_' + k, v); }
+
+// ─── CLASS NAME SETTING ───
+function getClassName() {
+  return getSetting('className', 'M4F') || 'M4F';
+}
+function saveClassName(val) {
+  const name = val.trim() || 'M4F';
+  saveSetting('className', name);
+  updateClassNameDisplay();
+}
+function updateClassNameDisplay() {
+  const name = getClassName();
+  document.getElementById('headerClassName').textContent = name;
+  document.getElementById('drawerSub').textContent = '出席管理システム';
+  document.getElementById('drawerVersion').textContent = '出席研究会';
+  document.title = 'KMSAMS | ' + name;
+}
+
+// ─── 出席率計算（出席×1, 遅刻×0.5, 欠席×0）───
+// 分母 = 総授業回数（記録件数）
+// 分子 = 出席数×1 + 遅刻数×0.5
+function calcAttendanceRate(records) {
+  const total = records.length;
+  if (total === 0) return null;
+  const cntP = records.filter(r => r.status === 'present').length;
+  const cntL = records.filter(r => r.status === 'late').length;
+  const score = cntP * 1 + cntL * 0.5;
+  return Math.round(score / total * 100);
+}
+
+// 全科目合算の出席率
+function calcTotalAttendanceRate(allClasses) {
+  let totalScore = 0;
+  let totalCount = 0;
+  allClasses.forEach(c => {
+    const recs = loadRecords(c.id);
+    totalCount += recs.length;
+    totalScore += recs.filter(r => r.status === 'present').length * 1
+                + recs.filter(r => r.status === 'late').length * 0.5;
+  });
+  if (totalCount === 0) return 0;
+  return Math.round(totalScore / totalCount * 100);
+}
+
+// ─── アラート判定（classIdセットを返す）───
+function getAlertedClassIds() {
+  const absThreshEl = document.getElementById('absThresh');
+  const rateThreshEl = document.getElementById('rateThresh');
+  const absThresh = absThreshEl ? parseInt(absThreshEl.value) || 3 : parseInt(getSetting('absThresh','3')) || 3;
+  const rateThresh = rateThreshEl ? parseInt(rateThreshEl.value) || 75 : parseInt(getSetting('rateThresh','75')) || 75;
+  const CLASSES = getClasses();
+  const alerted = new Set();
+  CLASSES.forEach(c => {
+    const recs = loadRecords(c.id);
+    const absCnt = recs.filter(r => r.status === 'absent').length;
+    const rate = calcAttendanceRate(recs);
+    if (absCnt >= absThresh) alerted.add(c.id);
+    else if (rate !== null && rate < rateThresh) alerted.add(c.id);
+  });
+  return alerted;
+}
 
 // ─── TIME HELPERS ───
 function timeToMinutes(t) { const [h,m] = t.split(':').map(Number); return h*60+m; }
@@ -907,7 +1014,7 @@ function updateClock() {
   const s=String(n.getSeconds()).padStart(2,'0');
   document.getElementById('clockBadge').textContent = h+':'+mi+':'+s;
   const y=n.getFullYear(), mo=String(n.getMonth()+1).padStart(2,'0'), d=String(n.getDate()).padStart(2,'0');
-  document.getElementById('dateBadge').textContent = `${y}/${mo}/${d}（${DAY_NAMES[n.getDay()]}）`;
+  document.getElementById('dateBadge').textContent = `${y}/${mo}/${d} (${DAY_NAMES[n.getDay()]})`;
 }
 
 // ─── ETA ───
@@ -937,6 +1044,7 @@ function buildTimetable() {
   grid.innerHTML = '';
   const today = jsDay();
   const fadeAbsent = getSetting('fadeAbsent', false);
+  const alertedIds = getAlertedClassIds();
   document.querySelectorAll('.day-label').forEach(el => el.classList.toggle('today', +el.dataset.day===today));
   PERIODS.forEach(period => {
     const row = document.createElement('div'); row.className = 'period-row';
@@ -958,9 +1066,11 @@ function buildTimetable() {
         if (fadeAbsent && cntA > 0 && cntP===0 && cntL===0) cell.classList.add('hidden-class');
         const eta=etaText(cls);
         const etaHtml=eta?`<span class="eta-chip ${eta.cls}">${eta.label}</span>`:'';
+        // アラートがある科目は名前をブランドカラーに
+        const alertedClass = alertedIds.has(cls.id) ? ' alerted' : '';
         cell.innerHTML=`
           <div>
-            <div class="cell-name">${cls.name}</div>
+            <div class="cell-name${alertedClass}">${cls.name}</div>
             <div class="cell-teacher">${cls.teacher}</div>
             <div class="cell-room">${cls.room}</div>
           </div>
@@ -1014,14 +1124,14 @@ function recordAttendance(status) {
   recs.sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
   saveRecords(currentClassId, recs);
   refreshModal(); buildTimetable();
-  showToast(STATUS_ICONS[status]+' '+STATUS_LABELS[status]+' を記録しました');
+  showToast(STATUS_LABELS[status] + ' を記録しました', STATUS_ICONS_MI[status]);
 }
 
 function deleteRecord(classId, recId) {
   const recs=loadRecords(classId).filter(r=>r.id!==recId);
   saveRecords(classId, recs);
   refreshModal(); buildTimetable();
-  showToast('削除しました');
+  showToast('削除しました', 'delete');
 }
 
 function renderChart(recs) {
@@ -1083,8 +1193,8 @@ function renderTable(recs) {
     sorted.map(r=>`<tr>
       <td>${r.date}</td>
       <td style="font-family:Roboto Condensed,monospace;font-size:12px">${formatTime(r.time)}</td>
-      <td><span class="status-badge ${STATUS_CLASS[r.status]}">${STATUS_ICONS[r.status]} ${STATUS_LABELS[r.status]}</span></td>
-      <td><button class="delete-btn" onclick="deleteRecord('${currentClassId}',${r.id})">🗑</button></td>
+      <td><span class="status-badge ${STATUS_CLASS[r.status]}"><span class="mi" style="font-size:13px">${STATUS_ICONS_MI[r.status]}</span> ${STATUS_LABELS[r.status]}</span></td>
+      <td><button class="delete-btn" onclick="deleteRecord('${currentClassId}',${r.id})"><span class="mi mi-18">delete</span></button></td>
     </tr>`).join('')
   }</tbody></table>`;
 }
@@ -1094,8 +1204,9 @@ function renderDashboard() {
   const CLASSES = getClasses();
   let totalP=0,totalL=0,totalA=0;
   CLASSES.forEach(c=>{ const r=loadRecords(c.id); totalP+=r.filter(x=>x.status==='present').length; totalL+=r.filter(x=>x.status==='late').length; totalA+=r.filter(x=>x.status==='absent').length; });
-  const totalRecorded=totalP+totalL+totalA;
-  const attendRate=totalRecorded>0?Math.round((totalP+totalL)/totalRecorded*100):0;
+
+  // 出席率：出席×1 + 遅刻×0.5（分母は総記録数）
+  const attendRate = calcTotalAttendanceRate(CLASSES);
 
   // Next class banner
   const showNext=getSetting('showNextClass',true);
@@ -1103,7 +1214,7 @@ function renderDashboard() {
   if (showNext) {
     const nextCls=getNextClass();
     if (nextCls) {
-      nb.innerHTML=`<div class="next-class-banner"><span class="ncb-icon">🔔</span><div class="ncb-text"><div class="ncb-title">次の授業：${nextCls.cls.name}</div><div class="ncb-sub">${nextCls.cls.teacher}　${nextCls.cls.room}</div></div><div class="ncb-time">${nextCls.start}</div></div>`;
+      nb.innerHTML=`<div class="next-class-banner"><span class="ncb-icon"><span class="mi mi-22">notifications_active</span></span><div class="ncb-text"><div class="ncb-title">次の授業：${nextCls.cls.name}</div><div class="ncb-sub">${nextCls.cls.teacher}　${nextCls.cls.room}</div></div><div class="ncb-time">${nextCls.start}</div></div>`;
     } else { nb.innerHTML=''; }
   } else { nb.innerHTML=''; }
 
@@ -1131,15 +1242,16 @@ function renderDashboard() {
   // Rate bar
   const rb=document.getElementById('rateBar');
   rb.innerHTML=`<div class="rate-bar-wrap">
-    <div class="rate-bar-label"><span>出席率</span><span style="color:${col}">${attendRate}%</span></div>
+    <div class="rate-bar-label"><span>出席率（遅刻0.5換算）</span><span style="color:${col}">${attendRate}%</span></div>
     <div class="rate-bar-track"><div class="rate-bar-fill" style="width:${attendRate}%;background:${col}"></div></div>
   </div>`;
 
-  // Subject rank
+  // Subject rank（アラート付き科目名もブランドカラー）
+  const alertedIds = getAlertedClassIds();
   const ranked=CLASSES.map(c=>{
     const recs=loadRecords(c.id);
-    const total=recs.length, att=recs.filter(r=>r.status==='present'||r.status==='late').length;
-    return {...c, rate:total>0?Math.round(att/total*100):null, total};
+    const rate = calcAttendanceRate(recs);
+    return {...c, rate, total:recs.length};
   }).filter(c=>c.total>0).sort((a,b)=>(b.rate||0)-(a.rate||0));
 
   const sr=document.getElementById('subjectRank');
@@ -1147,8 +1259,9 @@ function renderDashboard() {
   else {
     sr.innerHTML=ranked.map(c=>{
       const col=c.rate>=80?'#10b981':c.rate>=70?'#f59e0b':'#ef4444';
+      const alertedClass = alertedIds.has(c.id) ? ' alerted' : '';
       return `<div class="subject-rank-row">
-        <div class="sr-name">${c.name}</div>
+        <div class="sr-name${alertedClass}">${c.name}</div>
         <div class="sr-bar-wrap"><div class="sr-bar-fill" style="width:${c.rate}%;background:${col}"></div></div>
         <div class="sr-rate" style="color:${col}">${c.rate}%</div>
       </div>`;
@@ -1178,7 +1291,6 @@ function renderCalendar() {
   const firstDay=new Date(calYear,calMonth,1).getDay();
   const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
   const todayObj=new Date();
-  // Collect all dates with records
   const allRecords={};
   getClasses().forEach(c=>{
     loadRecords(c.id).forEach(r=>{ if(!allRecords[r.date]) allRecords[r.date]=[]; allRecords[r.date].push(r.status); });
@@ -1213,7 +1325,7 @@ function renderLogAll() {
       <td>${r.date}</td>
       <td style="font-family:Roboto Condensed,monospace">${formatTime(r.time)}</td>
       <td>${r.className}</td>
-      <td><span class="status-badge ${STATUS_CLASS[r.status]}">${STATUS_ICONS[r.status]} ${STATUS_LABELS[r.status]}</span></td>
+      <td><span class="status-badge ${STATUS_CLASS[r.status]}"><span class="mi" style="font-size:13px">${STATUS_ICONS_MI[r.status]}</span> ${STATUS_LABELS[r.status]}</span></td>
     </tr>`).join('')
   }</tbody></table>`;
 }
@@ -1233,21 +1345,22 @@ function renderAlerts() {
   CLASSES.forEach(c=>{
     const recs=loadRecords(c.id);
     const absCnt=recs.filter(r=>r.status==='absent').length;
-    const total=recs.length;
-    const rate=total>0?Math.round((recs.filter(r=>r.status==='present'||r.status==='late').length/total)*100):null;
+    const rate = calcAttendanceRate(recs);
     if(absCnt>=absThresh) alerts.push({type:'warn',text:`${c.name}`,val:`欠席${absCnt}回`});
     else if(rate!==null && rate<rateThresh) alerts.push({type:'caution',text:`${c.name}`,val:`出席率${rate}%`});
   });
   const wrap=document.getElementById('alertList');
-  if(!alerts.length){wrap.innerHTML='<div style="text-align:center;color:var(--text-muted);font-size:13px;padding:20px">⚠️ アラートなし</div>';return;}
+  if(!alerts.length){wrap.innerHTML='<div style="text-align:center;color:var(--text-muted);font-size:13px;padding:20px;display:flex;align-items:center;justify-content:center;gap:8px"><span class="mi mi-18">check_circle</span> アラートなし</div>';return;}
   wrap.innerHTML=alerts.map(a=>`<div class="alert-row ${a.type}">
-    <span class="ar-icon">${a.type==='warn'?'🚨':'⚠️'}</span>
+    <span class="ar-icon"><span class="mi mi-22">${a.type==='warn'?'error':'warning'}</span></span>
     <span class="ar-text">${a.text}</span>
     <span class="ar-val">${a.val}</span>
   </div>`).join('');
+  // アラート変化時に時間割も更新
+  buildTimetable();
 }
-document.getElementById('absThresh').addEventListener('change',renderAlerts);
-document.getElementById('rateThresh').addEventListener('change',renderAlerts);
+document.getElementById('absThresh').addEventListener('change', () => { renderAlerts(); buildTimetable(); });
+document.getElementById('rateThresh').addEventListener('change', () => { renderAlerts(); buildTimetable(); });
 
 // ─── EDIT TIMETABLE ───
 function openEditTimetable() {
@@ -1287,7 +1400,7 @@ function openEditTimetable() {
         </div>
       </div>
     </div>`).join('')
-  + `<button class="add-class-btn" onclick="saveEditedTimetable()">💾 保存して閉じる</button>`;
+  + `<button class="add-class-btn" onclick="saveEditedTimetable()"><span class="mi mi-20">save</span> 保存して閉じる</button>`;
   document.getElementById('editOverlay').classList.add('open');
 }
 function saveEditedTimetable() {
@@ -1304,7 +1417,7 @@ function saveEditedTimetable() {
   });
   saveClasses(CLASSES);
   closeEditTimetable(); buildTimetable();
-  showToast('✅ 時間割を保存しました');
+  showToast('時間割を保存しました', 'check_circle');
 }
 function closeEditTimetable() { document.getElementById('editOverlay').classList.remove('open'); }
 document.getElementById('editOverlay').addEventListener('click',e=>{ if(e.target===document.getElementById('editOverlay')) closeEditTimetable(); });
@@ -1314,14 +1427,16 @@ function openSendLog() {
   const CLASSES=getClasses();
   const name=getSetting('name','')||'(未設定)';
   const sid=getSetting('studentId','')||'(未設定)';
-  let text=`=== 出席ログ ===\n送信者: ${name}\n学籍番号: ${sid}\n出力日時: ${new Date().toLocaleString('ja-JP')}\n\n`;
+  const className=getClassName();
+  let text=`=== 出席ログ ===\n送信者: ${name}\n学籍番号: ${sid}\nクラス: ${className}\n出力日時: ${new Date().toLocaleString('ja-JP')}\n\n`;
   CLASSES.forEach(c=>{
     const recs=loadRecords(c.id);
     if(!recs.length) return;
     const cntP=recs.filter(r=>r.status==='present').length;
     const cntL=recs.filter(r=>r.status==='late').length;
     const cntA=recs.filter(r=>r.status==='absent').length;
-    text+=`【${c.name}】(${c.teacher}) 出:${cntP} 遅:${cntL} 欠:${cntA}\n`;
+    const rate = calcAttendanceRate(recs);
+    text+=`【${c.name}】(${c.teacher}) 出:${cntP} 遅:${cntL} 欠:${cntA} 出席率:${rate !== null ? rate+'%' : '-'}\n`;
     recs.forEach(r=>{ text+=`  ${r.date} ${formatTime(r.time)} ${STATUS_LABELS[r.status]}\n`; });
     text+='\n';
   });
@@ -1332,7 +1447,7 @@ function closeSendLog() { document.getElementById('sendOverlay').classList.remov
 document.getElementById('sendOverlay').addEventListener('click',e=>{ if(e.target===document.getElementById('sendOverlay')) closeSendLog(); });
 function copyLog() {
   const text=document.getElementById('sendTextarea').value;
-  navigator.clipboard.writeText(text).then(()=>{ closeSendLog(); showToast('📋 クリップボードにコピーしました'); }).catch(()=>{ showToast('コピーに失敗しました'); });
+  navigator.clipboard.writeText(text).then(()=>{ closeSendLog(); showToast('クリップボードにコピーしました', 'content_copy'); }).catch(()=>{ showToast('コピーに失敗しました', 'error'); });
 }
 
 // ─── CSV EXPORT ───
@@ -1344,25 +1459,27 @@ function exportCSV() {
       csv+=`"${c.name}","${c.teacher}","${r.date}","${formatTime(r.time)}","${STATUS_LABELS[r.status]}"\n`;
     });
   });
+  const className=getClassName();
   const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a'); a.href=url;
-  a.download=`AMS_M4F_${todayStr()}.csv`; a.click();
+  a.download=`AMS_${className}_${todayStr()}.csv`; a.click();
   URL.revokeObjectURL(url);
-  showToast('📊 CSVを書き出しました');
+  showToast('CSVを書き出しました', 'table_chart');
 }
 
 // ─── JSON EXPORT / IMPORT ───
 function exportJSON() {
   const CLASSES=getClasses();
-  const data={ exportDate:new Date().toISOString(), classes:CLASSES, records:{} };
+  const className=getClassName();
+  const data={ exportDate:new Date().toISOString(), className, classes:CLASSES, records:{} };
   CLASSES.forEach(c=>{ data.records[c.id]=loadRecords(c.id); });
   const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a'); a.href=url;
-  a.download=`AMS_M4F_backup_${todayStr()}.json`; a.click();
+  a.download=`AMS_${className}_backup_${todayStr()}.json`; a.click();
   URL.revokeObjectURL(url);
-  showToast('💾 バックアップを保存しました');
+  showToast('バックアップを保存しました', 'save');
 }
 function importBackup() { document.getElementById('importFileInput').click(); }
 function handleImport(e) {
@@ -1373,9 +1490,11 @@ function handleImport(e) {
       const data=JSON.parse(ev.target.result);
       if(data.classes) saveClasses(data.classes);
       if(data.records) { Object.entries(data.records).forEach(([id,recs])=>saveRecords(id,recs)); }
+      if(data.className) { saveSetting('className', data.className); }
+      updateClassNameDisplay();
       buildTimetable();
-      showToast('✅ バックアップを復元しました');
-    } catch { showToast('❌ ファイルの読み込みに失敗しました'); }
+      showToast('バックアップを復元しました', 'restore');
+    } catch { showToast('ファイルの読み込みに失敗しました', 'error'); }
   };
   reader.readAsText(file);
   e.target.value='';
@@ -1385,6 +1504,7 @@ function handleImport(e) {
 function loadSettingsUI() {
   document.getElementById('settingName').value=getSetting('name','')||'';
   document.getElementById('settingStudentId').value=getSetting('studentId','')||'';
+  document.getElementById('settingClassName').value=getClassName();
   document.getElementById('toggleFade').checked=getSetting('fadeAbsent',false);
   document.getElementById('toggleNextClass').checked=getSetting('showNextClass',true);
 }
@@ -1393,21 +1513,24 @@ function resetAllData() {
   const CLASSES=getClasses();
   CLASSES.forEach(c=>localStorage.removeItem('att_'+c.id));
   buildTimetable();
-  showToast('🗑 全データをリセットしました');
+  showToast('全データをリセットしました', 'delete');
 }
 
 // ─── TOAST ───
-function showToast(msg) {
+function showToast(msg, icon) {
   const t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
+  t.innerHTML = icon ? `<span class="mi mi-18">${icon}</span> ${msg}` : msg;
+  t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),2000);
 }
 
 // ─── INIT ───
+updateClassNameDisplay();
 buildTimetable();
 updateClock();
 setInterval(updateClock,1000);
 setInterval(buildTimetable,30000);
 </script>
+
 </body>
 </html>
