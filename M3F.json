@@ -1,0 +1,34 @@
+{
+  "exportDate": "2026-04-27T16:03:00.000Z",
+  "className": "M3F",
+  "classes": [
+    { "id": "mon1", "day": 1, "period": 1, "name": "臨床症候学Ⅱ", "teacher": "小松", "room": "実習棟2" },
+    { "id": "mon2", "day": 1, "period": 2, "name": "応用社会医学", "teacher": "安田", "room": "実習棟2" },
+    { "id": "mon3", "day": 1, "period": 3, "name": "薬理学", "teacher": "齊藤", "room": "実習棟2" },
+    { "id": "tue1", "day": 2, "period": 1, "name": "免疫学", "teacher": "山田", "room": "実習棟2" },
+    { "id": "tue2", "day": 2, "period": 2, "name": "漢方医学", "teacher": "学務委員会・総診", "room": "実習棟2" },
+    { "id": "tue3", "day": 2, "period": 3, "name": "基本的診療技能", "teacher": "小松", "room": "実習棟2" },
+    { "id": "tue4", "day": 2, "period": 4, "name": "病理学", "teacher": "倉林", "room": "実習棟2" },
+    { "id": "wed1", "day": 3, "period": 1, "name": "臨床症候学Ⅱ(補講枠)", "teacher": "-", "room": "実習棟2" },
+    { "id": "wed2", "day": 3, "period": 2, "name": "寄生虫学", "teacher": "加藤", "room": "臨床講義棟3/実習棟3" },
+    { "id": "wed3", "day": 3, "period": 3, "name": "寄生虫学(補講枠)", "teacher": "-", "room": "実習棟2/実習棟3" },
+    { "id": "wed4", "day": 3, "period": 4, "name": "病理学(補講枠)", "teacher": "-", "room": "実習棟2" },
+    { "id": "thu1", "day": 4, "period": 1, "name": "医療倫理Ⅱ", "teacher": "藤田", "room": "実習棟2" },
+    { "id": "thu2", "day": 4, "period": 2, "name": "保健医療制度", "teacher": "安田", "room": "実習棟2" },
+    { "id": "thu3", "day": 4, "period": 3, "name": "漢方医学", "teacher": "学務委員会・総診", "room": "実習棟2" },
+    { "id": "thu4", "day": 4, "period": 4, "name": "統合医学Ⅲ", "teacher": "関", "room": "実習棟2" },
+    { "id": "fri1", "day": 5, "period": 1, "name": "臨床症候学Ⅱ", "teacher": "小松", "room": "実習棟2" },
+    { "id": "fri2", "day": 5, "period": 2, "name": "免疫学", "teacher": "山田", "room": "実習棟1" },
+    { "id": "fri3", "day": 5, "period": 3, "name": "EBMⅡ", "teacher": "畠山・兵頭", "room": "情報実習室・実習棟1" }
+  ],
+  "records": {
+    "mon1": [], "mon2": [], "mon3": [],
+    "tue1": [], "tue2": [], "tue3": [], "tue4": [],
+    "wed1": [], "wed2": [], "wed3": [], "wed4": [],
+    "thu1": [], "thu2": [], "thu3": [], "thu4": [],
+    "fri1": [], "fri2": [], "fri3": []
+  },
+  "memos": {},
+  "noAttendance": [],
+
+}
