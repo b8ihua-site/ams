@@ -1,0 +1,40 @@
+
+{
+  "exportDate": "2026-04-27T05:11:10.369Z",
+  "className": "M4F",
+  "classes": [
+    { "id": "mon1", "day": 1, "period": 1, "name": "腎臓病学", "teacher": "岸", "room": "臨床講義棟３" },
+    { "id": "tue1", "day": 2, "period": 1, "name": "乳腺", "teacher": "増田", "room": "臨床講義棟３" },
+    { "id": "wed1", "day": 3, "period": 1, "name": "神経精神科学", "teacher": "藪井", "room": "実習棟１" },
+    { "id": "thu1", "day": 4, "period": 1, "name": "産婦人科学", "teacher": "永井", "room": "臨床講義棟３" },
+    { "id": "fri1", "day": 5, "period": 1, "name": "消化器科学", "teacher": "瀬尾", "room": "臨床講義棟３" },
+    { "id": "mon2", "day": 1, "period": 2, "name": "放射線医学", "teacher": "木村", "room": "臨床講義棟３" },
+    { "id": "tue2", "day": 2, "period": 2, "name": "呼吸器科学", "teacher": "上月", "room": "臨床講義棟３" },
+    { "id": "wed2", "day": 3, "period": 2, "name": "法医学", "teacher": "古宮", "room": "実習棟１" },
+    { "id": "thu2", "day": 4, "period": 2, "name": "麻酔科学", "teacher": "河野", "room": "臨床講義棟３" },
+    { "id": "fri2", "day": 5, "period": 2, "name": "歯科口腔外科学", "teacher": "山縣", "room": "臨床講義棟３" },
+    { "id": "mon3", "day": 1, "period": 3, "name": "循環器科学", "teacher": "久保", "room": "臨床講義棟３" },
+    { "id": "tue3", "day": 2, "period": 3, "name": "医療コミュニケーション学", "teacher": "盛實", "room": "臨床講義棟３" },
+    { "id": "wed3", "day": 3, "period": 3, "name": "救急医学総論", "teacher": "宮内", "room": "臨床講義棟３" },
+    { "id": "thu3", "day": 4, "period": 3, "name": "移植医学", "teacher": "藤本", "room": "非同期" },
+    { "id": "fri3", "day": 5, "period": 3, "name": "呼吸器科学", "teacher": "上月", "room": "臨床講義棟３" },
+    { "id": "mon4", "day": 1, "period": 4, "name": "統合医学Ⅳ", "teacher": "盛實", "room": "臨床講義棟３" },
+    { "id": "tue4", "day": 2, "period": 4, "name": "医療コミュニケーション学", "teacher": "盛實", "room": "臨床講義棟３" },
+    { "id": "wed4", "day": 3, "period": 4, "name": "消化器科学", "teacher": "瀬尾", "room": "臨床講義棟３" },
+    { "id": "thu4", "day": 4, "period": 4, "name": "内分泌科学", "teacher": "藤本", "room": "臨床講義棟３" },
+    { "id": "mon5", "day": 1, "period": 5, "name": "統合医学Ⅳ", "teacher": "盛實", "room": "臨床講義棟３" },
+    { "id": "tue5", "day": 2, "period": 5, "name": "泌尿器科学", "teacher": "井上", "room": "臨床講義棟３" },
+    { "id": "wed5", "day": 3, "period": 5, "name": "神経精神科学", "teacher": "藪井", "room": "臨床講義棟３" },
+    { "id": "thu5", "day": 4, "period": 5, "name": "耳鼻咽喉科学", "teacher": "手島", "room": "臨床講義棟３" }
+  ],
+  "records": {
+    "mon1": [], "tue1": [], "wed1": [], "thu1": [], "fri1": [],
+    "mon2": [], "tue2": [], "wed2": [], "thu2": [], "fri2": [],
+    "mon3": [], "tue3": [], "wed3": [], "thu3": [], "fri3": [],
+    "mon4": [], "tue4": [], "wed4": [], "thu4": [],
+    "mon5": [], "tue5": [], "wed5": [], "thu5": []
+  },
+  "memos": {},
+  "noAttendance": []
+ 
+}
