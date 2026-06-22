@@ -501,6 +501,10 @@ canvas.timeline-chart { width: 100%; height: 140px; display: block; }
 .status-badge.l { background: var(--late-light); color: var(--late); }
 .status-badge.a { background: var(--absent-light); color: var(--absent); }
 .delete-btn { border: none; background: none; color: var(--absent); font-size: 14px; cursor: pointer; padding: 2px 6px; border-radius: 4px; display: flex; align-items: center; }
+.outlier-btn { border: none; background: none; color: var(--text-muted); cursor: pointer; padding: 2px 6px; border-radius: 4px; display: flex; align-items: center; }
+.outlier-btn.active { color: var(--late); }
+.conv-note { display: block; font-size: 9px; color: var(--late); font-weight: 600; margin-top: 1px; white-space: nowrap; }
+.records-table tr.row-outlier td { background: var(--late-light); }
 .no-records { text-align: center; color: var(--text-muted); font-size: 13px; padding: 24px 0; }
 
 /* ─── EDIT TIMETABLE ─── */
@@ -667,14 +671,13 @@ display: flex; align-items: center; gap: 12px;
 .tl-track { position:relative; margin:0 14px; }
 .tl-hourline { position:absolute; left:0; right:0; height:1px; background:var(--border); }
 .tl-hourlabel { position:absolute; left:0; width:38px; text-align:right; font-family:'Roboto Condensed',monospace; font-size:11px; color:var(--text-muted); transform:translateY(-50%); }
-.tl-axis { position:absolute; top:0; bottom:0; width:1.5px; background:var(--border); }
-.tl-band { position:absolute; width:6px; border-radius:3px; z-index:2; }
+.tl-axis { position:absolute; top:0; bottom:0; width:6px; background:var(--border); }
+.tl-band { position:absolute; width:6px; z-index:2; }
 .tl-band-time { position:absolute; left:0; width:46px; text-align:right; transform:translateY(-50%); font-family:'Roboto Condensed',monospace; font-size:9px; font-weight:700; white-space:nowrap; z-index:3; }
 .tl-avg-dot { position:absolute; width:9px; height:9px; border-radius:50%; border:2px solid var(--surface); transform:translate(-50%,-50%); box-shadow:0 1px 3px rgba(0,0,0,0.25); z-index:4; }
 .tl-avg-time { position:absolute; transform:translateY(-50%); background:var(--surface); font-family:'Roboto Condensed',monospace; font-size:9px; font-weight:700; padding:1px 5px; border-radius:5px; white-space:nowrap; z-index:4; }
-.tl-card { position:absolute; border-radius:14px; overflow:hidden; background:var(--surface); border:1px solid var(--border); box-shadow:var(--shadow-sm); cursor:pointer; display:flex; padding:8px 10px 8px 14px; transition:transform .15s, box-shadow .15s; }
+.tl-card { position:absolute; border-radius:14px; overflow:hidden; background:var(--surface); border:1px solid var(--border); cursor:pointer; display:flex; padding:10px 12px; transition:transform .15s; }
 .tl-card:active { transform:scale(0.98); }
-.tl-card-accent { position:absolute; left:0; top:0; bottom:0; width:4px; }
 .tl-card-body { display:flex; flex-direction:column; min-width:0; flex:1; justify-content:center; gap:2px; }
 .tl-card-name { font-size:13px; font-weight:700; letter-spacing:-0.2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .tl-card-name.alerted { color:var(--brand); }
@@ -684,9 +687,9 @@ display: flex; align-items: center; gap: 12px;
 .tl-card.current { border-color:var(--current); box-shadow:0 6px 20px var(--current-light); }
 .tl-card.past { opacity:0.5; }
 .tl-card.noatt { background:#f3f4f6; }
-.tl-now-line { position:absolute; left:0; right:0; height:0; border-top:2px solid #FF3B30; z-index:5; pointer-events:none; }
-.tl-now-dot { position:absolute; width:9px; height:9px; border-radius:50%; background:#FF3B30; transform:translate(-50%,-50%); box-shadow:0 0 0 3px rgba(255,59,48,0.18); z-index:6; pointer-events:none; }
-.tl-now-label { position:absolute; transform:translateY(-50%); background:#FF3B30; color:#fff; font-family:'Roboto Condensed',monospace; font-size:9px; font-weight:700; padding:1px 5px; border-radius:5px; z-index:7; pointer-events:none; }
+.tl-now-line { position:absolute; right:0; height:0; border-top:2px solid var(--brand); z-index:5; pointer-events:none; }
+.tl-now-dot { position:absolute; width:9px; height:9px; border-radius:50%; background:var(--brand); transform:translate(-50%,-50%); box-shadow:0 0 0 3px var(--current-light); z-index:6; pointer-events:none; }
+.tl-now-label { position:absolute; transform:translateY(-50%); background:var(--brand); color:#fff; font-family:'Roboto Condensed',monospace; font-size:9px; font-weight:700; padding:1px 5px; border-radius:5px; z-index:7; pointer-events:none; }
 .tl-empty { text-align:center; padding:70px 20px; color:var(--text-muted); }
 .tl-empty .mi { font-size:48px; opacity:0.35; }
 .tl-empty-text { font-size:14px; margin-top:12px; }
@@ -1397,10 +1400,51 @@ document.getElementById('presetOverlay').addEventListener('click', function(e) {
 const PERIODS = [
   { id:1, label:'1限', start:'08:50', end:'10:20' },
   { id:2, label:'2限', start:'10:30', end:'12:00' },
-  { id:3, label:'3限', start:'13:00', end:'14:30' },
-  { id:4, label:'4限', start:'14:40', end:'16:10' },
-  { id:5, label:'5限', start:'16:20', end:'17:50' },
+  { id:3, label:'3限', start:'13:10', end:'14:40' },
+  { id:4, label:'4限', start:'14:50', end:'16:20' },
+  { id:5, label:'5限', start:'16:30', end:'18:00' },
 ];
+const TIME_BUFFER = 20; // 各限の前後バッファ(分)
+
+// 記録を「割り当て時限優先」で帰属判定し、想定プロット時刻を返す
+// 戻り値: { plotMins, rawMins, isConverted, fromPeriod, assignedPeriod }
+function resolveRecordTime(rec, assignedPeriod) {
+  if (!rec.time) return null;
+  const m = timeToMinutes(rec.time);
+  const aStart = timeToMinutes(PERIODS[assignedPeriod-1].start);
+  const aEnd   = timeToMinutes(PERIODS[assignedPeriod-1].end);
+  // 1) 割り当て時限の窓に入っていればそのまま
+  if (m >= aStart - TIME_BUFFER && m <= aEnd + TIME_BUFFER) {
+    return { plotMins:m, rawMins:m, isConverted:false, fromPeriod:assignedPeriod, assignedPeriod };
+  }
+  // 2) 外れていれば、窓に入る他の時限を探して換算
+  for (let p=1; p<=PERIODS.length; p++) {
+    if (p === assignedPeriod) continue;
+    const pStart = timeToMinutes(PERIODS[p-1].start);
+    const pEnd   = timeToMinutes(PERIODS[p-1].end);
+    if (m >= pStart - TIME_BUFFER && m <= pEnd + TIME_BUFFER) {
+      const offset = m - pStart;
+      return { plotMins:aStart + offset, rawMins:m, isConverted:true, fromPeriod:p, assignedPeriod };
+    }
+  }
+  // 3) どの窓にも入らない → そのままプロット
+  return { plotMins:m, rawMins:m, isConverted:false, fromPeriod:assignedPeriod, assignedPeriod };
+}
+
+// 平均・帯に使う有効な時刻配列（換算済み・外れ値除外）
+function effectivePlotMins(records, assignedPeriod) {
+  return records
+    .filter(r => r.time && !r.outlier)
+    .map(r => resolveRecordTime(r, assignedPeriod))
+    .filter(Boolean)
+    .map(r => r.plotMins);
+}
+
+// classId から割り当て時限を引く
+function periodOfClass(classId) {
+  const c = getClasses().find(x => x.id === classId);
+  return c ? c.period : 1;
+}
 
 const DEFAULT_CLASSES = [
   { id:'mon1', day:1, period:1, name:'腎臓病学',               teacher:'岸',   room:'臨床講義棟３' },
@@ -1570,6 +1614,18 @@ function hexToAlpha(hex, alpha) {
   const b = parseInt(hex.slice(4,6),16);
   return `rgba(${r},${g},${b},${alpha})`;
 }
+function darkenHex(hex, factor) {
+  factor = factor || 0.65;
+  hex = (hex||'#DC4848').replace('#','');
+  if (hex.length===3) hex=hex.split('').map(c=>c+c).join('');
+  const r=Math.round(Math.min(255,parseInt(hex.slice(0,2),16)*factor));
+  const g=Math.round(Math.min(255,parseInt(hex.slice(2,4),16)*factor));
+  const b=Math.round(Math.min(255,parseInt(hex.slice(4,6),16)*factor));
+  return '#'+[r,g,b].map(n=>n.toString(16).padStart(2,'0')).join('');
+}
+function getBrandHex() {
+  return cssColorToHex(getComputedStyle(document.documentElement).getPropertyValue('--brand').trim()) || '#DC4848';
+}
 function setColorVar(key, value) {
   document.documentElement.style.setProperty(key, value);
   localStorage.setItem('ams_color_' + key, value);
@@ -1684,9 +1740,9 @@ function updateClock() {
 
 // ─── ETA ───
 function avgCheckInMinutes(classId) {
-  const recs = loadRecords(classId).filter(r => r.time);
-  if (!recs.length) return null;
-  const mins = recs.map(r => timeToMinutes(r.time));
+  const period = periodOfClass(classId);
+  const mins = effectivePlotMins(loadRecords(classId), period);
+  if (!mins.length) return null;
   return Math.round(mins.reduce((a,b)=>a+b,0)/mins.length);
 }
 function etaText(cls) {
@@ -1800,20 +1856,34 @@ function renderTimeline(doScroll){
   const Y = m => (m - rangeStart) * TL_SCALE;
   const nowMin = nowMinutes();
   const alertedIds = getAlertedClassIds();
-  const presentCol = getComputedStyle(document.documentElement).getPropertyValue('--present').trim() || '#10b981';
-  const bandCol = hexToAlpha(presentCol, 0.30);
+  const brandHex = getBrandHex();
+  const brandDark = darkenHex(brandHex, 0.62);
   let parts = [];
 
-  for (let m=rangeStart; m<=rangeEnd; m+=60){
-    parts.push(`<div class="tl-hourline" style="top:${Y(m)}px"></div>`);
+  // ── グリッド線: 授業の開始・終了時刻のみ、縦線より右 ──
+  const gridTimes = new Set();
+  todays.forEach(cls => {
+    gridTimes.add(timeToMinutes(PERIODS[cls.period-1].start));
+    gridTimes.add(timeToMinutes(PERIODS[cls.period-1].end));
+  });
+  [...gridTimes].sort((a,b)=>a-b).forEach(m => {
+    parts.push(`<div class="tl-hourline" style="top:${Y(m)}px;left:${TL_AXIS_X}px"></div>`);
     parts.push(`<div class="tl-hourlabel" style="top:${Y(m)}px">${fmtMin(m)}</div>`);
+  });
+  parts.push(`<div class="tl-axis" style="left:${TL_AXIS_X-3}px"></div>`);
+
+  // ── 授業カードと帯 ──
+  function quartile(sorted, q) {
+    const pos = (sorted.length - 1) * q;
+    const base = Math.floor(pos);
+    const rest = pos - base;
+    return sorted[base + 1] !== undefined ? sorted[base] + rest * (sorted[base+1] - sorted[base]) : sorted[base];
   }
-  parts.push(`<div class="tl-axis" style="left:${TL_AXIS_X}px"></div>`);
 
   todays.forEach(cls => {
     const P = PERIODS[cls.period-1];
     const sMin = timeToMinutes(P.start), eMin = timeToMinutes(P.end);
-    const top = Y(sMin), h = Math.max(52, Y(eMin)-Y(sMin)-4);
+    const top = Y(sMin), h = Math.max(52, Y(eMin)-Y(sMin));
     const noAtt = isNoAttendance(cls.id);
     const recs = loadRecords(cls.id);
     const cntP = recs.filter(r=>r.status==='present').length;
@@ -1822,22 +1892,36 @@ function renderTimeline(doScroll){
     const isCurrent = nowMin>=sMin && nowMin<=eMin && !noAtt;
     const isPast = nowMin > eMin;
 
+    // 帯・平均
     if (!noAtt){
-      const t = recs.filter(r=>r.time).map(r=>timeToMinutes(r.time));
-      if (t.length){
-        const earliest=Math.min(...t), latest=Math.max(...t), avg=t.reduce((a,b)=>a+b,0)/t.length;
-        if (latest - earliest >= 3){
-          const eY=Y(earliest), lY=Y(latest);
-          parts.push(`<div class="tl-band" style="left:${TL_AXIS_X-3}px;top:${eY}px;height:${lY-eY}px;background:${bandCol}"></div>`);
-          parts.push(`<div class="tl-band-time" style="top:${eY}px;color:${presentCol}">${fmtMin(earliest)}</div>`);
-          parts.push(`<div class="tl-band-time" style="top:${lY}px;color:${presentCol}">${fmtMin(latest)}</div>`);
+      const t = effectivePlotMins(recs, cls.period);
+      if (t.length >= 2){
+        const sorted = [...t].sort((a,b)=>a-b);
+        const earliest = sorted[0], latest = sorted[sorted.length-1];
+        const eY = Y(earliest), lY = Y(latest);
+        // 全体帯: ブランドカラー
+        parts.push(`<div class="tl-band" style="left:${TL_AXIS_X-3}px;top:${eY}px;height:${lY-eY}px;background:${brandHex}"></div>`);
+        parts.push(`<div class="tl-band-time" style="top:${eY}px;color:${brandHex}">${fmtMin(earliest)}</div>`);
+        parts.push(`<div class="tl-band-time" style="top:${lY}px;color:${brandHex}">${fmtMin(latest)}</div>`);
+        // IQR帯: 濃いブランドカラー（4点以上）
+        if (t.length >= 4) {
+          const q1 = quartile(sorted, 0.25), q3 = quartile(sorted, 0.75);
+          if (q3 > q1) {
+            const q1Y = Y(q1), q3Y = Y(q3);
+            parts.push(`<div class="tl-band" style="left:${TL_AXIS_X-3}px;top:${q1Y}px;height:${q3Y-q1Y}px;background:${brandDark}"></div>`);
+          }
         }
-        parts.push(`<div class="tl-avg-dot" style="left:${TL_AXIS_X}px;top:${Y(avg)}px;background:${presentCol}"></div>`);
-        parts.push(`<div class="tl-avg-time" style="left:${TL_AXIS_X+9}px;top:${Y(avg)}px;color:${presentCol};border:1px solid ${bandCol}">${fmtMin(avg)}</div>`);
+        // 平均ドット
+        const avg = t.reduce((a,b)=>a+b,0)/t.length;
+        parts.push(`<div class="tl-avg-dot" style="left:${TL_AXIS_X}px;top:${Y(avg)}px;background:${brandHex}"></div>`);
+        parts.push(`<div class="tl-avg-time" style="left:${TL_AXIS_X+9}px;top:${Y(avg)}px;color:${brandHex};border:1px solid ${hexToAlpha(brandHex,0.25)}">${fmtMin(avg)}</div>`);
+      } else if (t.length === 1) {
+        parts.push(`<div class="tl-avg-dot" style="left:${TL_AXIS_X}px;top:${Y(t[0])}px;background:${brandHex}"></div>`);
+        parts.push(`<div class="tl-avg-time" style="left:${TL_AXIS_X+9}px;top:${Y(t[0])}px;color:${brandHex};border:1px solid ${hexToAlpha(brandHex,0.25)}">${fmtMin(t[0])}</div>`);
       }
     }
 
-    const accent = noAtt ? '#cbd5e1' : 'var(--brand)';
+    // カード（accent bar なし）
     const nameCls = (!noAtt && alertedIds.has(cls.id)) ? ' alerted' : '';
     const cardCls = 'tl-card' + (isCurrent?' current':'') + (isPast?' past':'') + (noAtt?' noatt':'');
     const chips = noAtt
@@ -1845,7 +1929,6 @@ function renderTimeline(doScroll){
       : `<span class="stat-chip p">${cntP}</span><span class="stat-chip l">${cntL}</span><span class="stat-chip a">${cntA}</span>`;
     parts.push(`
       <div class="${cardCls}" style="top:${top}px;height:${h}px;left:${TL_CARD_LEFT}px;right:0" onclick="openModal('${cls.id}')">
-        <div class="tl-card-accent" style="background:${accent}"></div>
         <div class="tl-card-body">
           <div class="tl-card-name${nameCls}">${escHtml(cls.name)}</div>
           <div class="tl-card-meta">${escHtml(cls.teacher)}${cls.room?' · '+escHtml(cls.room):''}</div>
@@ -1855,9 +1938,10 @@ function renderTimeline(doScroll){
       </div>`);
   });
 
+  // ── 現在時刻ライン: ドットから右方向のみ、ブランドカラー ──
   if (nowMin>=rangeStart && nowMin<=rangeEnd){
     const nY=Y(nowMin);
-    parts.push(`<div class="tl-now-line" id="tlNowLine" style="top:${nY}px"></div>`);
+    parts.push(`<div class="tl-now-line" id="tlNowLine" style="top:${nY}px;left:${TL_AXIS_X}px"></div>`);
     parts.push(`<div class="tl-now-dot" id="tlNowDot" style="left:${TL_AXIS_X}px;top:${nY}px"></div>`);
     parts.push(`<div class="tl-now-label" id="tlNowLabel" style="left:${TL_AXIS_X+9}px;top:${nY}px">${fmtMin(nowMin)}</div>`);
   }
@@ -1941,65 +2025,141 @@ function renderChart(recs) {
   const canvas=document.getElementById('timelineChart');
   const ctx=canvas.getContext('2d');
   const dpr=window.devicePixelRatio||1;
-  const data=recs.filter(r=>r.time).map(r=>({date:r.date,time:r.time,mins:timeToMinutes(r.time),status:r.status}));
+  const period = currentClassId ? periodOfClass(currentClassId) : 1;
+  const brandHex = getBrandHex();
+  const brandLight = hexToAlpha(brandHex, 0.22);
+  // 各点に換算情報を付与
+  const data=recs.filter(r=>r.time).map(r=>{
+    const res=resolveRecordTime(r, period);
+    return { date:r.date, time:r.time, mins:res.plotMins, rawMins:res.rawMins,
+             isConverted:res.isConverted, fromPeriod:res.fromPeriod,
+             outlier:!!r.outlier, status:r.status };
+  });
   canvas.style.width='100%'; canvas.style.height='140px';
   const W=canvas.parentElement.clientWidth-24;
   canvas.width=W*dpr; canvas.height=140*dpr;
   ctx.scale(dpr,dpr);
-  const w=W,h=140; ctx.clearRect(0,0,w,h);
+  const w=W, h=140; ctx.clearRect(0,0,w,h);
   if (!data.length) {
     ctx.fillStyle='#9ca3af'; ctx.font='13px Noto Sans JP,sans-serif'; ctx.textAlign='center';
     ctx.fillText('まだ記録がありません',w/2,h/2); return;
   }
   const minMins=Math.min(...data.map(d=>d.mins)), maxMins=Math.max(...data.map(d=>d.mins));
   const pad=data.length===1?10:5, yMin=minMins-pad, yMax=maxMins+pad;
-  const marginL=42,marginR=12,marginT=12,marginB=28;
+  const marginL=42, marginR=22, marginT=12, marginB=28;
   const plotW=w-marginL-marginR, plotH=h-marginT-marginB;
-  function xPos(i){return marginL+(data.length===1?plotW/2:i/(data.length-1)*plotW);}
-  function yPos(m){return marginT+plotH-(m-yMin)/(yMax-yMin)*plotH;}
+  function xPos(i){ return marginL+(data.length===1?plotW/2:i/(data.length-1)*plotW); }
+  function yPos(m){ return marginT+plotH-(m-yMin)/(yMax-yMin)*plotH; }
+  // グリッド
   ctx.strokeStyle='#e5e7eb'; ctx.lineWidth=1;
   for(let i=0;i<=4;i++){
     const m=yMin+(yMax-yMin)*i/4, y=yPos(m);
     ctx.beginPath(); ctx.moveTo(marginL,y); ctx.lineTo(w-marginR,y); ctx.stroke();
-    const hh=Math.floor(m/60),mm=Math.round(m%60);
+    const hh=Math.floor(m/60), mm=Math.round(m%60);
     ctx.fillStyle='#9ca3af'; ctx.font='9px Roboto Condensed,monospace'; ctx.textAlign='right';
     ctx.fillText(`${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}`,marginL-4,y+3);
   }
-  if(data.length>1){
-    const avgM=data.reduce((s,d)=>s+d.mins,0)/data.length, yA=yPos(avgM);
-    ctx.strokeStyle='#DC4848'; ctx.lineWidth=1; ctx.setLineDash([4,3]);
+  // 平均線（外れ値除外）
+  const valid = data.filter(d=>!d.outlier);
+  if(valid.length>=2){
+    const avgM=valid.reduce((s,d)=>s+d.mins,0)/valid.length, yA=yPos(avgM);
+    ctx.strokeStyle=brandHex; ctx.lineWidth=1; ctx.setLineDash([4,3]);
     ctx.beginPath(); ctx.moveTo(marginL,yA); ctx.lineTo(w-marginR,yA); ctx.stroke();
-    ctx.setLineDash([]); ctx.fillStyle='#DC4848'; ctx.font='8px Roboto Condensed,monospace'; ctx.textAlign='left';
+    ctx.setLineDash([]); ctx.fillStyle=brandHex; ctx.font='8px Roboto Condensed,monospace'; ctx.textAlign='left';
     ctx.fillText('平均',w-marginR+2,yA+3);
-    ctx.strokeStyle='#93c5fd'; ctx.lineWidth=2;
-    ctx.beginPath();
-    data.forEach((d,i)=>{const x=xPos(i),y=yPos(d.mins);i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});
-    ctx.stroke();
   }
+  ctx.setLineDash([]);
+  // 折れ線: 外れ値を飛ばして非外れ値のみ結ぶ
+  ctx.strokeStyle='#93c5fd'; ctx.lineWidth=2;
+  let lineStarted=false;
+  data.forEach((d,i)=>{
+    const x=xPos(i), y=yPos(d.mins);
+    if(d.outlier){ lineStarted=false; return; }
+    if(!lineStarted){ ctx.beginPath(); ctx.moveTo(x,y); lineStarted=true; }
+    else ctx.lineTo(x,y);
+  });
+  ctx.stroke();
+  // 各点
   const colorMap={present:'#10b981',late:'#f59e0b',absent:'#ef4444'};
   data.forEach((d,i)=>{
-    const x=xPos(i),y=yPos(d.mins);
-    ctx.beginPath(); ctx.arc(x,y,5,0,Math.PI*2);
-    ctx.fillStyle=colorMap[d.status]||'#6b7280'; ctx.fill();
-    ctx.strokeStyle='#fff'; ctx.lineWidth=1.5; ctx.stroke();
+    const x=xPos(i), y=yPos(d.mins);
+    const col=colorMap[d.status]||'#6b7280';
+    if(d.outlier){
+      // 外れ値: ×マーク
+      ctx.save();
+      ctx.strokeStyle=col; ctx.lineWidth=2; ctx.globalAlpha=0.45;
+      const s=5;
+      ctx.beginPath(); ctx.moveTo(x-s,y-s); ctx.lineTo(x+s,y+s); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(x+s,y-s); ctx.lineTo(x-s,y+s); ctx.stroke();
+      ctx.restore();
+    } else {
+      ctx.beginPath(); ctx.arc(x,y,5,0,Math.PI*2);
+      ctx.fillStyle=col; ctx.fill();
+      ctx.strokeStyle='#fff'; ctx.lineWidth=1.5; ctx.stroke();
+      // 換算点: 外側に二重リング
+      if(d.isConverted){
+        ctx.beginPath(); ctx.arc(x,y,8.5,0,Math.PI*2);
+        ctx.strokeStyle=col; ctx.lineWidth=1.5; ctx.stroke();
+      }
+    }
+    // 日付ラベル
     const parts=d.date.split('-');
     ctx.fillStyle='#9ca3af'; ctx.font='8px Noto Sans JP,sans-serif'; ctx.textAlign='center';
     ctx.fillText(parts[1]+'/'+parts[2],x,h-marginB+14);
   });
+  // 凡例
+  const hasConverted=data.some(d=>d.isConverted&&!d.outlier);
+  const hasOutlier=data.some(d=>d.outlier);
+  if(hasConverted||hasOutlier){
+    let lx=marginL, ly=h-2; ctx.textAlign='left'; ctx.font='8px Noto Sans JP,sans-serif';
+    if(hasConverted){
+      // 二重リング見本
+      ctx.beginPath(); ctx.arc(lx+4,ly-4,3,0,Math.PI*2); ctx.fillStyle='#6b7280'; ctx.fill();
+      ctx.beginPath(); ctx.arc(lx+4,ly-4,6,0,Math.PI*2); ctx.strokeStyle='#6b7280'; ctx.lineWidth=1; ctx.stroke();
+      ctx.fillStyle='#9ca3af'; ctx.fillText('換算', lx+14, ly-1); lx+=46;
+    }
+    if(hasOutlier){
+      ctx.save(); ctx.strokeStyle='#6b7280'; ctx.lineWidth=1.5; ctx.globalAlpha=0.45;
+      ctx.beginPath(); ctx.moveTo(lx+1,ly-7); ctx.lineTo(lx+7,ly-1); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(lx+7,ly-7); ctx.lineTo(lx+1,ly-1); ctx.stroke();
+      ctx.restore();
+      ctx.fillStyle='#9ca3af'; ctx.fillText('外れ値(平均除外)', lx+12, ly-1);
+    }
+  }
 }
 
 function renderTable(recs) {
   const wrap=document.getElementById('recordsTableWrap');
   if (!recs.length) { wrap.innerHTML='<div class="no-records">記録がありません</div>'; return; }
+  const period = currentClassId ? periodOfClass(currentClassId) : 1;
   const sorted=[...recs].reverse();
   wrap.innerHTML=`<table class="records-table"><thead><tr><th>日付</th><th>時刻</th><th>状態</th><th></th></tr></thead><tbody>${
-    sorted.map(r=>`<tr>
-      <td>${r.date}</td>
-      <td style="font-family:Roboto Condensed,monospace;font-size:12px">${formatTime(r.time)}</td>
-      <td><span class="status-badge ${STATUS_CLASS[r.status]}"><span class="mi" style="font-size:13px">${STATUS_ICONS_MI[r.status]}</span> ${STATUS_LABELS[r.status]}</span></td>
-      <td><button class="delete-btn" onclick="deleteRecord('${currentClassId}',${r.id})"><span class="mi mi-18">delete</span></button></td>
-    </tr>`).join('')
+    sorted.map(r=>{
+      const res = r.time ? resolveRecordTime(r, period) : null;
+      const convNote = (res && res.isConverted)
+        ? `<span class="conv-note">${res.fromPeriod}限から換算</span>` : '';
+      const isOut = !!r.outlier;
+      return `<tr${isOut?' class="row-outlier"':''}>
+        <td>${r.date}</td>
+        <td><span style="font-family:Roboto Condensed,monospace;font-size:12px">${formatTime(r.time)}</span>${convNote}</td>
+        <td><span class="status-badge ${STATUS_CLASS[r.status]}"><span class="mi" style="font-size:13px">${STATUS_ICONS_MI[r.status]}</span> ${STATUS_LABELS[r.status]}</span></td>
+        <td style="white-space:nowrap;padding:4px 4px">
+          <button class="outlier-btn${isOut?' active':''}" onclick="toggleOutlier('${currentClassId}',${r.id})" title="${isOut?'外れ値を解除':'外れ値に設定'}"><span class="mi mi-18">${isOut?'filter_alt_off':'filter_alt'}</span></button><button class="delete-btn" onclick="deleteRecord('${currentClassId}',${r.id})"><span class="mi mi-18">delete</span></button>
+        </td>
+      </tr>`;
+    }).join('')
   }</tbody></table>`;
+}
+
+function toggleOutlier(classId, recId) {
+  const recs = loadRecords(classId);
+  const rec = recs.find(r => r.id === recId);
+  if (!rec) return;
+  rec.outlier = !rec.outlier;
+  saveRecords(classId, recs);
+  refreshModal(); buildTimetable();
+  if (document.getElementById('view-timeline').classList.contains('active')) renderTimeline(false);
+  showToast(rec.outlier ? '外れ値に設定（平均から除外）' : '外れ値を解除', rec.outlier ? 'filter_alt' : 'filter_alt_off');
 }
 
 // ─── DASHBOARD ───
