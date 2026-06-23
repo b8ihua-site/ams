@@ -174,6 +174,12 @@ border-bottom: 1.5px solid var(--border);
 box-shadow: 0 2px 12px rgba(0,0,0,0.06);
 padding: 0px 0 0;
 }
+.header-logo-img {
+  height: 28px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+
 .header-brand-bar {box-shadow: 0 2px 12px rgba(0,0,0,0.06);
 display: flex; align-items: center; justify-content: space-between; background-color: var(--brandbar);
 padding: 10px 18px 10px 18px;
@@ -266,7 +272,7 @@ border: none; background: none; width: 100%; text-align: left;
 background: var(--surface); border-radius: var(--radius-sm);
 padding: 6px 5px 5px; min-height: 82px; cursor: pointer;
 transition: transform 0.15s, box-shadow 0.15s;
-display: flex; flex-direction: column; justify-content: space-between;
+display: flex; flex-direction: column; justify-content: flex-start; gap: 0;
 position: relative; overflow: hidden;
 -webkit-user-select: none; user-select: none;
 box-shadow: 1px 2px 2px rgba(0,0,0,0.07);
@@ -279,22 +285,25 @@ box-shadow: 1px 2px 2px rgba(0,0,0,0.07);
 .cell.no-attendance .cell-name { color: var(--text-muted); }
 .cell.no-attendance .cell-teacher { color: #d1d5db; }
 .cell.no-attendance .cell-room { color: #d1d5db; }
-.cell-name { font-size: 10.5px; font-weight: 600; line-height: 1.35; color: var(--text-primary); }
+.cell-name    { font-size: 10.5px; font-weight: 600; line-height: 1.35; color: var(--text-primary); min-height: 28px; }
 .cell-name.alerted { color: var(--brand); }
-.cell-teacher { font-size: 9px; color: var(--text-secondary); margin-top: 2px; }
-.cell-room { font-size: 8.5px; color: var(--text-muted); }
-.cell-stats { margin-top: 4px; display: flex; flex-direction: row; flex-wrap: wrap; gap: 2px; align-items: center; }
-.cell-stats { margin-top: 4px; display: flex; align-items: center; gap: 0; }
+.cell-teacher { font-size: 9px; color: var(--text-secondary); margin-top: 2px; min-height: 14px; }
+.cell-room    { font-size: 8.5px; color: var(--text-muted); min-height: 12px; }
+.cell-total { font-size: 8.5px; color: var(--text-muted); opacity: 0.7; min-height: 12px; }
+.cell-stats { margin-top: 2px; display: grid; grid-template-columns: repeat(4,1fr); gap: 2px; width: 100%; }
 .stat-num {
-  font-size: 10px; font-weight: 700; padding: 0 5px;
-  border-left: 1.5px solid #e5e7eb; line-height: 1.4;
+  font-size: 9px; font-weight: 700; padding: 2px 0;
+  border-radius: 3px; text-align: center; line-height: 1.4;
+  background: var(--current-light); color: #555;
+  border-left: none;
 }
-.stat-num:first-child { border-left: none; padding-left: 0; }
-.stat-num.p { color: var(--present); }
-.stat-num.l { color: var(--late); }
-.stat-num.a { color: var(--absent); }
-.stat-num.n { color: #9ca3af; }
-.status-badge.n { background: #f3f4f6; color: #6b7280; }
+.stat-num.a { background: var(--current-light); color: #555; }.stat-num {
+  font-size: 9px; font-weight: 700; padding: 2px 0;
+  border-radius: 3px; text-align: center; line-height: 1.4;
+  background: #f0f0f0; color: #555;
+  border-left: none;
+}
+.stat-num.a-nonzero { background: var(--brand); color: #fff; }.status-badge.n { background: #f3f4f6; color: #6b7280; }
 .eta-chip { font-size: 7.5px; font-weight: 600; background: #f1f5f9; color: #64748b; border-radius: 4px; padding: 1px 4px; line-height: 1.5; white-space: nowrap; }
 .eta-chip.soon { background: var(--brand); color: #ffffff; }
 .eta-chip.now { background: var(--present-light); color: var(--present); }
@@ -302,22 +311,36 @@ box-shadow: 1px 2px 2px rgba(0,0,0,0.07);
 
 /* ─── BOTTOM NAV ─── */
 .bottom-nav {
-position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
-background: var(--surface); border-top: 1px solid var(--border);
-display: flex; padding: 8px 0 env(safe-area-inset-bottom, 8px);
-box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+  display: flex; justify-content: center; align-items: center;
+  padding: 10px 0 max(18px, env(safe-area-inset-bottom, 18px));
+  background: transparent; pointer-events: none;
 }
-.nav-item {
-flex: 1; display: flex; flex-direction: column; align-items: center;
-gap: 3px; padding: 4px 0px 20px 0px; cursor: pointer;
-border: none; background: none; font-family: inherit;
-transition: color 0.15s;
+.bottom-nav-toggle {
+  display: flex; background: rgba(255,255,255,0.45);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.6);
+  border-radius: 99px; padding: 4px; gap: 2px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.8);
+  pointer-events: all;
 }
-.nav-item .ni-icon { font-size: 24px; line-height: 1; color: var(--text-muted); }
-.nav-item .ni-label { font-size: 9px; font-weight: 600; letter-spacing: 0.3px; color: var(--text-muted); }
-.nav-item.active .ni-label { color: var(--brand); }
-.nav-item.active .ni-icon { color: var(--brand); }
-
+.toggle-btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 10px 24px; border: none; border-radius: 99px;
+  background: transparent; cursor: pointer;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 12px; font-weight: 600;
+  color: var(--text-secondary);
+  transition: all 0.25s cubic-bezier(0.32,0.72,0,1);
+}
+.toggle-btn .mi { font-size: 18px; line-height: 1; }
+.toggle-btn-label { font-size: 12px; }
+.toggle-btn.active {
+  background: rgba(255,255,255,0.75);
+  color: var(--brand);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.10), inset 0 1px 0 rgba(255,255,255,0.9);
+}
 /* ─── VIEWS ─── */
 .view { display: none; animation: fadeIn 0.2s ease; }
 .view.active { display: block; }
@@ -876,15 +899,12 @@ display: flex; align-items: center; gap: 12px;
 <!-- HEADER -->
 
 <div class="header">
-  <div class="header-brand-bar">
-    <div class="header-brand">
-      <span class="brand-logo">AMS</span>
-      <span class="brand-subtitle">高知大学医学部出席管理システム</span>
-    </div>
-    <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleDrawer()">
-      <div class="hb-line"></div><div class="hb-line"></div><div class="hb-line"></div>
-    </button>
-  </div>
+<div class="header-brand-bar">
+  <img src="header_logo.PNG" alt="AMS" class="header-logo-img">
+  <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleDrawer()">
+    <div class="hb-line"></div><div class="hb-line"></div><div class="hb-line"></div>
+  </button>
+</div>
   <div class="header-info-bar">
     <div class="header-class-name" id="headerClassName">M4F</div>
     <div class="header-datetime">
@@ -1179,30 +1199,16 @@ display: flex; align-items: center; gap: 12px;
 <!-- BOTTOM NAV -->
 
 <div class="bottom-nav">
-  <button class="nav-item active" id="nav-timetable" onclick="switchView('timetable')">
-    <span class="ni-icon mi">calendar_month</span>
-    <span class="ni-label">時間割</span>
-  </button>
-  <button class="nav-item" id="nav-timeline" onclick="switchView('timeline')">
-    <span class="ni-icon mi">today</span>
-    <span class="ni-label">予定</span>
-  </button>
-  <button class="nav-item" id="nav-dashboard" onclick="switchView('dashboard')">
-    <span class="ni-icon mi">bar_chart</span>
-    <span class="ni-label">統計</span>
-  </button>
-  <button class="nav-item" id="nav-log" onclick="switchView('log')">
-    <span class="ni-icon mi">list_alt</span>
-    <span class="ni-label">ログ</span>
-  </button>
-  <button class="nav-item" id="nav-alerts" onclick="switchView('alerts')">
-    <span class="ni-icon mi">notifications</span>
-    <span class="ni-label">アラート</span>
-  </button>
-  <button class="nav-item" id="nav-settings" onclick="switchView('settings')">
-    <span class="ni-icon mi">settings</span>
-    <span class="ni-label">設定</span>
-  </button>
+  <div class="bottom-nav-toggle">
+    <button class="toggle-btn active" id="nav-timetable" onclick="switchView('timetable')">
+      <span class="mi">calendar_month</span>
+      <span class="toggle-btn-label">時間割</span>
+    </button>
+    <button class="toggle-btn" id="nav-timeline" onclick="switchView('timeline')">
+      <span class="mi">today</span>
+      <span class="toggle-btn-label">予定</span>
+    </button>
+  </div>
 </div>
 
 <!-- ATTENDANCE MODAL -->
@@ -1688,7 +1694,7 @@ function loadTheme() {
 function updateDerivedColors() {
   const brand = getComputedStyle(document.documentElement).getPropertyValue('--brand').trim();
   document.documentElement.style.setProperty('--current', brand);
-  document.documentElement.style.setProperty('--current-light', hexToAlpha(brand, 0.08));
+  document.documentElement.style.setProperty('--current-light', hexToAlpha(brand, 0.1));
   const present = getComputedStyle(document.documentElement).getPropertyValue('--present').trim();
   const late = getComputedStyle(document.documentElement).getPropertyValue('--late').trim();
   const absent = getComputedStyle(document.documentElement).getPropertyValue('--absent').trim();
@@ -1805,7 +1811,7 @@ function handleDrawerOverlayClick(e) {
 // ─── VIEW SWITCHING ───
 function switchView(name) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.toggle-btn').forEach(n => n.classList.remove('active'));
   document.getElementById('view-'+name).classList.add('active');
   const navBtn = document.getElementById('nav-'+name);
   if (navBtn) navBtn.classList.add('active');
@@ -1940,13 +1946,19 @@ if (cellColor) cell.style.background = cellColor;
         if (noAtt) {
           cell.classList.add('no-attendance');
           cell.innerHTML=`
-            <div>
-  <div class="cell-name">${cls.name}</div>
-  <div class="cell-teacher">${cls.teacher}</div>
-  <div class="cell-room">${cls.room}</div>
-  <div class="cell-room" style="color:var(--text-muted);opacity:0.7">全${getClassTotal(cls.id)}回</div>
-</div>
-            <div class="cell-stats"><span class="no-att-chip">出席なし</span></div>`;
+  <div>
+    <div class="cell-name">${cls.name}</div>
+    <div class="cell-teacher">${cls.teacher}</div>
+    <div class="cell-room">${cls.room}</div>
+    <div class="cell-total">全${getClassTotal(cls.id)}回</div>
+  </div>
+  <div style="margin-bottom:2px;min-height:17px"></div>
+  <div class="cell-stats">
+    <span class="stat-num"></span>
+    <span class="stat-num"></span>
+    <span class="stat-num"></span>
+    <span class="stat-num"></span>
+  </div>`;
           cell.addEventListener('click', () => openModal(cls.id));
         } else {
           if (day===today) {
@@ -1963,21 +1975,21 @@ const cntP = merged.p, cntL = merged.l, cntA = merged.a, cntN = merged.n;       
 const seijiLimit = Math.floor(getClassTotal(cls.id) / 3);
 const seijiSVG = renderSeijiSVG(cntA, cntL, seijiLimit, brandHex);
 
+          const cntAClass = cntA > 0 ? 'stat-num a-nonzero' : 'stat-num';
           cell.innerHTML=`
             <div>
               <div class="cell-name${alertedClass}">${cls.name}</div>
               <div class="cell-teacher">${cls.teacher}</div>
               <div class="cell-room">${cls.room}</div>
-              <div class="cell-room" style="color:var(--text-muted);opacity:0.7">全${getClassTotal(cls.id)}回</div>
+              <div class="cell-total">全${getClassTotal(cls.id)}回</div>
             </div>
-            <div style="margin-bottom:2px">${seijiSVG}</div>
+            <div style="margin:8px 0">${seijiSVG}</div>
             <div class="cell-stats">
-              <span class="stat-num p">${cntP}</span>
-              <span class="stat-num l">${cntL}</span>
-              <span class="stat-num a">${cntA}</span>
-              <span class="stat-num n">${cntN}</span>
-              ${etaHtml}
-            </div>`;
+  <span class="stat-num">${cntP}</span>
+  <span class="stat-num">${cntL}</span>
+  <span class="stat-num a">${cntA}</span>
+  <span class="stat-num">${cntN}</span>
+</div>`;
             
           cell.addEventListener('click', () => openModal(cls.id));
         }
