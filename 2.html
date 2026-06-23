@@ -14,7 +14,7 @@
 a {color:var(--brand);}
 
 :root {
---bg: #f8f9fb;
+--bg: #ffffff;
 --surface: #ffffff;
 --border: #e2e6ea;
 --text-primary: #1a1d23;
@@ -37,7 +37,7 @@ a {color:var(--brand);}
 --shadow-md: 0 4px 16px rgba(0,0,0,0.10);
 --shadow-lg: 0 8px 32px rgba(0,0,0,0.14);
 --radius: 12px;
---radius-sm: 8px;
+--radius-sm: 5px;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -258,17 +258,18 @@ border: none; background: none; width: 100%; text-align: left;
 /* ─── TIMETABLE ─── */
 .timetable-wrap { padding: 12px 10px 100px; }
 .day-labels { display: grid; grid-template-columns: repeat(5,1fr); gap: 4px; margin-bottom: 6px; padding: 0 2px; }
-.day-label { text-align: center; font-size: 13px; font-weight: 600; color: var(--text-secondary); padding: 6px 0; background: var(--surface); border-radius: var(--radius-sm); border: 1px solid var(--border); }
+.day-label { text-align: center; font-size: 13px; font-weight: 600; color: var(--text-secondary); padding: 6px 0; background: var(--surface); border-radius: var(--radius-sm); box-shadow: 1px 2px 2px rgba(0,0,0,0.07); border: 1.5px solid transparent; }
 .day-label.today { color: var(--brand); background: var(--current-light); border-color: var(--brand); }
 .period-row { display: flex; gap: 4px; margin-bottom: 4px; align-items: stretch; }
 .period-cells { display: grid; grid-template-columns: repeat(5,1fr); gap: 4px; flex: 1; }
 .cell {
-background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm);
+background: var(--surface); border-radius: var(--radius-sm);
 padding: 6px 5px 5px; min-height: 82px; cursor: pointer;
-transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+transition: transform 0.15s, box-shadow 0.15s;
 display: flex; flex-direction: column; justify-content: space-between;
 position: relative; overflow: hidden;
 -webkit-user-select: none; user-select: none;
+box-shadow: 1px 2px 2px rgba(0,0,0,0.07);
 }
 .cell:active { transform: scale(0.96); }
 .cell.empty { background: transparent; border-color: transparent; cursor: default; pointer-events: none; }
@@ -283,10 +284,17 @@ position: relative; overflow: hidden;
 .cell-teacher { font-size: 9px; color: var(--text-secondary); margin-top: 2px; }
 .cell-room { font-size: 8.5px; color: var(--text-muted); }
 .cell-stats { margin-top: 4px; display: flex; flex-direction: row; flex-wrap: wrap; gap: 2px; align-items: center; }
-.stat-chip { font-size: 8px; font-weight: 700; border-radius: 4px; padding: 1px 4px; line-height: 1.4; }
-.stat-chip.p { background: var(--present-light); color: var(--present); }
-.stat-chip.l { background: var(--late-light); color: var(--late); }
-.stat-chip.a { background: var(--absent-light); color: var(--absent); }
+.cell-stats { margin-top: 4px; display: flex; align-items: center; gap: 0; }
+.stat-num {
+  font-size: 10px; font-weight: 700; padding: 0 5px;
+  border-left: 1.5px solid #e5e7eb; line-height: 1.4;
+}
+.stat-num:first-child { border-left: none; padding-left: 0; }
+.stat-num.p { color: var(--present); }
+.stat-num.l { color: var(--late); }
+.stat-num.a { color: var(--absent); }
+.stat-num.n { color: #9ca3af; }
+.status-badge.n { background: #f3f4f6; color: #6b7280; }
 .eta-chip { font-size: 7.5px; font-weight: 600; background: #f1f5f9; color: #64748b; border-radius: 4px; padding: 1px 4px; line-height: 1.5; white-space: nowrap; }
 .eta-chip.soon { background: var(--brand); color: #ffffff; }
 .eta-chip.now { background: var(--present-light); color: var(--present); }
@@ -461,6 +469,41 @@ display: flex; align-items: center; gap: 5px; margin-bottom: 16px;
 }
 .memo-save-btn:active { opacity: 0.85; }
 
+/* ─── CELL COLOR PICKER ─── */
+.cell-color-section { margin-top: 4px; }
+.color-palette { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; align-items: center; }
+.palette-dot {
+  width: 28px; height: 28px; border-radius: 50%; cursor: pointer;
+  border: 2.5px solid transparent;
+  transition: transform 0.15s, border-color 0.15s;
+  flex-shrink: 0;
+}
+.palette-dot:active { transform: scale(0.9); }
+.palette-dot.selected { border-color: var(--text-primary); transform: scale(1.15); }
+.palette-dot.clear {
+  background: var(--surface) !important;
+  border: 2px dashed var(--border) !important;
+  position: relative;
+}
+.palette-dot.clear::after {
+  content: '';
+  position: absolute; inset: 3px;
+  background: linear-gradient(135deg, transparent 45%, #ef4444 45%, #ef4444 55%, transparent 55%);
+  border-radius: 50%;
+}
+.custom-color-row { display: flex; align-items: center; gap: 10px; }
+.custom-color-swatch {
+  width: 32px; height: 32px; border-radius: 8px;
+  border: 2px solid var(--border); cursor: pointer;
+  overflow: hidden; position: relative; flex-shrink: 0;
+}
+.custom-color-swatch input[type="color"] {
+  position: absolute; inset: -4px;
+  width: calc(100% + 8px); height: calc(100% + 8px);
+  border: none; cursor: pointer; opacity: 0;
+}
+.custom-color-preview { width: 100%; height: 100%; border-radius: 6px; }
+.custom-color-label { font-size: 12px; color: var(--text-secondary); }
 .record-row { display: flex; gap: 8px; align-items: center; background: var(--bg); border-radius: var(--radius-sm); padding: 10px 12px; margin-bottom: 10px; }
 .record-row label { font-size: 12px; color: var(--text-secondary); white-space: nowrap; }
 .record-row input[type="date"], .record-row input[type="time"] {
@@ -469,7 +512,7 @@ font-size: 13px; font-family: inherit; background: var(--surface); color: var(--
 outline: none; flex: 1;
 }
 .record-row input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,130,246,0.12); }
-.action-btns { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 20px; }
+.action-btns { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 20px; }
 .action-btn {
 border: none; border-radius: var(--radius-sm); padding: 12px 6px;
 font-family: inherit; font-size: 14px; font-weight: 700;
@@ -480,6 +523,7 @@ display: flex; flex-direction: column; align-items: center; gap: 3px;
 .btn-present { background: var(--present-light); color: var(--present); }
 .btn-late    { background: var(--late-light);    color: var(--late);    }
 .btn-absent  { background: var(--absent-light);  color: var(--absent);  }
+.btn-none { background: #f3f4f6; color: #6b7280; }
 .action-btn .btn-icon { font-size: 24px; line-height: 1; }
 .action-btn .btn-label { font-size: 12px; }
 .stats-summary { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 20px; }
@@ -489,6 +533,7 @@ display: flex; flex-direction: column; align-items: center; gap: 3px;
 .stat-box.present { background: var(--present-light); color: var(--present); }
 .stat-box.late    { background: var(--late-light);    color: var(--late);    }
 .stat-box.absent  { background: var(--absent-light);  color: var(--absent);  }
+.stat-box.none { background: #f3f4f6; color: #6b7280; }
 .chart-container { margin-bottom: 20px; }
 .chart-canvas-wrap { background: var(--bg); border-radius: var(--radius-sm); padding: 12px; overflow-x: auto; }
 canvas.timeline-chart { width: 100%; height: 140px; display: block; }
@@ -662,12 +707,18 @@ display: flex; align-items: center; gap: 12px;
 
 /* ─── TIMELINE (今日の予定) ─── */
 .timeline-wrap { padding: 14px 0 100px; }
-.tl-day-head { display:flex; align-items:center; gap:14px; padding: 2px 18px 18px; }
-.tl-day-num { font-family:'Roboto Condensed',sans-serif; font-weight:700; font-size:46px; line-height:1; color:var(--brand); letter-spacing:-2px; }
-.tl-day-info { display:flex; flex-direction:column; gap:2px; }
-.tl-overline { font-size:10px; font-weight:700; letter-spacing:1.5px; color:var(--brand); }
-.tl-weekday { font-size:16px; font-weight:700; letter-spacing:-0.3px; }
-.tl-day-sub { font-size:12px; color:var(--text-muted); font-weight:500; }
+.tl-day-head { display:flex; align-items:center; justify-content:space-between; gap:12px; padding: 4px 16px 16px; }
+.tl-title { font-size:17px; font-weight:700; letter-spacing:-0.3px; color:var(--text-primary); white-space:nowrap; }
+.tl-eta-panel { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:8px 12px 9px; box-shadow:var(--shadow-sm); }
+.tl-eta-head { font-size:10px; font-weight:700; color:var(--text-muted); letter-spacing:0.3px; margin-bottom:6px; display:flex; align-items:baseline; gap:6px; white-space:nowrap; }
+.tl-eta-cls { font-size:10px; font-weight:700; color:var(--brand); max-width:96px; overflow:hidden; text-overflow:ellipsis; }
+.tl-eta-row { display:flex; gap:10px; }
+.tl-eta-col { display:flex; flex-direction:column; align-items:center; gap:3px; min-width:52px; }
+.tl-eta-lbl { font-size:9px; font-weight:600; color:var(--text-muted); }
+.tl-eta-val { font-family:'Roboto Condensed',monospace; font-size:14px; font-weight:700; color:var(--text-secondary); letter-spacing:0.3px; line-height:1; }
+.tl-eta-val.accent { color:var(--brand); }
+.tl-eta-val.passed { color:var(--text-muted); opacity:0.55; }
+.tl-eta-empty { font-size:11px; color:var(--text-muted); padding:4px 2px; white-space:nowrap; }
 .tl-track { position:relative; margin:0 14px; }
 .tl-hourline { position:absolute; left:0; right:0; height:1px; background:var(--border); }
 .tl-hourlabel { position:absolute; left:0; width:38px; text-align:right; font-family:'Roboto Condensed',monospace; font-size:11px; color:var(--text-muted); transform:translateY(-50%); }
@@ -1181,13 +1232,17 @@ display: flex; align-items: center; gap: 12px;
         <button class="action-btn btn-absent" onclick="recordAttendance('absent')">
           <span class="btn-icon mi">cancel</span><span class="btn-label">欠席</span>
         </button>
+        <button class="action-btn btn-none" onclick="recordAttendance('none')">
+  <span class="btn-icon mi">block</span><span class="btn-label">出席なし</span>
+</button>
       </div>
       <div class="section-label">集計</div>
-      <div class="stats-summary">
-        <div class="stat-box present"><div class="s-num" id="cntPresent">0</div><div class="s-lbl">出席</div></div>
-        <div class="stat-box late"><div class="s-num" id="cntLate">0</div><div class="s-lbl">遅刻</div></div>
-        <div class="stat-box absent"><div class="s-num" id="cntAbsent">0</div><div class="s-lbl">欠席</div></div>
-      </div>
+<div class="stats-summary">
+  <div class="stat-box present"><div class="s-num" id="cntPresent">0</div><div class="s-lbl">出席</div></div>
+  <div class="stat-box late"><div class="s-num" id="cntLate">0</div><div class="s-lbl">遅刻</div></div>
+  <div class="stat-box absent"><div class="s-num" id="cntAbsent">0</div><div class="s-lbl">欠席</div></div>
+  <div class="stat-box none"><div class="s-num" id="cntNone">0</div><div class="s-lbl">出席なし</div></div>
+</div>
       <div class="chart-container">
         <div class="section-label">出席確認時刻の推移</div>
         <div class="chart-canvas-wrap">
@@ -1196,6 +1251,7 @@ display: flex; align-items: center; gap: 12px;
       </div>
       <div class="section-label">記録一覧</div>
       <div id="recordsTableWrap"></div>
+      <div class="cell-color-section" id="cellColorSection"></div>
       <div class="section-label">メモ</div>
       <textarea class="memo-textarea" id="memoTextarea" placeholder="授業のメモ"></textarea>
       <button class="memo-save-btn" onclick="saveMemo()">
@@ -1472,9 +1528,9 @@ const DEFAULT_CLASSES = [
   { id:'thu5', day:4, period:5, name:'耳鼻咽喉科学',           teacher:'手島', room:'臨床講義棟３' },
 ];
 
-const STATUS_LABELS = { present:'出席', late:'遅刻', absent:'欠席' };
-const STATUS_CLASS  = { present:'p', late:'l', absent:'a' };
-const STATUS_ICONS_MI = { present:'check_circle', late:'schedule', absent:'cancel' };
+const STATUS_LABELS = { present:'出席', late:'遅刻', absent:'欠席', none:'出席なし' };
+const STATUS_CLASS  = { present:'p', late:'l', absent:'a', none:'n' };
+const STATUS_ICONS_MI = { present:'check_circle', late:'schedule', absent:'cancel', none:'block' };
 const DAY_NAMES = ['日','月','火','水','木','金','土'];
 
 let currentClassId = null;
@@ -1531,6 +1587,11 @@ function saveMemoStorage(classId, text) { localStorage.setItem('memo_' + classId
 function getNoAttendanceIds() {
   try { return JSON.parse(localStorage.getItem('ams_no_att')) || []; } catch { return []; }
 }
+function getCellColor(classId) { return localStorage.getItem('ams_cellcolor_' + classId) || null; }
+function saveCellColor(classId, color) {
+  if (color) localStorage.setItem('ams_cellcolor_' + classId, color);
+  else localStorage.removeItem('ams_cellcolor_' + classId);
+}
 function saveNoAttendanceIds(ids) { localStorage.setItem('ams_no_att', JSON.stringify(ids)); }
 function isNoAttendance(classId) { return getNoAttendanceIds().includes(classId); }
 function toggleNoAttendance(classId, val) {
@@ -1549,6 +1610,26 @@ function calcAttendanceRate(records) {
   const cntL = records.filter(r => r.status === 'late').length;
   return Math.round((cntP * 1 + cntL * 0.5) / total * 100);
 }
+// 同名科目の全レコードを合算して返す
+function loadRecordsMerged(classId) {
+  const cls = getClasses().find(c => c.id === classId);
+  if (!cls) return loadRecords(classId);
+  const sameName = getClasses().filter(c => c.name === cls.name);
+  if (sameName.length <= 1) return loadRecords(classId);
+  return sameName.flatMap(c => loadRecords(c.id));
+}
+
+// 合算後の出席・遅刻・欠席カウントを返す
+function getMergedCounts(classId) {
+  const recs = loadRecordsMerged(classId);
+  return {
+    p: recs.filter(r => r.status === 'present').length,
+    l: recs.filter(r => r.status === 'late').length,
+    a: recs.filter(r => r.status === 'absent').length,
+    n: recs.filter(r => r.status === 'none').length,
+  };
+}
+
 function calcTotalAttendanceRate(allClasses) {
   let totalScore = 0, totalCount = 0;
   allClasses.forEach(c => {
@@ -1572,8 +1653,9 @@ function getAlertedClassIds() {
   CLASSES.forEach(c => {
     if (isNoAttendance(c.id)) return;
     const recs = loadRecords(c.id);
-    const absCnt = recs.filter(r => r.status === 'absent').length;
-    const rate = calcAttendanceRate(recs);
+    const mergedRecs = loadRecordsMerged(c.id);
+const absCnt = mergedRecs.filter(r => r.status === 'absent').length;
+const rate = calcAttendanceRate(mergedRecs);
     if (absCnt >= absThresh) alerted.add(c.id);
     else if (rate !== null && rate < rateThresh) alerted.add(c.id);
   });
@@ -1735,7 +1817,7 @@ function updateClock() {
   document.getElementById('clockBadge').textContent = h+':'+mi+':'+s;
   const y=n.getFullYear(), mo=String(n.getMonth()+1).padStart(2,'0'), d=String(n.getDate()).padStart(2,'0');
   document.getElementById('dateBadge').textContent = `${y}/${mo}/${d} (${DAY_NAMES[n.getDay()]})`;
-  if (document.getElementById('view-timeline').classList.contains('active')) updateTlNow();
+  if (document.getElementById('view-timeline').classList.contains('active')) { updateTlNow(); updateTlCountdown(); }
 }
 
 // ─── ETA ───
@@ -1776,6 +1858,8 @@ function buildTimetable() {
       if (!cls) { cell.className='cell empty'; }
       else {
         cell.className = 'cell';
+        const cellColor = getCellColor(cls.id);
+if (cellColor) cell.style.background = cellColor;
         const noAtt = isNoAttendance(cls.id);
         if (noAtt) {
           cell.classList.add('no-attendance');
@@ -1793,9 +1877,8 @@ function buildTimetable() {
             if (nm>=pStart && nm<=pEnd) cell.classList.add('current-class');
           }
           const recs=loadRecords(cls.id);
-          const cntP=recs.filter(r=>r.status==='present').length;
-          const cntL=recs.filter(r=>r.status==='late').length;
-          const cntA=recs.filter(r=>r.status==='absent').length;
+const merged = getMergedCounts(cls.id);
+const cntP = merged.p, cntL = merged.l, cntA = merged.a, cntN = merged.n;
           if (fadeAbsent && cntA > 0 && cntP===0 && cntL===0) cell.classList.add('hidden-class');
           const eta=etaText(cls);
           const etaHtml=eta?`<span class="eta-chip ${eta.cls}">${eta.label}</span>`:'';
@@ -1807,9 +1890,10 @@ function buildTimetable() {
               <div class="cell-room">${cls.room}</div>
             </div>
             <div class="cell-stats">
-              <span class="stat-chip p">${cntP}</span>
-              <span class="stat-chip l">${cntL}</span>
-              <span class="stat-chip a">${cntA}</span>
+              <span class="stat-num p">${cntP}</span>
+<span class="stat-num l">${cntL}</span>
+<span class="stat-num a">${cntA}</span>
+<span class="stat-num n">${cntN}</span>
               ${etaHtml}
             </div>`;
           cell.addEventListener('click', () => openModal(cls.id));
@@ -1826,25 +1910,88 @@ function buildTimetable() {
 const TL_SCALE = 1.5, TL_AXIS_X = 52, TL_CARD_LEFT = 96;
 function fmtMin(m){ m=Math.round(m); const h=Math.floor(m/60), mm=((m%60)+60)%60; return String(h).padStart(2,'0')+':'+String(mm).padStart(2,'0'); }
 
+// 次の出席対象クラス（今日・出席あり・終了+バッファが未来の最初のコマ）
+function getNextAttendanceTarget() {
+  const today = jsDay();
+  if (!today) return null;
+  const now = nowMinutes();
+  const todays = getClasses()
+    .filter(c => c.day === today && !isNoAttendance(c.id))
+    .sort((a,b)=>a.period-b.period);
+  for (const c of todays) {
+    const eMin = timeToMinutes(PERIODS[c.period-1].end);
+    if (now <= eMin + TIME_BUFFER) return c;
+  }
+  return null;
+}
+// 履歴から最早・平均・最遅（分・float）を返す
+function attendanceTargetTimes(cls) {
+  const mins = effectivePlotMins(loadRecords(cls.id), cls.period);
+  if (!mins.length) return null;
+  return {
+    earliest: Math.min(...mins),
+    latest: Math.max(...mins),
+    avg: mins.reduce((a,b)=>a+b,0)/mins.length
+  };
+}
+// 残り秒数を H:MM:SS / MM:SS に整形（経過済みは null）
+function fmtCountdown(sec) {
+  if (sec <= 0) return null;
+  const h = Math.floor(sec/3600), m = Math.floor((sec%3600)/60), s = sec%60;
+  const mm = String(m).padStart(2,'0'), ss = String(s).padStart(2,'0');
+  return h>0 ? `${h}:${mm}:${ss}` : `${mm}:${ss}`;
+}
+// ヘッダーのカウントダウンを毎秒更新
+function updateTlCountdown() {
+  const panel = document.getElementById('tlEtaPanel');
+  if (!panel) return;
+  const n = new Date();
+  const nowSec = n.getHours()*3600 + n.getMinutes()*60 + n.getSeconds();
+  [['tlEtaEarly','early'],['tlEtaAvg','avg'],['tlEtaLate','late']].forEach(([id,key])=>{
+    const el = document.getElementById(id);
+    if (!el) return;
+    const txt = fmtCountdown(parseInt(panel.dataset[key]) - nowSec);
+    if (txt === null) { el.textContent = '済'; el.classList.add('passed'); }
+    else { el.textContent = txt; el.classList.remove('passed'); }
+  });
+}
+
 function renderTimeline(doScroll){
   const wrap = document.getElementById('timelineWrap');
   const CLASSES = getClasses();
   const today = jsDay();
-  const now = new Date();
-  const WD = ['日曜日','月曜日','火曜日','水曜日','木曜日','金曜日','土曜日'];
+  const target = getNextAttendanceTarget();
+  const tt = target ? attendanceTargetTimes(target) : null;
+  let countdownHtml;
+  if (target && tt) {
+    countdownHtml = `
+      <div class="tl-eta-panel" id="tlEtaPanel"
+           data-early="${Math.round(tt.earliest*60)}"
+           data-avg="${Math.round(tt.avg*60)}"
+           data-late="${Math.round(tt.latest*60)}">
+        <div class="tl-eta-head">次の出席まで<span class="tl-eta-cls">${escHtml(target.name)}</span></div>
+        <div class="tl-eta-row">
+          <div class="tl-eta-col"><div class="tl-eta-lbl">最早</div><div class="tl-eta-val" id="tlEtaEarly">--:--</div></div>
+          <div class="tl-eta-col"><div class="tl-eta-lbl">平均</div><div class="tl-eta-val accent" id="tlEtaAvg">--:--</div></div>
+          <div class="tl-eta-col"><div class="tl-eta-lbl">最遅</div><div class="tl-eta-val" id="tlEtaLate">--:--</div></div>
+        </div>
+      </div>`;
+  } else if (target) {
+    countdownHtml = `<div class="tl-eta-panel"><div class="tl-eta-head">次の出席まで<span class="tl-eta-cls">${escHtml(target.name)}</span></div><div class="tl-eta-empty">記録なし</div></div>`;
+  } else {
+    countdownHtml = `<div class="tl-eta-empty">本日の出席予定なし</div>`;
+  }
   const head = `
     <div class="tl-day-head">
-      <div class="tl-day-num">${now.getDate()}</div>
-      <div class="tl-day-info">
-        <div class="tl-overline">今日の予定</div>
-        <div class="tl-weekday">${WD[now.getDay()]}</div>
-        <div class="tl-day-sub">${now.getMonth()+1}月</div>
-      </div>
+      <div class="tl-title">今日の予定</div>
+      ${countdownHtml}
     </div>`;
   const todays = CLASSES.filter(c => c.day === today).sort((a,b)=>a.period-b.period);
 
+
   if (today === 0 || !todays.length){
     wrap.innerHTML = head + `<div class="tl-empty"><span class="mi">free_breakfast</span><div class="tl-empty-text">今日の授業はありません</div></div>`;
+    updateTlCountdown();
     return;
   }
 
@@ -1867,7 +2014,7 @@ function renderTimeline(doScroll){
     gridTimes.add(timeToMinutes(PERIODS[cls.period-1].end));
   });
   [...gridTimes].sort((a,b)=>a-b).forEach(m => {
-    parts.push(`<div class="tl-hourline" style="top:${Y(m)}px;left:${TL_AXIS_X}px"></div>`);
+    
     parts.push(`<div class="tl-hourlabel" style="top:${Y(m)}px">${fmtMin(m)}</div>`);
   });
   parts.push(`<div class="tl-axis" style="left:${TL_AXIS_X-3}px"></div>`);
@@ -1886,9 +2033,8 @@ function renderTimeline(doScroll){
     const top = Y(sMin), h = Math.max(52, Y(eMin)-Y(sMin));
     const noAtt = isNoAttendance(cls.id);
     const recs = loadRecords(cls.id);
-    const cntP = recs.filter(r=>r.status==='present').length;
-    const cntL = recs.filter(r=>r.status==='late').length;
-    const cntA = recs.filter(r=>r.status==='absent').length;
+    const merged = getMergedCounts(cls.id);
+const cntP = merged.p, cntL = merged.l, cntA = merged.a;
     const isCurrent = nowMin>=sMin && nowMin<=eMin && !noAtt;
     const isPast = nowMin > eMin;
 
@@ -1925,8 +2071,8 @@ function renderTimeline(doScroll){
     const nameCls = (!noAtt && alertedIds.has(cls.id)) ? ' alerted' : '';
     const cardCls = 'tl-card' + (isCurrent?' current':'') + (isPast?' past':'') + (noAtt?' noatt':'');
     const chips = noAtt
-      ? `<span class="no-att-chip">出席なし</span>`
-      : `<span class="stat-chip p">${cntP}</span><span class="stat-chip l">${cntL}</span><span class="stat-chip a">${cntA}</span>`;
+  ? `<span class="no-att-chip">出席なし</span>`
+  : `<span class="stat-num p">${cntP}</span><span class="stat-num l">${cntL}</span><span class="stat-num a">${cntA}</span><span class="stat-num n">${cntN}</span>`;
     parts.push(`
       <div class="${cardCls}" style="top:${top}px;height:${h}px;left:${TL_CARD_LEFT}px;right:0" onclick="openModal('${cls.id}')">
         <div class="tl-card-body">
@@ -1976,6 +2122,7 @@ function openModal(classId) {
   const n=new Date();
   document.getElementById('inputTime').value = String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0');
   document.getElementById('memoTextarea').value = loadMemo(classId);
+  renderCellColorPicker(classId);
   refreshModal();
   document.getElementById('overlay').classList.add('open');
 }
@@ -1989,13 +2136,61 @@ function saveMemo() {
   showToast('メモを保存しました', 'save');
 }
 
+const CELL_PALETTE = [
+  '#fef9c3','#fef3c7','#fce7f3','#ede9fe','#dbeafe',
+  '#dcfce7','#ffedd5','#e0f2fe','#f3f4f6','#ffd6d6',
+  '#c7d2fe','#d1fae5','#fbcfe8','#bfdbfe','#a7f3d0',
+];
+
+function renderCellColorPicker(classId) {
+  const wrap = document.getElementById('cellColorSection');
+  if (!wrap) return;
+  const current = getCellColor(classId);
+  wrap.innerHTML = `
+    <div class="section-label" style="margin-top:0">セルの背景色</div>
+    <div class="color-palette" id="cellPalette">
+      <div class="palette-dot clear ${!current ? 'selected' : ''}"
+           title="なし" onclick="applyCellColor('${classId}', null)"></div>
+      ${CELL_PALETTE.map(c => `
+        <div class="palette-dot ${current===c?'selected':''}"
+             style="background:${c}"
+             onclick="applyCellColor('${classId}','${c}')"></div>
+      `).join('')}
+    </div>
+    <div class="custom-color-row">
+      <div class="custom-color-swatch" id="customSwatchWrap" style="background:${current&&!CELL_PALETTE.includes(current)?current:'#ffffff'}">
+        <input type="color" value="${current&&!CELL_PALETTE.includes(current)?current:'#ffffff'}"
+               oninput="onCustomCellColor('${classId}',this.value,this)"
+               onchange="onCustomCellColor('${classId}',this.value,this)">
+      </div>
+      <span class="custom-color-label">カスタムカラー</span>
+    </div>`;
+}
+
+function applyCellColor(classId, color) {
+  saveCellColor(classId, color);
+  buildTimetable();
+  renderCellColorPicker(classId);
+}
+
+function onCustomCellColor(classId, value, input) {
+  const wrap = document.getElementById('customSwatchWrap');
+  if (wrap) wrap.style.background = value;
+  saveCellColor(classId, value);
+  buildTimetable();
+  // パレットの選択状態を外す
+  document.querySelectorAll('#cellPalette .palette-dot').forEach(d => d.classList.remove('selected'));
+}
+
 function refreshModal() {
   if (!currentClassId) return;
   const recs=loadRecords(currentClassId);
-  document.getElementById('cntPresent').textContent = recs.filter(r=>r.status==='present').length;
-  document.getElementById('cntLate').textContent    = recs.filter(r=>r.status==='late').length;
-  document.getElementById('cntAbsent').textContent  = recs.filter(r=>r.status==='absent').length;
-  renderChart(recs);
+  const merged = getMergedCounts(currentClassId);
+document.getElementById('cntPresent').textContent = merged.p;
+document.getElementById('cntLate').textContent    = merged.l;
+document.getElementById('cntAbsent').textContent  = merged.a;
+document.getElementById('cntNone').textContent    = merged.n;
+renderChart(recs);
   renderTable(recs);
 }
 
