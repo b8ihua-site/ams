@@ -1243,6 +1243,14 @@ display: flex; align-items: center; gap: 12px;
   <div class="stat-box absent"><div class="s-num" id="cntAbsent">0</div><div class="s-lbl">欠席</div></div>
   <div class="stat-box none"><div class="s-num" id="cntNone">0</div><div class="s-lbl">出席なし</div></div>
 </div>
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;padding:10px 12px;background:var(--bg);border-radius:var(--radius-sm);">
+  <span class="mi mi-18" style="color:var(--text-muted)">event_note</span>
+  <span style="font-size:12px;color:var(--text-secondary);flex:1">授業回数（全体）</span>
+  <input type="number" id="classTotalInput" min="1" max="99" value="15"
+    style="width:56px;border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:13px;font-family:'Roboto Condensed',monospace;text-align:center;background:var(--surface);color:var(--text-primary);outline:none;"
+    oninput="saveClassTotal(currentClassId, parseInt(this.value)||15)">
+  <span style="font-size:12px;color:var(--text-muted)">回</span>
+</div>
       <div class="chart-container">
         <div class="section-label">出席確認時刻の推移</div>
         <div class="chart-canvas-wrap">
@@ -1841,6 +1849,74 @@ function etaText(cls) {
 }
 
 // ─── TIMETABLE ───
+// ─── 正の字ピクセルアート ───
+const SEIJI_STROKES = [
+  [[0,0],[0,1],[0,2],[0,3],[0,4]],
+  [[1,2],[2,2],[3,2],[4,2]],
+  [[2,3],[2,4]],
+  [[2,0],[3,0],[4,0]],
+  [[4,1],[4,2],[4,3],[4,4]],
+];
+const SEIJI_DOT_PX = 3;
+const SEIJI_GAP = 2;
+const SEIJI_DOT_GAP = 2;
+const SEIJI_CHAR_W = 5 * SEIJI_DOT_PX;
+const SEIJI_CHAR_H = 5 * SEIJI_DOT_PX;
+
+function seijiCalcScore(absent, late) {
+  const score = absent * 1 + late * 0.5;
+  return { strokes: Math.floor(score), hasDot: (score % 1) === 0.5 };
+}
+
+function seijiBuildGrid(strokeCount) {
+  const grid = Array.from({length:5}, () => Array(5).fill(false));
+  for (let s = 0; s < Math.min(strokeCount, SEIJI_STROKES.length); s++) {
+    SEIJI_STROKES[s].forEach(([r,c]) => { grid[r][c] = true; });
+  }
+  return grid;
+}
+
+function renderSeijiSVG(absent, late, limit, accentColor) {
+  const limitChars  = Math.floor(limit / 5);
+  const limitStrokes = limit % 5;
+  const totalChars  = limitChars + (limitStrokes > 0 ? 1 : 0);
+  if (totalChars === 0) return '';
+
+  const { strokes: totalAbsentStrokes, hasDot } = seijiCalcScore(absent, late);
+  const absentChars   = Math.floor(totalAbsentStrokes / 5);
+  const absentStrokes = totalAbsentStrokes % 5;
+  const dotCharIdx    = totalChars - 1;
+
+  let totalW = totalChars * SEIJI_CHAR_W + (totalChars - 1) * SEIJI_GAP;
+  if (hasDot) totalW += SEIJI_DOT_GAP + SEIJI_DOT_PX;
+
+  let rects = '';
+  for (let i = 0; i < totalChars; i++) {
+    const xOff = i * (SEIJI_CHAR_W + SEIJI_GAP);
+    const thisLimitStrokes  = i < limitChars ? 5 : limitStrokes;
+    const thisAbsentStrokes = i < absentChars ? 5 : (i === absentChars ? absentStrokes : 0);
+    const showDot = hasDot && i === dotCharIdx;
+
+    const limitGrid  = seijiBuildGrid(thisLimitStrokes);
+    const absentGrid = seijiBuildGrid(thisAbsentStrokes);
+
+    // 灰色（上限）
+    limitGrid.forEach((row, r) => row.forEach((filled, c) => {
+      if (filled) rects += `<rect x="${xOff + c*SEIJI_DOT_PX}" y="${r*SEIJI_DOT_PX}" width="${SEIJI_DOT_PX}" height="${SEIJI_DOT_PX}" fill="#d1d5db"/>`;
+    }));
+    // アクセントカラー（欠席）
+    absentGrid.forEach((row, r) => row.forEach((filled, c) => {
+      if (filled) rects += `<rect x="${xOff + c*SEIJI_DOT_PX}" y="${r*SEIJI_DOT_PX}" width="${SEIJI_DOT_PX}" height="${SEIJI_DOT_PX}" fill="${accentColor}"/>`;
+    }));
+    // 遅刻ドット
+    if (showDot) {
+      rects += `<rect x="${xOff + SEIJI_CHAR_W + SEIJI_DOT_GAP}" y="0" width="${SEIJI_DOT_PX}" height="${SEIJI_DOT_PX}" fill="${accentColor}"/>`;
+    }
+  }
+
+  return `<svg width="${totalW}" height="${SEIJI_CHAR_H}" style="display:block">${rects}</svg>`;
+}
+
 function buildTimetable() {
   const CLASSES = getClasses();
   const grid = document.getElementById('timetableGrid');
@@ -1865,10 +1941,11 @@ if (cellColor) cell.style.background = cellColor;
           cell.classList.add('no-attendance');
           cell.innerHTML=`
             <div>
-              <div class="cell-name">${cls.name}</div>
-              <div class="cell-teacher">${cls.teacher}</div>
-              <div class="cell-room">${cls.room}</div>
-            </div>
+  <div class="cell-name">${cls.name}</div>
+  <div class="cell-teacher">${cls.teacher}</div>
+  <div class="cell-room">${cls.room}</div>
+  <div class="cell-room" style="color:var(--text-muted);opacity:0.7">全${getClassTotal(cls.id)}回</div>
+</div>
             <div class="cell-stats"><span class="no-att-chip">出席なし</span></div>`;
           cell.addEventListener('click', () => openModal(cls.id));
         } else {
@@ -1878,24 +1955,30 @@ if (cellColor) cell.style.background = cellColor;
           }
           const recs=loadRecords(cls.id);
 const merged = getMergedCounts(cls.id);
-const cntP = merged.p, cntL = merged.l, cntA = merged.a, cntN = merged.n;
-          if (fadeAbsent && cntA > 0 && cntP===0 && cntL===0) cell.classList.add('hidden-class');
+const cntP = merged.p, cntL = merged.l, cntA = merged.a, cntN = merged.n;          if (fadeAbsent && cntA > 0 && cntP===0 && cntL===0) cell.classList.add('hidden-class');
           const eta=etaText(cls);
           const etaHtml=eta?`<span class="eta-chip ${eta.cls}">${eta.label}</span>`:'';
           const alertedClass = alertedIds.has(cls.id) ? ' alerted' : '';
+          const brandHex = getBrandHex();
+const seijiLimit = Math.floor(getClassTotal(cls.id) / 3);
+const seijiSVG = renderSeijiSVG(cntA, cntL, seijiLimit, brandHex);
+
           cell.innerHTML=`
             <div>
               <div class="cell-name${alertedClass}">${cls.name}</div>
               <div class="cell-teacher">${cls.teacher}</div>
               <div class="cell-room">${cls.room}</div>
+              <div class="cell-room" style="color:var(--text-muted);opacity:0.7">全${getClassTotal(cls.id)}回</div>
             </div>
+            <div style="margin-bottom:2px">${seijiSVG}</div>
             <div class="cell-stats">
               <span class="stat-num p">${cntP}</span>
-<span class="stat-num l">${cntL}</span>
-<span class="stat-num a">${cntA}</span>
-<span class="stat-num n">${cntN}</span>
+              <span class="stat-num l">${cntL}</span>
+              <span class="stat-num a">${cntA}</span>
+              <span class="stat-num n">${cntN}</span>
               ${etaHtml}
             </div>`;
+            
           cell.addEventListener('click', () => openModal(cls.id));
         }
       }
@@ -2033,9 +2116,8 @@ function renderTimeline(doScroll){
     const top = Y(sMin), h = Math.max(52, Y(eMin)-Y(sMin));
     const noAtt = isNoAttendance(cls.id);
     const recs = loadRecords(cls.id);
-    const merged = getMergedCounts(cls.id);
-const cntP = merged.p, cntL = merged.l, cntA = merged.a;
-    const isCurrent = nowMin>=sMin && nowMin<=eMin && !noAtt;
+const merged = getMergedCounts(cls.id);
+const cntP = merged.p, cntL = merged.l, cntA = merged.a, cntN = merged.n;    const isCurrent = nowMin>=sMin && nowMin<=eMin && !noAtt;
     const isPast = nowMin > eMin;
 
     // 帯・平均
@@ -2123,6 +2205,7 @@ function openModal(classId) {
   document.getElementById('inputTime').value = String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0');
   document.getElementById('memoTextarea').value = loadMemo(classId);
   renderCellColorPicker(classId);
+  document.getElementById('classTotalInput').value = getClassTotal(classId);
   refreshModal();
   document.getElementById('overlay').classList.add('open');
 }
@@ -2165,6 +2248,14 @@ function renderCellColorPicker(classId) {
       </div>
       <span class="custom-color-label">カスタムカラー</span>
     </div>`;
+}
+
+function getClassTotal(classId) {
+  const v = localStorage.getItem('ams_total_' + classId);
+  return v !== null ? parseInt(v) : 15;
+}
+function saveClassTotal(classId, n) {
+  localStorage.setItem('ams_total_' + classId, n);
 }
 
 function applyCellColor(classId, color) {
