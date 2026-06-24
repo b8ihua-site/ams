@@ -20,8 +20,6 @@ a {color:var(--brand);}
 --text-primary: #1a1d23;
 --text-secondary: #7f7f7f;
 --text-muted: #b1b1b1;
---accent: #dc7e48;
---accent-light: #eff6ff;
 --present: #1067b9;
 --present-light: #ececfd;
 --late: #7d40b6;
@@ -195,7 +193,7 @@ position: fixed; top: max(14px, env(safe-area-inset-top, 14px)); right: 16px; z-
 width: 40px; height: 40px;
 background: var(--surface); border: none; border-radius: 12px;
 display: flex; align-items: center; justify-content: center;
-box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+
 cursor: pointer;
 opacity: 0; pointer-events: none;
 transition: opacity 0.25s, transform 0.25s;
@@ -230,7 +228,7 @@ opacity: 1; pointer-events: all; transform: scale(1);
 /* ─── DRAWER ─── */
 .drawer-overlay {
 position: fixed; inset: 0; z-index: 300;
-background: rgba(0,0,0,0.4); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
+background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
 opacity: 0; pointer-events: none; transition: opacity 0.25s;
 }
 .drawer-overlay.open { opacity: 1; pointer-events: all; }
@@ -247,13 +245,13 @@ overflow-y: auto; -webkit-overflow-scrolling: touch;
 .drawer-overlay.open .drawer { transform: translateX(0); }
 .drawer-header {
 padding: 54px 20px 18px;
-border-bottom: 1px solid var(--border);
+
 background: var(--surface);
 }
 .drawer-title { font-size: 22px; font-weight: 700; color: var(--brand); font-family: "Roboto Condensed", sans-serif; }
 .drawer-sub { font-size: 11px; color: var(--text-muted); margin-top: 3px; letter-spacing: 0.5px; }
 .drawer-section { padding: 12px 0;  }
-.drawer-section-label { font-size: 15px; font-weight: 300; color: var(--text); text-transform: uppercase; letter-spacing: 1px; padding: 8px 20px 0px; }
+.drawer-section-label { font-size: 15px; font-weight: 300; color: var(--text-primary); text-transform: uppercase; letter-spacing: 1px; padding: 8px 20px 0px; }
 .drawer-item {
 display: flex; align-items: center; gap: 14px;
 padding: 13px 20px; cursor: pointer;
@@ -387,7 +385,7 @@ box-shadow: 1px 2px 2px rgba(0,0,0,0.07);
 
 /* ─── DASHBOARD ─── */
 .dashboard-wrap { padding: 160px 14px 100px; }
-.dash-section-title { font-size: 20px; font-weight: 300; color: var(--text); text-transform: uppercase; letter-spacing: 0px; margin-bottom: 10px; margin-top: 30px; }
+.dash-section-title { font-size: 20px; font-weight: 300; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0px; margin-bottom: 10px; margin-top: 30px; }
 .dash-section-title:first-child { margin-top: 0; }
 .overview-cards { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 16px; }
 .ov-card {
@@ -463,7 +461,7 @@ padding: 8px 10px; font-size: 13px; font-family: inherit;
 background: var(--bg); color: var(--text-primary);
 outline: none; width: 150px;
 }
-.name-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
+.name-input:focus { border-color: var(--brand); box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
 
 /* ─── SETTINGS NAV ─── */
 .settings-nav-row {
@@ -551,13 +549,16 @@ opacity: 0; pointer-events: none; transition: opacity 0.25s;
 }
 .overlay.open { opacity: 1; pointer-events: all; }
 .modal {
-background: var(--surface); border-radius: 20px 20px 0 0;
-width: 100%; max-width: 540px;
-max-height: 90vh; overflow-y: auto;
-padding: 0 0 env(safe-area-inset-bottom,16px);
-transform: translateY(100%);
-transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
--webkit-overflow-scrolling: touch;
+  background: var(--surface);
+  border-radius: 0;
+  width: 100%; max-width: 100%;
+  height: 100vh;
+  max-height: 100vh;
+  overflow-y: auto;
+  padding: 0 0 env(safe-area-inset-bottom, 16px);
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
+  -webkit-overflow-scrolling: touch;
 }
 .overlay.open .modal { transform: translateY(0); }
 .modal-handle { width: 36px; height: 4px; background: #d1d5db; border-radius: 2px; margin: 12px auto 0; }
@@ -565,7 +566,7 @@ transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
 .modal-title { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; }
 .modal-sub { font-size: 13px; color: var(--text-secondary); margin-top: 3px; }
 .modal-body { padding: 16px 20px; }
-.section-label { font-size: 15px; font-weight: 300; color: var(--text); text-transform: uppercase; letter-spacing: 0px; margin-bottom: 8px; }
+.section-label { font-size: 15px; font-weight: 300; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0px; margin-bottom: 8px; }
 
 .memo-textarea {
 width: 90%; min-height: 72px; border: 1px solid var(--border); border-radius: var(--radius-sm);
@@ -574,9 +575,9 @@ background: var(--bg); color: var(--text-primary); outline: none; resize: vertic
 line-height: 1.6; margin-bottom: 16px;
 transition: border-color 0.2s;
 }
-.memo-textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
+.memo-textarea:focus { border-color: var(--brand); box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
 .memo-save-btn {
-border: none; background: var(--accent); color: white; border-radius: var(--radius-sm);
+border: none; background: var(--brand); color: white; border-radius: var(--radius-sm);
 padding: 7px 14px; font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer;
 display: flex; align-items: center; gap: 5px; margin-bottom: 16px;
 }
@@ -624,7 +625,7 @@ border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 6px 1
 font-size: 13px; font-family: inherit; background: var(--surface); color: var(--text-primary);
 outline: none; flex: 1;
 }
-.record-row input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,130,246,0.12); }
+.record-row input:focus { border-color: var(--brand); box-shadow: 0 0 0 3px rgba(59,130,246,0.12); }
 .action-btns { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 20px; }
 .action-btn {
 border: none; border-radius: var(--radius-sm); padding: 12px 6px;
@@ -698,7 +699,7 @@ border: 1px solid var(--border); border-radius: 6px; padding: 6px 8px;
 font-size: 12px; font-family: inherit; background: var(--surface); color: var(--text-primary);
 outline: none;
 }
-.edit-field input:focus, .edit-field select:focus { border-color: var(--accent); }
+.edit-field input:focus, .edit-field select:focus { border-color: var(--brand); }
 .edit-field.full { grid-column: 1 / -1; }
 .add-class-btn {
 width: 100%; border: 2px dashed var(--border); background: transparent;
@@ -726,7 +727,7 @@ display: flex; align-items: center; gap: 3px;
 /* ─── LOG ─── */
 .log-wrap { padding: 160px 14px 100px; }
 .export-btns { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
-.export-btn { color:var(--text);
+.export-btn { color:var(--text-primary);
 flex: 1; min-width: 100px; border: 1px solid var(--border); background: var(--surface);
 border-radius: var(--radius-sm); padding: 10px 12px;
 font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer;
@@ -760,7 +761,7 @@ transition: background 0.15s;
 
 /* ─── ALERTS ─── */
 .threshold-input { width: 60px; border: 1px solid var(--border); border-radius: 6px; padding: 6px 8px; font-size: 13px; font-family: 'Roboto Condensed', monospace; text-align: center; outline: none; background: var(--surface); }
-.threshold-input:focus { border-color: var(--accent); }
+.threshold-input:focus { border-color: var(--brand); }
 .threshold-unit { font-size: 11px; color: var(--text-muted); }
 .alert-row { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: var(--radius-sm); margin-bottom: 6px; }
 .alert-row.warn { background: var(--absent-light); }
@@ -842,13 +843,13 @@ display: flex; align-items: center; gap: 12px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.8);
   width: 100%;
 }
-.tl-eta-head { font-size:10px; font-weight:500; color:var(--text); letter-spacing:0.3px; margin-bottom:10px; display:flex; align-items:center; gap:8px; }
+.tl-eta-head { font-size:10px; font-weight:500; color:var(--text-primary); letter-spacing:0.3px; margin-bottom:10px; display:flex; align-items:center; gap:8px; }
 .tl-eta-cls { font-size:11px; font-weight:700; color:var(--brand); background:var(--current-light); border-radius:6px; padding:2px 8px; }
 .tl-eta-row { display:flex; align-items:stretch; }
 .tl-eta-col { display:flex; flex-direction:column; align-items:center; gap:4px; flex:1; padding:4px 0; }
 .tl-eta-col:not(:last-child) { border-right:1px solid var(--border); }
 .tl-eta-lbl { font-size:9px; font-weight:500; color:var(--text-muted); }
-.tl-eta-val { font-family:'Roboto Condensed',monospace; font-size:18px; font-weight:500; color:var(--text); letter-spacing:0.3px; line-height:1; }
+.tl-eta-val { font-family:'Roboto Condensed',monospace; font-size:18px; font-weight:500; color:var(--text-primary); letter-spacing:0.3px; line-height:1; }
 .tl-eta-val.accent { color:var(--brand); }
 .tl-eta-val.passed { color:var(--text-muted); opacity:0.55; }
 .tl-eta-empty { font-size:11px; color:var(--text-muted); padding:4px 2px; }.tl-track { position:relative; margin:0 14px; }
@@ -918,7 +919,7 @@ display: flex; align-items: center; gap: 12px;
   <div style="flex:1;overflow:hidden;position:relative;margin-top:48px;">
     <div id="obSlider" style="display:flex;width:500%;height:100%;transition:transform 0.4s cubic-bezier(0.32,0.72,0,1);">
       <!-- Slide 1 -->
-      <div style="width:25%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 36px 0;text-align:center;">
+      <div style="width:20%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 36px 0;text-align:center;">
         <div style="width:116px;height:116px;border-radius:32px;background:linear-gradient(145deg,#DC4848,#ff7070);display:flex;align-items:center;justify-content:center;margin-bottom:28px;box-shadow:0 16px 48px rgba(220,72,72,0.28);">
           <span class="mi" style="font-size:54px;color:white;">school</span>
         </div>
@@ -926,7 +927,7 @@ display: flex; align-items: center; gap: 12px;
         <div style="font-size:14px;color:#6b7280;line-height:1.9;font-family:'Noto Sans JP',sans-serif;">授業の出席をかんたんに管理・傾向分析できるアプリです。さっそく使い方を見てみましょう。</div>
       </div>
       <!-- Slide 2 -->
-      <div style="width:25%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 36px 0;text-align:center;">
+      <div style="width:20%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 36px 0;text-align:center;">
         <div style="width:116px;height:116px;border-radius:32px;background:linear-gradient(145deg,#3b82f6,#60a5fa);display:flex;align-items:center;justify-content:center;margin-bottom:28px;box-shadow:0 16px 48px rgba(59,130,246,0.28);">
           <span class="mi" style="font-size:54px;color:white;">grid_on</span>
         </div>
@@ -934,7 +935,7 @@ display: flex; align-items: center; gap: 12px;
         <div style="font-size:14px;color:#6b7280;line-height:1.9;font-family:'Noto Sans JP',sans-serif;">コマをタップするだけで出席・遅刻・欠席を記録できます。出席が取られた時刻はグラフにして、推移を確認できます。時間割の編集・追加も自由自在です。</div>
       </div>
       <!-- Slide 3 -->
-      <div style="width:25%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 36px 0;text-align:center;">
+      <div style="width:20%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 36px 0;text-align:center;">
         <div style="width:116px;height:116px;border-radius:32px;background:linear-gradient(145deg,#10b981,#34d399);display:flex;align-items:center;justify-content:center;margin-bottom:28px;box-shadow:0 16px 48px rgba(16,185,129,0.28);">
           <span class="mi" style="font-size:54px;color:white;">bar_chart</span>
         </div>
@@ -942,7 +943,7 @@ display: flex; align-items: center; gap: 12px;
         <div style="font-size:14px;color:#6b7280;line-height:1.9;font-family:'Noto Sans JP',sans-serif;">ダッシュボードで科目ごとの出席率を確認。欠席が増えるとアラートでお知らせします。</div>
       </div>
       <!-- Slide 4 -->
-      <div style="width:25%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 36px 0;text-align:center;">
+      <div style="width:20%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 36px 0;text-align:center;">
         <div style="width:116px;height:116px;border-radius:32px;background:linear-gradient(145deg,#8b5cf6,#a78bfa);display:flex;align-items:center;justify-content:center;margin-bottom:28px;box-shadow:0 16px 48px rgba(139,92,246,0.28);">
           <span class="mi" style="font-size:54px;color:white;">download</span>
         </div>
@@ -950,7 +951,7 @@ display: flex; align-items: center; gap: 12px;
         <div style="font-size:14px;color:#6b7280;line-height:1.9;font-family:'Noto Sans JP',sans-serif;">共有<span class="mi" style="font-size:14px;color:6b7280;">ios_share</span>からホーム画面に追加<span class="mi2" style="font-size:14px;color:6b7280;">add_box</span>でより便利に利用できます。</div>
       </div>
       <!-- Slide 5 -->
-      <div style="width:25%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 36px 0;text-align:center;">
+      <div style="width:20%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 36px 0;text-align:center;">
         <div style="width:116px;height:116px;border-radius:32px;background:linear-gradient(145deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;margin-bottom:28px;box-shadow:0 16px 48px rgba(245,158,11,0.28);">
           <span class="mi" style="font-size:54px;color:white;">rocket_launch</span>
         </div>
@@ -1161,13 +1162,13 @@ display: flex; align-items: center; gap: 12px;
 <div class="view" id="view-log">
   <div class="log-wrap">
     <div style="display:flex;align-items:center;gap:10px;font-size:22px;font-weight:700;letter-spacing:0.5px;margin-bottom:4px;">
-      <span class="mi" style="font-size:26px;color:var(--text)">list_alt</span>履歴
+      <span class="mi" style="font-size:26px;color:var(--text-primary)">list_alt</span>履歴
     </div>
     <div style="font-size:11px;color:var(--text-muted);margin-bottom:26px;">JSONバックアップは定期的にとることをおすすめします</div>
     <div class="export-btns" style="flex-direction:column;">
       <button class="export-btn" style="width:100%;flex:none;" onclick="exportJSON()"><span class="mi mi-18">save</span> JSONバックアップ</button>
       <div style="display:flex;gap:8px;">
-        <button class="export-btn" onclick="openSendLog()"><span class="mi mi-18">upload</span> ログ送信</button>
+        <button class="export-btn" onclick="openSendLog()"><span class="mi mi-18">upload</span> TXT出力</button>
         <button class="export-btn" onclick="exportCSV()"><span class="mi mi-18">table_chart</span> CSV出力</button>
       </div>
     </div>
@@ -1316,11 +1317,16 @@ display: flex; align-items: center; gap: 12px;
 
 <div class="overlay" id="overlay">
   <div class="modal" id="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-header">
-      <div class="modal-title" id="modalTitle">授業名</div>
-      <div class="modal-sub" id="modalSub">教員 / 教室</div>
-    </div>
+
+    <div class="modal-header" style="padding:12px 20px 16px;border-bottom:none;">
+  <button onclick="closeModal()" style="border:none;background:none;cursor:pointer;color:#1a1d23;display:flex;align-items:center;padding:0;margin-bottom:12px;">
+    <span class="mi mi-22">arrow_back_ios</span>
+  </button>
+  <div style="padding:20px 0; border-bottom: 1px solid var(--border); ">
+    <div class="modal-title" id="modalTitle">授業名</div>
+    <div class="modal-sub" id="modalSub">教員 / 教室</div>
+  </div>
+</div>
     <div class="modal-body">
       <div class="section-label">出席を記録</div>
       <div class="record-row">
@@ -1666,22 +1672,23 @@ const COLOR_VARS = [
   { key: '--present',        label: '出席カラー',          sub: '出席チップ・グラフ' },
   { key: '--late',           label: '遅刻カラー',          sub: '遅刻チップ・グラフ' },
   { key: '--absent',         label: '欠席カラー',          sub: '欠席チップ・グラフ' },
-  { key: '--accent',         label: 'アクセント',          sub: 'フォーカス枠など' },
   { key: '--text-primary',   label: '文字色（メイン）',   sub: '' },
   { key: '--text-secondary', label: '文字色（サブ）',     sub: '' },
+    { key: '--border', label: '枠線色',     sub: '' },
 ];
 
 const DEFAULT_COLORS = {
-  '--brand':          '#DC4848',
-  '--header-text':    '#ffffff',
-  '--bg':             '#f8f9fb',
+  '--brand':          '#9b0041',
+  '--brandbar':       '#ffffff',
+  '--header-text':    '#9b0041',
+  '--bg':             '#ffffff',
   '--surface':        '#ffffff',
-  '--present':        '#10b981',
-  '--late':           '#f59e0b',
-  '--absent':         '#ef4444',
-  '--accent':         '#DC4848',
+  '--present':        '#1067b9',
+  '--late':           '#7d40b6',
+  '--absent':         '#d10158',
+  '--accent':         '#9b0041',
   '--text-primary':   '#1a1d23',
-  '--text-secondary': '#6b7280',
+  '--text-secondary': '#7f7f7f',
 };
 
 // ─── STORAGE HELPERS ───
@@ -1980,6 +1987,27 @@ function etaText(cls) {
 
 // ─── TIMETABLE ───
 // ─── 正の字ピクセルアート ───
+
+function updateSeijiPreview() {
+  const brandHex = getBrandHex();
+  const limit = 5;
+  const absent = 2, late = 1;
+
+  const ps = document.getElementById('previewSeiji');
+  const pp = document.getElementById('previewSimple');
+  if (ps) ps.innerHTML = renderSeijiSVG(absent, late, limit, brandHex);
+  if (pp) pp.innerHTML = renderSimpleSVG(absent, late, limit, brandHex);
+
+  const mode = getSetting('seijiMode', 'simple');
+  document.querySelectorAll('input[name="seijiMode"]').forEach(r => {
+    r.checked = r.value === mode;
+    const preview = r.closest('label').querySelector('[id^="preview"]');
+    if (preview) {
+      preview.style.borderColor = r.value === mode ? brandHex : 'var(--border)';
+    }
+  });
+}
+
 const SEIJI_STROKES = [
   [[0,0],[0,1],[0,2],[0,3],[0,4]],
   [[1,2],[2,2],[3,2],[4,2]],
@@ -2047,12 +2075,48 @@ function renderSeijiSVG(absent, late, limit, accentColor) {
   return `<svg width="${totalW}" height="${SEIJI_CHAR_H}" style="display:block">${rects}</svg>`;
 }
 
+function renderSimpleSVG(absent, late, limit, accentColor) {
+  const score = absent + late * 0.5;
+  const total = Math.ceil(score); // 表示するドット数（遅刻は半分）
+  if (limit === 0) return '';
+
+  const DOT = 6; // 2x2 → 1ドット=6px（パディング込み）
+  const GAP = 2;
+  const COLS = 5;
+  const rows = Math.max(2, Math.ceil(limit / COLS));
+  const w = COLS * DOT + (COLS - 1) * GAP;
+  const h = rows * DOT + (rows - 1) * GAP;
+
+  let rects = '';
+  for (let i = 0; i < limit; i++) {
+    const col = i % COLS;
+    const row = Math.floor(i / COLS);
+    const x = col * (DOT + GAP);
+    const y = row * (DOT + GAP);
+
+    const filled = i < Math.floor(score); // 完全に塗る
+    const half   = !filled && (i === Math.floor(score)) && (score % 1 === 0.5); // 遅刻（半分）
+
+    if (filled) {
+      rects += `<rect x="${x}" y="${y}" width="${DOT}" height="${DOT}" fill="${accentColor}" rx="1"/>`;
+    } else if (half) {
+      // 左半分アクセント、右半分グレー
+      rects += `<rect x="${x}" y="${y}" width="${DOT/2}" height="${DOT}" fill="${accentColor}" rx="1"/>`;
+      rects += `<rect x="${x + DOT/2}" y="${y}" width="${DOT/2}" height="${DOT}" fill="#d1d5db" rx="1"/>`;
+    } else {
+      rects += `<rect x="${x}" y="${y}" width="${DOT}" height="${DOT}" fill="#d1d5db" rx="1"/>`;
+    }
+  }
+
+  return `<svg width="${w}" height="${h}" style="display:block">${rects}</svg>`;
+}
+
 const CELL_ITEMS_DEFAULT = [
   { key: 'teacher', label: '担当教員' },
   { key: 'room',    label: '教室' },
-  { key: 'total',   label: '全回数' },
-  { key: 'seiji',   label: '正の字' },
-  { key: 'stats',   label: '出欠数字' },
+  { key: 'total',   label: '全授業回数' },
+  { key: 'seiji',   label: '欠席アイコン' },
+  { key: 'stats',   label: '出欠情報' },
 ];
 
 function getCellItemOrder() {
@@ -2167,29 +2231,39 @@ const cntP = merged.p, cntL = merged.l, cntA = merged.a, cntN = merged.n;       
           const alertedClass = alertedIds.has(cls.id) ? ' alerted' : '';
           const brandHex = getBrandHex();
 const seijiLimit = Math.floor(getClassTotal(cls.id) / 3);
-const seijiSVG = renderSeijiSVG(cntA, cntL, seijiLimit, brandHex);
+const seijiMode = getSetting('seijiMode', 'simple');
+const seijiSVG = seijiMode === 'simple'
+  ? renderSimpleSVG(cntA, cntL, seijiLimit, brandHex)
+  : renderSeijiSVG(cntA, cntL, seijiLimit, brandHex);
 
           const cntAClass = cntA > 0 ? 'stat-num a-nonzero' : 'stat-num';
-const showTeacher = getSetting('cellShow_teacher', true);
-const showRoom    = getSetting('cellShow_room', true);
-const showTotal   = getSetting('cellShow_total', true);
-const showSeiji   = getSetting('cellShow_seiji', true);
-const showStats   = getSetting('cellShow_stats', true);
+const order = getCellItemOrder();
+const showMap = {
+  teacher: getSetting('cellShow_teacher', true),
+  room:    getSetting('cellShow_room', true),
+  total:   getSetting('cellShow_total', true),
+  seiji:   getSetting('cellShow_seiji', true),
+  stats:   getSetting('cellShow_stats', true),
+};
 
-cell.innerHTML = `
-  <div>
-    <div class="cell-name${alertedClass}">${cls.name}</div>
-    ${showTeacher ? `<div class="cell-teacher">${cls.teacher}</div>` : ''}
-    ${showRoom    ? `<div class="cell-room">${cls.room}</div>` : ''}
-    ${showTotal   ? `<div class="cell-total">全${getClassTotal(cls.id)}回</div>` : ''}
-  </div>
-  ${showSeiji ? `<div style="margin:8px 0">${seijiSVG}</div>` : ''}
-  ${showStats ? `<div class="cell-stats">
+const cellParts = order.map(key => {
+  if (!showMap[key]) return '';
+  if (key === 'teacher') return `<div class="cell-teacher">${cls.teacher}</div>`;
+  if (key === 'room')    return `<div class="cell-room">${cls.room}</div>`;
+  if (key === 'total')   return `<div class="cell-total">全${getClassTotal(cls.id)}回</div>`;
+  if (key === 'seiji')   return `<div style="margin:8px 0">${seijiSVG}</div>`;
+  if (key === 'stats')   return `<div class="cell-stats">
     <span class="stat-num p">${cntP}</span>
     <span class="stat-num l">${cntL}</span>
     <span class="stat-num a">${cntA}</span>
     <span class="stat-num">${cntN}</span>
-  </div>` : ''}`;
+  </div>`;
+  return '';
+}).join('');
+
+cell.innerHTML = `
+  <div class="cell-name${alertedClass}">${cls.name}</div>
+  ${cellParts}`;
             
           cell.addEventListener('click', () => openModal(cls.id));
         }
@@ -2326,8 +2400,32 @@ const SUB_SETTING_CONTENTS = {
     </div>
     <div class="dash-section-title">時間割セルの表示項目</div>
     <div class="settings-section">
+      
       <div id="cellItemList"></div>
     </div>
+    <div class="dash-section-title">欠席数アイコンのスタイル</div>
+<div class="settings-section">
+  <div class="settings-row" style="flex-direction:column;align-items:flex-start;gap:12px;">
+    <div style="display:flex;gap:24px;width:100%;">
+      
+      <label style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;">
+        <div id="previewSimple" style="padding:8px;background:var(--bg);border-radius:8px;border:2px solid var(--border);min-height:32px;display:flex;align-items:center;justify-content:center;width:100%;"></div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:13px;">
+          <input type="radio" style="display:none" name="seijiMode" value="simple" onchange="saveSetting('seijiMode','simple');buildTimetable();updateSeijiPreview();">
+          simple
+        </div>
+      </label>
+
+      <label style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;">
+        <div id="previewSeiji" style="padding:8px;background:var(--bg);border-radius:8px;border:2px solid var(--border);min-height:32px;display:flex;align-items:center;justify-content:center;width:100%;"></div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:13px;">
+          <input type="radio" style="display:none" name="seijiMode" value="seiji" onchange="saveSetting('seijiMode','seiji');buildTimetable();updateSeijiPreview();">
+          kanji
+        </div>
+      </label>
+    </div>
+  </div>
+</div>
     </div>`
   },
   'data': {
@@ -2391,7 +2489,7 @@ function openSubSetting(key) {
   const cnEl = document.getElementById('settingClassName');
   if (cnEl) cnEl.value = getClassName();
   if (key === 'no-attendance') renderNoAttSubjectList();
-  if (key === 'style') { renderColorThemeUI(); renderCellItemList(); }
+  if (key === 'style') { renderColorThemeUI(); renderCellItemList(); updateSeijiPreview(); }
   const splashEl = document.getElementById('toggleSplash');
 if (splashEl) splashEl.checked = getSetting('showSplash', true);
 ['cellShowTeacher','cellShowRoom','cellShowTotal','cellShowSeiji','cellShowStats'].forEach(k => {
@@ -2820,7 +2918,7 @@ const presentHex = cssColorToHex(getComputedStyle(document.documentElement).getP
              outlier:!!r.outlier, status:r.status };
   });
   canvas.style.width='100%'; canvas.style.height='140px';
-  const W=canvas.parentElement.clientWidth-24;
+  const W=canvas.parentElement.clientWidth;
   canvas.width=W*dpr; canvas.height=140*dpr;
   ctx.scale(dpr,dpr);
   const w=W, h=140; ctx.clearRect(0,0,w,h);
@@ -3034,6 +3132,11 @@ function getNextClass() {
 
 // ─── CALENDAR ───
 function renderCalendar() {
+
+  const presentHex = cssColorToHex(getComputedStyle(document.documentElement).getPropertyValue('--present').trim()) || '#10b981';
+const lateHex    = cssColorToHex(getComputedStyle(document.documentElement).getPropertyValue('--late').trim())    || '#f59e0b';
+const absentHex  = cssColorToHex(getComputedStyle(document.documentElement).getPropertyValue('--absent').trim())  || '#ef4444';
+
   document.getElementById('calTitle').textContent = `${calYear}年 ${calMonth+1}月`;
   const grid=document.getElementById('calGrid');
   const dayLabels=['日','月','火','水','木','金','土'];
@@ -3051,9 +3154,9 @@ function renderCalendar() {
     const isToday=todayObj.getFullYear()===calYear&&todayObj.getMonth()===calMonth&&todayObj.getDate()===d;
     const recs=allRecords[dateStr]||[];
     let dotHtml='';
-    if(recs.includes('present')) dotHtml+=`<div class="cal-dot" style="background:#10b981;left:35%"></div>`;
-    if(recs.includes('late'))    dotHtml+=`<div class="cal-dot" style="background:#f59e0b;left:50%"></div>`;
-    if(recs.includes('absent'))  dotHtml+=`<div class="cal-dot" style="background:#ef4444;left:65%"></div>`;
+    if(recs.includes('present')) dotHtml+=`<div class="cal-dot" style="background:${presentHex};left:35%"></div>`;
+if(recs.includes('late'))    dotHtml+=`<div class="cal-dot" style="background:${lateHex};left:50%"></div>`;
+if(recs.includes('absent'))  dotHtml+=`<div class="cal-dot" style="background:${absentHex};left:65%"></div>`;
     html+=`<div class="cal-cell${isToday?' today':''}">${d}${dotHtml}</div>`;
   }
   grid.innerHTML=html;
