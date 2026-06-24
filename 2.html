@@ -218,7 +218,7 @@ opacity: 1; pointer-events: all; transform: scale(1);
 
 .header-info-bar {
   display: flex; align-items: center; justify-content: space-between;
-  margin: 8px 12px 10px;
+  margin: 8px 10px 10px;
   padding: 10px 16px;
   gap: 12px;
   background: rgba(255,255,255,0.45);
@@ -276,7 +276,7 @@ border: none; background: none; width: 100%; text-align: left;
 .drawer-version { font-size: 10px; color: var(--text-muted); text-align: center; }
 
 /* ─── TIMETABLE ─── */
-.timetable-wrap { padding: 110px 10px 100px; }
+.timetable-wrap { padding: 140px 10px 100px; }
 .day-labels { display: grid; grid-template-columns: repeat(5,1fr); gap: 4px; margin-bottom: 6px; padding: 0 2px; }
 .day-label { text-align: center; font-size: 13px; font-weight: 600; color: var(--text-secondary); padding: 6px 0; background: var(--surface); border-radius: var(--radius-sm); box-shadow: 1px 2px 2px rgba(0,0,0,0.07); border: 1.5px solid transparent; }
 .day-label.today { color: var(--brand); background: var(--current-light); border-color: var(--brand); }
@@ -319,6 +319,30 @@ box-shadow: 1px 2px 2px rgba(0,0,0,0.07);
 .eta-chip.now { background: var(--present-light); color: var(--present); }
 .no-att-chip { font-size: 7.5px; font-weight: 600; background: #f3f4f6; color: #9ca3af; border-radius: 4px; padding: 1px 5px; line-height: 1.5; }
 
+.tl-eta-carousel {
+  position: relative; overflow: hidden; border-radius: 14px;
+}
+.tl-eta-carousel-track {
+  display: flex; transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
+}
+.tl-eta-carousel-track .tl-eta-panel {
+  min-width: 100%; flex-shrink: 0; border-radius: 14px;
+  box-sizing: border-box;
+}
+.tl-eta-nav {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 28px; height: 28px; border-radius: 50%;
+  border: none; background: var(--surface);
+  box-shadow: var(--shadow-sm); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-secondary); z-index: 2;
+  opacity: 0.85;
+}
+.tl-eta-nav:active { opacity: 0.6; }
+.tl-eta-nav-prev { left: 6px; }
+.tl-eta-nav-next { right: 6px; }
+.tl-eta-nav.hidden { opacity: 0; pointer-events: none; }
+
 /* ─── BOTTOM NAV ─── */
 .bottom-nav {
   position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
@@ -357,8 +381,8 @@ box-shadow: 1px 2px 2px rgba(0,0,0,0.07);
 @keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
 
 /* ─── DASHBOARD ─── */
-.dashboard-wrap { padding: 16px 14px 100px; }
-.dash-section-title { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; margin-top: 20px; }
+.dashboard-wrap { padding: 140px 14px 100px; }
+.dash-section-title { font-size: 12px; font-weight: 500; color: var(--text); text-transform: uppercase; letter-spacing: 0px; margin-bottom: 10px; margin-top: 30px; }
 .dash-section-title:first-child { margin-top: 0; }
 .overview-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 4px; }
 .ov-card { background: var(--surface); border-radius: var(--radius); padding: 14px 10px; text-align: center; box-shadow: var(--shadow-sm); border: 1px solid var(--border); }
@@ -394,7 +418,7 @@ box-shadow: 1px 2px 2px rgba(0,0,0,0.07);
 .cal-dot { position: absolute; bottom: 2px; left: 50%; transform: translateX(-50%); width: 4px; height: 4px; border-radius: 50%; }
 
 /* ─── SETTINGS ─── */
-.settings-wrap { padding: 16px 14px 100px; }
+.settings-wrap { padding: 140px 14px 100px; }
 .settings-section { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; box-shadow: var(--shadow-sm); margin-bottom: 20px; }
 .settings-row {
 display: flex; align-items: center; justify-content: space-between;
@@ -424,6 +448,46 @@ background: var(--bg); color: var(--text-primary);
 outline: none; width: 150px;
 }
 .name-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
+
+/* ─── SETTINGS NAV ─── */
+.settings-nav-row {
+  display: flex; align-items: center; gap: 14px;
+  padding: 11px 16px; border: none; background: none;
+  width: 100%; text-align: left; cursor: pointer;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+  font-family: inherit;
+}
+.settings-nav-row:last-child { border-bottom: none; }
+.settings-nav-row:active { background: var(--bg); }
+.settings-nav-icon {
+  width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.settings-nav-label {
+  flex: 1; font-size: 14px; font-weight: 500; color: var(--text-primary);
+}
+.settings-nav-chevron { font-size: 20px; color: var(--text-muted); }
+
+/* ─── SETTINGS SUB ─── */
+.settings-sub-header {
+  position: sticky; top: 140px; z-index: 10;
+  display: flex; align-items: center;
+  padding: 12px 16px 8px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+.settings-back-btn {
+  display: flex; align-items: center; gap: 2px;
+  border: none; background: none; cursor: pointer;
+  font-size: 14px; font-weight: 500; color: var(--brand);
+  font-family: inherit; padding: 4px 8px 4px 0;
+}
+.settings-sub-title {
+  flex: 1; text-align: center;
+  font-size: 15px; font-weight: 700;
+  margin-right: 60px;
+}
 
 /* ─── COLOR THEME CUSTOMIZER ─── */
 .color-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
@@ -485,7 +549,7 @@ transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
 .modal-title { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; }
 .modal-sub { font-size: 13px; color: var(--text-secondary); margin-top: 3px; }
 .modal-body { padding: 16px 20px; }
-.section-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
+.section-label { font-size: 15px; font-weight: 300; color: var(--text); text-transform: uppercase; letter-spacing: 0px; margin-bottom: 8px; }
 
 .memo-textarea {
 width: 90%; min-height: 72px; border: 1px solid var(--border); border-radius: var(--radius-sm);
@@ -644,7 +708,7 @@ display: flex; align-items: center; gap: 3px;
 .edit-delete-btn:active { opacity: 0.7; }
 
 /* ─── LOG ─── */
-.log-wrap { padding: 14px 14px 100px; }
+.log-wrap { padding: 140px 14px 100px; }
 .export-btns { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
 .export-btn { color:var(--brand);
 flex: 1; min-width: 100px; border: 1px solid var(--border); background: var(--surface);
@@ -739,20 +803,24 @@ display: flex; align-items: center; gap: 12px;
 .ncb-time { font-family: 'Roboto Condensed', monospace; font-size: 13px; font-weight: 700; color: var(--brand); }
 
 /* ─── TIMELINE (今日の予定) ─── */
-.timeline-wrap { padding: 14px 0 100px; }
-.tl-day-head { display:flex; align-items:center; justify-content:space-between; gap:12px; padding: 4px 16px 16px; }
-.tl-title { font-size:17px; font-weight:700; letter-spacing:-0.3px; color:var(--text-primary); white-space:nowrap; }
-.tl-eta-panel { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:8px 12px 9px; box-shadow:var(--shadow-sm); }
-.tl-eta-head { font-size:10px; font-weight:700; color:var(--text-muted); letter-spacing:0.3px; margin-bottom:6px; display:flex; align-items:baseline; gap:6px; white-space:nowrap; }
-.tl-eta-cls { font-size:10px; font-weight:700; color:var(--brand); max-width:96px; overflow:hidden; text-overflow:ellipsis; }
-.tl-eta-row { display:flex; gap:10px; }
-.tl-eta-col { display:flex; flex-direction:column; align-items:center; gap:3px; min-width:52px; }
-.tl-eta-lbl { font-size:9px; font-weight:600; color:var(--text-muted); }
-.tl-eta-val { font-family:'Roboto Condensed',monospace; font-size:14px; font-weight:700; color:var(--text-secondary); letter-spacing:0.3px; line-height:1; }
+.timeline-wrap { padding: 140px 0 100px; }
+.tl-day-head { padding: 4px 16px 16px; }
+.tl-title { font-size:17px; font-weight:700; letter-spacing:-0.3px; color:var(--text-primary); margin-bottom:10px; }.tl-eta-panel { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:12px 16px; box-shadow:var(--shadow-sm); width:100%; }
+.tl-eta-head { font-size:10px; font-weight:500; color:var(--text); letter-spacing:0.3px; margin-bottom:10px; display:flex; align-items:center; gap:8px; }
+.tl-eta-cls { font-size:11px; font-weight:700; color:var(--brand); background:var(--current-light); border-radius:6px; padding:2px 8px; }
+.tl-eta-row { display:flex; align-items:stretch; }
+.tl-eta-col { display:flex; flex-direction:column; align-items:center; gap:4px; flex:1; padding:4px 0; }
+.tl-eta-col:not(:last-child) { border-right:1px solid var(--border); }
+.tl-eta-lbl { font-size:9px; font-weight:500; color:var(--text-muted); }
+.tl-eta-val { font-family:'Roboto Condensed',monospace; font-size:18px; font-weight:500; color:var(--text); letter-spacing:0.3px; line-height:1; }
 .tl-eta-val.accent { color:var(--brand); }
 .tl-eta-val.passed { color:var(--text-muted); opacity:0.55; }
-.tl-eta-empty { font-size:11px; color:var(--text-muted); padding:4px 2px; white-space:nowrap; }
-.tl-track { position:relative; margin:0 14px; }
+.tl-eta-empty { font-size:11px; color:var(--text-muted); padding:4px 2px; }.tl-track { position:relative; margin:0 14px; }
+.tl-eta-sticky {
+  position: sticky; top: 140px; z-index: 10;
+  padding: 0 10px 12px;
+}
+.tl-day-head { padding: 4px 16px 16px; }
 .tl-hourline { position:absolute; left:0; right:0; height:1px; background:var(--border); }
 .tl-hourlabel { position:absolute; left:0; width:38px; text-align:right; font-family:'Roboto Condensed',monospace; font-size:11px; color:var(--text-muted); transform:translateY(-50%); }
 .tl-axis { position:absolute; top:0; bottom:0; width:6px; background:var(--border); }
@@ -1056,164 +1124,116 @@ display: flex; align-items: center; gap: 12px;
 </div>
 
 <!-- ALERTS VIEW -->
-
+ <!-- ALERTS VIEW -->
 <div class="view" id="view-alerts">
   <div class="settings-wrap">
     <div class="dash-section-title">アラート</div>
     <div class="settings-section">
-  <div class="settings-row">
-    <div class="settings-row-left">
-      <div class="settings-row-title">欠席回数アラート</div>
-      <div class="settings-row-sub">休める回数まであと何回でアラート</div>
+      <div class="settings-row">
+        <div class="settings-row-left">
+          <div class="settings-row-title">欠席回数アラート</div>
+          <div class="settings-row-sub">休める回数まであと何回でアラート</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <label class="toggle">
+            <input type="checkbox" id="absAlertOn" checked onchange="saveSetting('absAlertOn',this.checked); renderAlerts();">
+            <span class="toggle-slider"></span>
+          </label>
+          <input class="threshold-input" type="number" id="absThresh" min="0" max="10" value="2" oninput="saveSetting('absThresh', this.value); renderAlerts();">
+          <span class="threshold-unit">回前</span>
+        </div>
+      </div>
+      <div class="settings-row">
+        <div class="settings-row-left">
+          <div class="settings-row-title">出席率警告ライン</div>
+          <div class="settings-row-sub">授業回数ベースの出席率</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <label class="toggle">
+            <input type="checkbox" id="rateAlertOn" checked onchange="saveSetting('rateAlertOn',this.checked); renderAlerts();">
+            <span class="toggle-slider"></span>
+          </label>
+          <input class="threshold-input" type="number" id="rateThresh" min="0" max="100" value="60" oninput="saveSetting('rateThresh', this.value); renderAlerts();">
+          <span class="threshold-unit">%</span>
+        </div>
+      </div>
     </div>
-    <div style="display:flex;align-items:center;gap:6px">
-      <label class="toggle">
-        <input type="checkbox" id="absAlertOn" checked onchange="saveSetting('absAlertOn',this.checked); renderAlerts();">
-        <span class="toggle-slider"></span>
-      </label>
-      <input class="threshold-input" type="number" id="absThresh" min="0" max="10" value="2" oninput="saveSetting('absThresh', this.value); renderAlerts();">
-      <span class="threshold-unit">回前</span>
-    </div>
-  </div>
-  <div class="settings-row">
-    <div class="settings-row-left">
-      <div class="settings-row-title">出席率警告ライン</div>
-      <div class="settings-row-sub">授業回数ベースの出席率</div>
-    </div>
-    <div style="display:flex;align-items:center;gap:6px">
-      <label class="toggle">
-        <input type="checkbox" id="rateAlertOn" checked onchange="saveSetting('rateAlertOn',this.checked); renderAlerts();">
-        <span class="toggle-slider"></span>
-      </label>
-      <input class="threshold-input" type="number" id="rateThresh" min="0" max="100" value="60" oninput="saveSetting('rateThresh', this.value); renderAlerts();">
-      <span class="threshold-unit">%</span>
-    </div>
-  </div>
-</div>
-
     <div class="dash-section-title">現在のアラート</div>
     <div id="alertList"></div>
   </div>
 </div>
 
-<!-- SETTINGS VIEW -->
-
 <div class="view" id="view-settings">
-  <div class="settings-wrap">
-    <div class="dash-section-title">プロフィール</div>
-    <div class="settings-section">
-      <div class="settings-row">
-        <div class="settings-row-left">
-          <div class="settings-row-title">名前</div>
-          <div class="settings-row-sub">ログ送信時に使用</div>
-        </div>
-        <input class="name-input" type="text" id="settingName" placeholder="出席 花子" oninput="saveSetting('name',this.value)">
+  <div id="settings-main">
+    <div class="settings-wrap" >
+      <div class="settings-section">
+
+        <button class="settings-nav-row" onclick="openSubSetting('profile')">
+          <div class="settings-nav-icon" style="background:linear-gradient(145deg,#5856d6,#7c7aff)">
+            <span class="mi" style="font-size:20px;color:white">person</span>
+          </div>
+          <div class="settings-nav-label">プロフィール</div>
+          <span class="mi settings-nav-chevron">chevron_right</span>
+        </button>
+
+        <button class="settings-nav-row" onclick="openSubSetting('timetable-edit')">
+          <div class="settings-nav-icon" style="background:linear-gradient(145deg,#34c759,#30d158)">
+            <span class="mi" style="font-size:20px;color:white">edit_calendar</span>
+          </div>
+          <div class="settings-nav-label">時間割の編集</div>
+          <span class="mi settings-nav-chevron">chevron_right</span>
+        </button>
+
+        <button class="settings-nav-row" onclick="openSubSetting('timetable-view')">
+          <div class="settings-nav-icon" style="background:linear-gradient(145deg,#007aff,#0a84ff)">
+            <span class="mi" style="font-size:20px;color:white">calendar_view_week</span>
+          </div>
+          <div class="settings-nav-label">時間割の表示</div>
+          <span class="mi settings-nav-chevron">chevron_right</span>
+        </button>
+
+        <button class="settings-nav-row" onclick="openSubSetting('no-attendance')">
+          <div class="settings-nav-icon" style="background:linear-gradient(145deg,#ff9500,#ff9f0a)">
+            <span class="mi" style="font-size:20px;color:white">event_busy</span>
+          </div>
+          <div class="settings-nav-label">出席を記録しない科目</div>
+          <span class="mi settings-nav-chevron">chevron_right</span>
+        </button>
+
+        <button class="settings-nav-row" onclick="openSubSetting('style')">
+          <div class="settings-nav-icon" style="background:linear-gradient(145deg,#ff2d55,#ff375f)">
+            <span class="mi" style="font-size:20px;color:white">palette</span>
+          </div>
+          <div class="settings-nav-label">スタイル</div>
+          <span class="mi settings-nav-chevron">chevron_right</span>
+        </button>
+
+        <button class="settings-nav-row" onclick="openSubSetting('data')">
+          <div class="settings-nav-icon" style="background:linear-gradient(145deg,#636366,#8e8e93)">
+            <span class="mi" style="font-size:20px;color:white">storage</span>
+          </div>
+          <div class="settings-nav-label">データの管理</div>
+          <span class="mi settings-nav-chevron">chevron_right</span>
+        </button>
+
       </div>
-      <div class="settings-row">
-        <div class="settings-row-left">
-          <div class="settings-row-title">学籍番号</div>
-        </div>
-        <input class="name-input" type="text" id="settingStudentId" placeholder="B235A000R" oninput="saveSetting('studentId',this.value)">
-      </div>
     </div>
+  </div>
 
-
-<div class="dash-section-title">時間割名</div>
-<div class="settings-section">
-  <div class="settings-row">
-    <div class="settings-row-left">
-      <div class="settings-row-title">時間割名</div>
-      <div class="settings-row-sub">ヘッダーやログに表示されます</div>
+  <!-- サブ画面共通コンテナ -->
+  <div id="settings-sub" style="display:none">
+    <div class="settings-sub-header">
+      <button class="settings-back-btn" onclick="closeSubSetting()">
+        <span class="mi mi-22">chevron_left</span>
+        <span>設定</span>
+      </button>
+      <div class="settings-sub-title" id="settingsSubTitle"></div>
     </div>
-    <input class="name-input" type="text" id="settingClassName" placeholder="M4F" oninput="saveClassName(this.value)">
+    <div class="settings-wrap" id="settingsSubBody"></div>
   </div>
 </div>
 
-<div class="dash-section-title">プリセット時間割</div>
-<div class="settings-section">
-  <div class="settings-row">
-    <div class="settings-row-left">
-      <div class="settings-row-title">プリセットを登録</div>
-      <div class="settings-row-sub">学年・学期を選んで時間割を上書き読込</div>
-    </div>
-    <button class="settings-btn" onclick="openPresetFromSettings()">
-      <span class="mi mi-18">calendar_month</span> 選択
-    </button>
-  </div>
-</div>
-
-<div class="dash-section-title">表示</div>
-<div class="settings-section">
-  <div class="settings-row">
-    <div class="settings-row-left">
-      <div class="settings-row-title">休講科目を薄く表示</div>
-      <div class="settings-row-sub">欠席でマークした科目をグレーアウト</div>
-    </div>
-    <label class="toggle">
-      <input type="checkbox" id="toggleFade" onchange="saveSetting('fadeAbsent',this.checked); buildTimetable()">
-      <span class="toggle-slider"></span>
-    </label>
-  </div>
-  <div class="settings-row">
-    <div class="settings-row-left">
-      <div class="settings-row-title">次の授業バナーを表示</div>
-    </div>
-    <label class="toggle">
-      <input type="checkbox" id="toggleNextClass" checked onchange="saveSetting('showNextClass',this.checked); renderDashboard()">
-      <span class="toggle-slider"></span>
-    </label>
-  </div>
-</div>
-
-<div class="dash-section-title">出席のない科目の登録</div>
-<div class="settings-section">
-  <div class="settings-row" style="border-bottom:1px solid var(--border);">
-    <div class="settings-row-left">
-      <div class="settings-row-title">出席のない科目</div>
-      <div class="settings-row-sub">オンにした科目はグレーアウト表示され、出席記録の対象外になります</div>
-    </div>
-  </div>
-  <div class="no-att-subject-list" id="noAttSubjectList"></div>
-</div>
-
-<div class="dash-section-title">カラーテーマ</div>
-<div class="settings-section">
-  <div id="colorThemeRows"></div>
-  <div class="settings-row" style="justify-content:center;border-top:1px solid var(--border);">
-    <button class="theme-reset-btn" onclick="resetTheme()">
-      <span class="mi mi-18">refresh</span> デフォルトに戻す
-    </button>
-  </div>
-</div>
-
-<div class="dash-section-title">データ管理</div>
-<div class="settings-section">
-  <div class="settings-row">
-    <div class="settings-row-left">
-      <div class="settings-row-title">JSONバックアップを保存</div>
-      <div class="settings-row-sub">全データをファイルとして書き出す</div>
-    </div>
-    <button class="settings-btn" onclick="exportJSON()"><span class="mi mi-18">download</span> 保存</button>
-  </div>
-  <div class="settings-row">
-    <div class="settings-row-left">
-      <div class="settings-row-title">バックアップから復元</div>
-      <div class="settings-row-sub">JSONファイルを読み込む</div>
-    </div>
-    <button class="settings-btn" onclick="importBackup()"><span class="mi mi-18">folder_open</span> 読込</button>
-  </div>
-  <div class="settings-row">
-    <div class="settings-row-left">
-      <div class="settings-row-title">全データをリセット</div>
-      <div class="settings-row-sub">出席記録をすべて削除</div>
-    </div>
-    <button class="settings-btn danger" onclick="resetAllData()"><span class="mi mi-18">delete</span> リセット</button>
-  </div>
-</div>
-
-
-  </div>
-</div>
+  
 
 <!-- BOTTOM NAV -->
 
@@ -2036,6 +2056,187 @@ const seijiSVG = renderSeijiSVG(cntA, cntL, seijiLimit, brandHex);
   });
 }
 
+const SUB_SETTING_CONTENTS = {
+  'profile': {
+    title: 'プロフィール',
+    html: () => `
+      <div class="dash-section-title">プロフィール</div>
+      <div class="settings-section">
+        <div class="settings-row">
+          <div class="settings-row-left">
+            <div class="settings-row-title">名前</div>
+            <div class="settings-row-sub">ログ送信時に使用</div>
+          </div>
+          <input class="name-input" type="text" id="settingName" placeholder="出席 花子" oninput="saveSetting('name',this.value)">
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-left">
+            <div class="settings-row-title">学籍番号</div>
+          </div>
+          <input class="name-input" type="text" id="settingStudentId" placeholder="B235A000R" oninput="saveSetting('studentId',this.value)">
+        </div>
+      </div>`
+  },
+  'timetable-edit': {
+    title: '時間割の編集',
+    html: () => `
+      <div class="dash-section-title">時間割</div>
+      <div class="settings-section">
+        <div class="settings-row">
+          <div class="settings-row-left">
+            <div class="settings-row-title">時間割名</div>
+            <div class="settings-row-sub">ヘッダーやログに表示されます</div>
+          </div>
+          <input class="name-input" type="text" id="settingClassName" placeholder="M4F" oninput="saveClassName(this.value)">
+        </div>
+      </div>
+      <div class="dash-section-title">プリセット</div>
+      <div class="settings-section">
+        <div class="settings-row">
+          <div class="settings-row-left">
+            <div class="settings-row-title">プリセットを登録</div>
+            <div class="settings-row-sub">学年・学期を選んで時間割を上書き読込</div>
+          </div>
+          <button class="settings-btn" onclick="openPresetFromSettings()">
+            <span class="mi mi-18">calendar_month</span> 選択
+          </button>
+        </div>
+      </div>
+      <div class="dash-section-title">編集</div>
+      <div class="settings-section">
+        <div class="settings-row">
+          <div class="settings-row-left">
+            <div class="settings-row-title">時間割を編集</div>
+            <div class="settings-row-sub">コマの追加・削除・変更</div>
+          </div>
+          <button class="settings-btn" onclick="openEditTimetable()">
+            <span class="mi mi-18">edit</span> 編集
+          </button>
+        </div>
+      </div>`
+  },
+  'timetable-view': {
+    title: '時間割の表示',
+    html: () => `
+      <div class="dash-section-title">表示</div>
+      <div class="settings-section">
+        <div class="settings-row">
+          <div class="settings-row-left">
+            <div class="settings-row-title">休講科目を薄く表示</div>
+            <div class="settings-row-sub">欠席でマークした科目をグレーアウト</div>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" id="toggleFade" onchange="saveSetting('fadeAbsent',this.checked); buildTimetable()">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-left">
+            <div class="settings-row-title">次の授業バナーを表示</div>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" id="toggleNextClass" checked onchange="saveSetting('showNextClass',this.checked); renderDashboard()">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>`
+  },
+  'no-attendance': {
+    title: '出席を記録しない科目',
+    html: () => `
+      <div class="dash-section-title">科目一覧</div>
+      <div class="settings-section">
+        <div class="settings-row" style="border-bottom:1px solid var(--border);">
+          <div class="settings-row-left">
+            <div class="settings-row-sub">オンにした科目はグレーアウト表示され、出席記録の対象外になります</div>
+          </div>
+        </div>
+        <div class="no-att-subject-list" id="noAttSubjectList"></div>
+      </div>`
+  },
+  'style': {
+    title: 'スタイル',
+    html: () => `
+      <div class="dash-section-title">カラーテーマ</div>
+      <div class="settings-section">
+        <div id="colorThemeRows"></div>
+        <div class="settings-row" style="justify-content:center;border-top:1px solid var(--border);">
+          <button class="theme-reset-btn" onclick="resetTheme()">
+            <span class="mi mi-18">refresh</span> デフォルトに戻す
+          </button>
+        </div>
+      </div>`
+  },
+  'data': {
+    title: 'データの管理',
+    html: () => `
+      <div class="dash-section-title">エクスポート</div>
+      <div class="settings-section">
+        <div class="settings-row">
+          <div class="settings-row-left">
+            <div class="settings-row-title">JSONバックアップを保存</div>
+            <div class="settings-row-sub">全データをファイルとして書き出す</div>
+          </div>
+          <button class="settings-btn" onclick="exportJSON()"><span class="mi mi-18">download</span> 保存</button>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-left">
+            <div class="settings-row-title">CSVエクスポート</div>
+          </div>
+          <button class="settings-btn" onclick="exportCSV()"><span class="mi mi-18">table_chart</span> 出力</button>
+        </div>
+      </div>
+      <div class="dash-section-title">インポート</div>
+      <div class="settings-section">
+        <div class="settings-row">
+          <div class="settings-row-left">
+            <div class="settings-row-title">バックアップから復元</div>
+            <div class="settings-row-sub">JSONファイルを読み込む</div>
+          </div>
+          <button class="settings-btn" onclick="importBackup()"><span class="mi mi-18">folder_open</span> 読込</button>
+        </div>
+      </div>
+      <div class="dash-section-title">リセット</div>
+      <div class="settings-section">
+        <div class="settings-row">
+          <div class="settings-row-left">
+            <div class="settings-row-title">全データをリセット</div>
+            <div class="settings-row-sub">出席記録をすべて削除</div>
+          </div>
+          <button class="settings-btn danger" onclick="resetAllData()"><span class="mi mi-18">delete</span> リセット</button>
+        </div>
+      </div>`
+  }
+};
+
+function openSubSetting(key) {
+  const conf = SUB_SETTING_CONTENTS[key];
+  if (!conf) return;
+  document.getElementById('settings-main').style.display = 'none';
+  document.getElementById('settings-sub').style.display = 'block';
+  document.getElementById('settingsSubTitle').textContent = conf.title;
+  document.getElementById('settingsSubBody').innerHTML = conf.html();
+  // 各サブ画面の初期値セット
+  const fadeEl = document.getElementById('toggleFade');
+  if (fadeEl) fadeEl.checked = getSetting('fadeAbsent', false);
+  const nextEl = document.getElementById('toggleNextClass');
+  if (nextEl) nextEl.checked = getSetting('showNextClass', true);
+  const nameEl = document.getElementById('settingName');
+  if (nameEl) nameEl.value = getSetting('name', '') || '';
+  const sidEl = document.getElementById('settingStudentId');
+  if (sidEl) sidEl.value = getSetting('studentId', '') || '';
+  const cnEl = document.getElementById('settingClassName');
+  if (cnEl) cnEl.value = getClassName();
+  if (key === 'no-attendance') renderNoAttSubjectList();
+  if (key === 'style') renderColorThemeUI();
+}
+
+function closeSubSetting() {
+  document.getElementById('settings-main').style.display = 'block';
+  document.getElementById('settings-sub').style.display = 'none';
+}
+
+
 // ─── TIMELINE (今日の予定) ───
 const TL_SCALE = 1.5, TL_AXIS_X = 52, TL_CARD_LEFT = 96;
 function fmtMin(m){ m=Math.round(m); const h=Math.floor(m/60), mm=((m%60)+60)%60; return String(h).padStart(2,'0')+':'+String(mm).padStart(2,'0'); }
@@ -2073,48 +2274,109 @@ function fmtCountdown(sec) {
 }
 // ヘッダーのカウントダウンを毎秒更新
 function updateTlCountdown() {
-  const panel = document.getElementById('tlEtaPanel');
-  if (!panel) return;
   const n = new Date();
   const nowSec = n.getHours()*3600 + n.getMinutes()*60 + n.getSeconds();
-  [['tlEtaEarly','early'],['tlEtaAvg','avg'],['tlEtaLate','late']].forEach(([id,key])=>{
-    const el = document.getElementById(id);
-    if (!el) return;
-    const txt = fmtCountdown(parseInt(panel.dataset[key]) - nowSec);
-    if (txt === null) { el.textContent = '済'; el.classList.add('passed'); }
-    else { el.textContent = txt; el.classList.remove('passed'); }
+  document.querySelectorAll('[id^="tlEtaPanel-"]').forEach(panel => {
+    const idx = panel.dataset.idx;
+    if (!panel.dataset.early) return;
+    ['Early','Avg','Late'].forEach(k => {
+      const el = document.getElementById(`tlEta${k}-${idx}`);
+      if (!el) return;
+      const key = k.toLowerCase();
+      const txt = fmtCountdown(parseInt(panel.dataset[key]) - nowSec);
+      if (txt === null) { el.textContent = '済'; el.classList.add('passed'); }
+      else { el.textContent = txt; el.classList.remove('passed'); }
+    });
   });
+}
+
+function etaCarouselPrev() {
+  const c = document.getElementById('tlEtaCarousel');
+  if (!c) return;
+  const cur = parseInt(c.dataset.current);
+  if (cur <= 0) return;
+  etaCarouselGo(cur - 1);
+}
+
+function etaCarouselNext() {
+  const c = document.getElementById('tlEtaCarousel');
+  if (!c) return;
+  const cur = parseInt(c.dataset.current);
+  const total = parseInt(c.dataset.total);
+  if (cur >= total - 1) return;
+  etaCarouselGo(cur + 1);
+}
+
+function etaCarouselGo(idx) {
+  const c = document.getElementById('tlEtaCarousel');
+  const track = document.getElementById('tlEtaTrack');
+  if (!c || !track) return;
+  const total = parseInt(c.dataset.total);
+  c.dataset.current = idx;
+  track.style.transform = `translateX(-${idx * 100}%)`;
+  const prev = document.getElementById('tlEtaPrev');
+  const next = document.getElementById('tlEtaNext');
+  if (prev) prev.classList.toggle('hidden', idx === 0);
+  if (next) next.classList.toggle('hidden', idx === total - 1);
 }
 
 function renderTimeline(doScroll){
   const wrap = document.getElementById('timelineWrap');
   const CLASSES = getClasses();
   const today = jsDay();
+  const todayTargets = getClasses()
+    .filter(c => c.day === today && !isNoAttendance(c.id))
+    .sort((a,b) => a.period - b.period);
   const target = getNextAttendanceTarget();
-  const tt = target ? attendanceTargetTimes(target) : null;
-  let countdownHtml;
-  if (target && tt) {
-    countdownHtml = `
-      <div class="tl-eta-panel" id="tlEtaPanel"
-           data-early="${Math.round(tt.earliest*60)}"
-           data-avg="${Math.round(tt.avg*60)}"
-           data-late="${Math.round(tt.latest*60)}">
-        <div class="tl-eta-head">次の出席まで<span class="tl-eta-cls">${escHtml(target.name)}</span></div>
-        <div class="tl-eta-row">
-          <div class="tl-eta-col"><div class="tl-eta-lbl">最早</div><div class="tl-eta-val" id="tlEtaEarly">--:--</div></div>
-          <div class="tl-eta-col"><div class="tl-eta-lbl">平均</div><div class="tl-eta-val accent" id="tlEtaAvg">--:--</div></div>
-          <div class="tl-eta-col"><div class="tl-eta-lbl">最遅</div><div class="tl-eta-val" id="tlEtaLate">--:--</div></div>
-        </div>
-      </div>`;
-  } else if (target) {
-    countdownHtml = `<div class="tl-eta-panel"><div class="tl-eta-head">次の出席まで<span class="tl-eta-cls">${escHtml(target.name)}</span></div><div class="tl-eta-empty">記録なし</div></div>`;
+  const targetIdx = target ? todayTargets.findIndex(c => c.id === target.id) : 0;
+
+  let etaPanelHtml;
+  if (todayTargets.length > 0) {
+    etaPanelHtml = todayTargets.map((cls, idx) => {
+      const tt = attendanceTargetTimes(cls);
+      const isNext = target && cls.id === target.id;
+      if (tt) {
+        return `<div class="tl-eta-panel" id="tlEtaPanel-${idx}"
+             data-early="${Math.round(tt.earliest*60)}"
+             data-avg="${Math.round(tt.avg*60)}"
+             data-late="${Math.round(tt.latest*60)}"
+             data-idx="${idx}">
+          <div class="tl-eta-head">${PERIODS[cls.period-1].label}の出席まで<span class="tl-eta-cls">${escHtml(cls.name)}</span></div>
+          <div class="tl-eta-row">
+            <div class="tl-eta-col"><div class="tl-eta-lbl">最早</div><div class="tl-eta-val" id="tlEtaEarly-${idx}">--:--</div></div>
+            <div class="tl-eta-col"><div class="tl-eta-lbl">平均</div><div class="tl-eta-val accent" id="tlEtaAvg-${idx}">--:--</div></div>
+            <div class="tl-eta-col"><div class="tl-eta-lbl">最遅</div><div class="tl-eta-val" id="tlEtaLate-${idx}">--:--</div></div>
+          </div>
+        </div>`;
+      } else {
+        return `<div class="tl-eta-panel" id="tlEtaPanel-${idx}" data-idx="${idx}">
+          <div class="tl-eta-head">${PERIODS[cls.period-1].label}の出席まで<span class="tl-eta-cls">${escHtml(cls.name)}</span></div>
+          <div class="tl-eta-empty">記録なし</div>
+        </div>`;
+      }
+    }).join('');
   } else {
-    countdownHtml = `<div class="tl-eta-empty">本日の出席予定なし</div>`;
+    etaPanelHtml = `<div class="tl-eta-panel"><div class="tl-eta-empty">本日の出席予定なし</div></div>`;
   }
+
+  const initialIdx = Math.max(0, targetIdx);
   const head = `
+    <div class="tl-eta-sticky">
+      <div class="tl-eta-carousel" id="tlEtaCarousel" data-current="${initialIdx}" data-total="${todayTargets.length}">
+        <div class="tl-eta-carousel-track" id="tlEtaTrack" style="transform:translateX(-${initialIdx * 100}%)">
+          ${etaPanelHtml}
+        </div>
+        ${todayTargets.length > 1 ? `
+        <button class="tl-eta-nav tl-eta-nav-prev" onclick="etaCarouselPrev()" id="tlEtaPrev">
+          <span class="mi">chevron_left</span>
+        </button>
+        <button class="tl-eta-nav tl-eta-nav-next" onclick="etaCarouselNext()" id="tlEtaNext">
+          <span class="mi">chevron_right</span>
+        </button>` : ''}
+      </div>
+    </div>
     <div class="tl-day-head">
       <div class="tl-title">今日の予定</div>
-      ${countdownHtml}
     </div>`;
   const todays = CLASSES.filter(c => c.day === today).sort((a,b)=>a.period-b.period);
 
@@ -2222,7 +2484,7 @@ const cntP = merged.p, cntL = merged.l, cntA = merged.a, cntN = merged.n;    con
   }
 
   wrap.innerHTML = head + `<div class="tl-track" id="tlTrack" data-rs="${rangeStart}" data-sc="${TL_SCALE}" style="height:${trackH}px">${parts.join('')}</div>`;
-
+requestAnimationFrame(() => { etaCarouselGo(initialIdx); });
   if (doScroll && nowMin>=rangeStart && nowMin<=rangeEnd){
     requestAnimationFrame(()=>{
       const track=document.getElementById('tlTrack'); if(!track) return;
@@ -2898,24 +3160,15 @@ function handleImport(e) {
 
 // ─── SETTINGS UI ───
 function loadSettingsUI() {
-  document.getElementById('settingName').value=getSetting('name','')||'';
-  document.getElementById('settingStudentId').value=getSetting('studentId','')||'';
-  document.getElementById('settingClassName').value=getClassName();
-  document.getElementById('toggleFade').checked=getSetting('fadeAbsent',false);
-  document.getElementById('toggleNextClass').checked=getSetting('showNextClass',true);
-  renderNoAttSubjectList();
-  renderColorThemeUI();
-
-const absAlertOnEl = document.getElementById('absAlertOn');
-const rateAlertOnEl = document.getElementById('rateAlertOn');
-if (absAlertOnEl) absAlertOnEl.checked = getSetting('absAlertOn', true);
-if (rateAlertOnEl) rateAlertOnEl.checked = getSetting('rateAlertOn', true);
-const absThreshEl2 = document.getElementById('absThresh');
-const rateThreshEl2 = document.getElementById('rateThresh');
-if (absThreshEl2) absThreshEl2.value = getSetting('absThresh', 2);
-if (rateThreshEl2) rateThreshEl2.value = getSetting('rateThresh', 75);
-
-
+  closeSubSetting();
+  const absAlertOnEl = document.getElementById('absAlertOn');
+  const rateAlertOnEl = document.getElementById('rateAlertOn');
+  if (absAlertOnEl) absAlertOnEl.checked = getSetting('absAlertOn', true);
+  if (rateAlertOnEl) rateAlertOnEl.checked = getSetting('rateAlertOn', true);
+  const absThreshEl2 = document.getElementById('absThresh');
+  const rateThreshEl2 = document.getElementById('rateThresh');
+  if (absThreshEl2) absThreshEl2.value = getSetting('absThresh', 2);
+  if (rateThreshEl2) rateThreshEl2.value = getSetting('rateThresh', 75);
 }
 function renderNoAttSubjectList() {
   const CLASSES = getClasses();
