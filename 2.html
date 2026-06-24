@@ -1771,13 +1771,10 @@ function calcTotalAttendanceRate(allClasses) {
 
 // ─── アラート判定 ───
 function getAlertedClassIds() {
-  const absAlertOn = getSetting('absAlertOn', true);
-  const rateAlertOn = getSetting('rateAlertOn', true);
-  const absThreshEl = document.getElementById('absThresh');
-  const rateThreshEl = document.getElementById('rateThresh');
-  const absThresh = absThreshEl ? parseInt(absThreshEl.value) ?? 2 : 2;
-  const rateThresh = rateThreshEl ? parseInt(rateThreshEl.value) ?? 75 : 75;
-  const CLASSES = getClasses();
+const absAlertOn = getSetting('absAlertOn', true);
+const rateAlertOn = getSetting('rateAlertOn', true);
+const absThresh = parseInt(getSetting('absThresh', 2));
+const rateThresh = parseInt(getSetting('rateThresh', 60));  const CLASSES = getClasses();
   const alerted = new Set();
   CLASSES.forEach(c => {
     if (isNoAttendance(c.id)) return;
@@ -1795,7 +1792,7 @@ if (rateAlertOn) {
   const pCnt = mergedRecs.filter(r => r.status === 'present').length;
   const lateCnt2 = mergedRecs.filter(r => r.status === 'late').length;
   if (mergedRecs.length === 0) return; // 記録なしはスキップ
-  const rate = total > 0 ? Math.round((pCnt + lateCnt2 * 0.5) / total * 100) : null;
+  const rate = mergedRecs.length > 0 ? Math.round((pCnt + lateCnt2 * 0.5) / mergedRecs.length * 100) : null;
   if (rate !== null && rate < rateThresh) alerted.add(c.id);
 }
   });
@@ -3196,11 +3193,10 @@ function setLogFilter(f,btn){
 
 // ─── ALERTS ───
 function renderAlerts() {
-  const absAlertOn = getSetting('absAlertOn', true);
-  const rateAlertOn = getSetting('rateAlertOn', true);
-  const absThresh = parseInt(document.getElementById('absThresh')?.value) ?? 2;
-  const rateThresh = parseInt(document.getElementById('rateThresh')?.value) ?? 75;
-
+const absAlertOn = getSetting('absAlertOn', true);
+const rateAlertOn = getSetting('rateAlertOn', true);
+const absThresh = parseInt(getSetting('absThresh', 2));
+const rateThresh = parseInt(getSetting('rateThresh', 60));
   // トグルの状態を反映
   const absEl = document.getElementById('absAlertOn');
   const rateEl = document.getElementById('rateAlertOn');
@@ -3219,7 +3215,7 @@ function renderAlerts() {
     const total = getClassTotal(c.id);
     const allowedAbs = Math.floor(total / 3);
     const remaining = allowedAbs - score;
-    const rate = total > 0 ? Math.round((pCnt + lateCnt * 0.5) / total * 100) : null;
+    const rate = mergedRecs.length > 0 ? Math.round((pCnt + lateCnt * 0.5) / mergedRecs.length * 100) : null;
 
     if (absAlertOn && remaining <= absThresh) {
       if (mergedRecs.length === 0) return;
@@ -3460,7 +3456,7 @@ function loadSettingsUI() {
   const absThreshEl2 = document.getElementById('absThresh');
   const rateThreshEl2 = document.getElementById('rateThresh');
   if (absThreshEl2) absThreshEl2.value = getSetting('absThresh', 2);
-  if (rateThreshEl2) rateThreshEl2.value = getSetting('rateThresh', 75);
+  if (rateThreshEl2) rateThreshEl2.value = getSetting('rateThresh', 60);
 }
 function renderNoAttSubjectList() {
   const CLASSES = getClasses();
