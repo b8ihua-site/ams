@@ -222,8 +222,8 @@ opacity: 1; pointer-events: all; transform: scale(1);
   padding: 10px 16px;
   gap: 12px;
   background: rgba(255,255,255,0.45);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(8px) saturate(180%);
+  -webkit-backdrop-filter: blur(8px) saturate(180%);
   border: 1px solid rgba(255,255,255,0.6);
   border-radius: var(--radius);
   box-shadow: 0 8px 32px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.8);
@@ -305,6 +305,19 @@ box-shadow: 1px 2px 2px rgba(0,0,0,0.07);
 .cell-room    { font-size: 8.5px; color: var(--text-muted); min-height: 12px; }
 .cell-total { font-size: 8.5px; color: var(--text-muted); opacity: 0.7; min-height: 12px; }
 .cell-stats { margin-top: 2px; display: grid; grid-template-columns: repeat(4,1fr); gap: 2px; width: 100%; }
+
+.cell-item-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 16px; border-bottom: 1px solid var(--border);
+  cursor: grab; user-select: none; background: var(--surface);
+  transition: opacity 0.2s;
+}
+.cell-item-row:last-child { border-bottom: none; }
+.cell-item-row.dragging { opacity: 0.4; }
+.cell-item-drag { color: var(--text-muted); display: flex; align-items: center; }
+.cell-item-label { flex: 1; font-size: 14px; font-weight: 500; }
+
+
 .stat-num {
   font-size: 9px; font-weight: 700; padding: 2px 0;
   border-radius: 3px; text-align: center; line-height: 1.4;
@@ -353,8 +366,8 @@ box-shadow: 1px 2px 2px rgba(0,0,0,0.07);
 }
 .bottom-nav-toggle {
   display: flex; background: rgba(255,255,255,0.45);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(8px) saturate(180%);
+  -webkit-backdrop-filter: blur(8px) saturate(180%);
   border: 1px solid rgba(255,255,255,0.6);
   border-radius: 99px; padding: 4px; gap: 2px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.8);
@@ -475,8 +488,8 @@ outline: none; width: 150px;
   position: sticky; top: 140px; z-index: 10;
   display: flex; align-items: center;
   padding: 12px 16px 8px;
+  margin-bottom: 10px;
   background: var(--bg);
-  border-bottom: 1px solid var(--border);
 }
 .settings-back-btn {
   display: flex; align-items: center; gap: 2px;
@@ -809,8 +822,8 @@ display: flex; align-items: center; gap: 12px;
 .tl-title { font-size:17px; font-weight:700; letter-spacing:-0.3px; color:var(--text-primary); margin-bottom:10px; }
 .tl-eta-panel {
   background: rgba(255,255,255,0.45);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(8px) saturate(180%);
+  -webkit-backdrop-filter: blur(8px) saturate(180%);
   border: 1px solid rgba(255,255,255,0.6);
   border-radius: 14px; padding: 12px 16px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.8);
@@ -842,7 +855,7 @@ display: flex; align-items: center; gap: 12px;
   position:absolute; border-radius:14px; 
   background: rgba(255,255,255,0.25);
   backdrop-filter: blur(8px) saturate(100%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(8px) saturate(180%);
   border: 1px solid rgba(255,255,255,0.6);
   box-shadow: 0 8px 32px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.8);
   cursor:pointer; display:flex; padding:10px 12px; transition:transform .15s;
@@ -2006,6 +2019,76 @@ function renderSeijiSVG(absent, late, limit, accentColor) {
   return `<svg width="${totalW}" height="${SEIJI_CHAR_H}" style="display:block">${rects}</svg>`;
 }
 
+const CELL_ITEMS_DEFAULT = [
+  { key: 'teacher', label: '担当教員' },
+  { key: 'room',    label: '教室' },
+  { key: 'total',   label: '全回数' },
+  { key: 'seiji',   label: '正の字' },
+  { key: 'stats',   label: '出欠数字' },
+];
+
+function getCellItemOrder() {
+  try {
+    const saved = JSON.parse(localStorage.getItem('ams_cell_order'));
+    if (saved && saved.length === CELL_ITEMS_DEFAULT.length) return saved;
+  } catch {}
+  return CELL_ITEMS_DEFAULT.map(i => i.key);
+}
+function saveCellItemOrder(order) {
+  localStorage.setItem('ams_cell_order', JSON.stringify(order));
+}
+
+function renderCellItemList() {
+  const wrap = document.getElementById('cellItemList');
+  if (!wrap) return;
+  const order = getCellItemOrder();
+  const items = order.map(k => CELL_ITEMS_DEFAULT.find(i => i.key === k)).filter(Boolean);
+
+  wrap.innerHTML = items.map((item, idx) => {
+    const checked = getSetting('cellShow_' + item.key, true);
+    return `<div class="cell-item-row" draggable="true" data-key="${item.key}" data-idx="${idx}">
+      <span class="cell-item-drag"><span class="mi mi-20">drag_indicator</span></span>
+      <span class="cell-item-label">${item.label}</span>
+      <label class="toggle">
+        <input type="checkbox" ${checked ? 'checked' : ''}
+          onchange="saveSetting('cellShow_${item.key}',this.checked);buildTimetable()">
+        <span class="toggle-slider"></span>
+      </label>
+    </div>`;
+  }).join('');
+
+  // ドラッグ&ドロップ
+  let dragSrc = null;
+  wrap.querySelectorAll('.cell-item-row').forEach(row => {
+    row.addEventListener('dragstart', e => {
+      dragSrc = row;
+      row.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    row.addEventListener('dragend', () => {
+      row.classList.remove('dragging');
+      dragSrc = null;
+    });
+    row.addEventListener('dragover', e => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+    });
+    row.addEventListener('drop', e => {
+      e.preventDefault();
+      if (!dragSrc || dragSrc === row) return;
+      const allRows = [...wrap.querySelectorAll('.cell-item-row')];
+      const srcIdx = allRows.indexOf(dragSrc);
+      const dstIdx = allRows.indexOf(row);
+      const order = getCellItemOrder();
+      const [moved] = order.splice(srcIdx, 1);
+      order.splice(dstIdx, 0, moved);
+      saveCellItemOrder(order);
+      renderCellItemList();
+      buildTimetable();
+    });
+  });
+}
+
 function buildTimetable() {
   const CLASSES = getClasses();
   const grid = document.getElementById('timetableGrid');
@@ -2059,21 +2142,26 @@ const seijiLimit = Math.floor(getClassTotal(cls.id) / 3);
 const seijiSVG = renderSeijiSVG(cntA, cntL, seijiLimit, brandHex);
 
           const cntAClass = cntA > 0 ? 'stat-num a-nonzero' : 'stat-num';
-          cell.innerHTML=`
-            <div>
-              <div class="cell-name${alertedClass}">${cls.name}</div>
-              <div class="cell-teacher">${cls.teacher}</div>
-              <div class="cell-room">${cls.room}</div>
-              <div class="cell-total">全${getClassTotal(cls.id)}回</div>
-            </div>
-            <div style="margin:8px 0">${seijiSVG}</div>
-            <div class="cell-stats">
-  <span class="stat-num p">${cntP}</span>
-<span class="stat-num l">${cntL}</span>
-<span class="stat-num a">${cntA}</span>
-<span class="stat-num">${cntN}</span>
+          const showTeacher = getSetting('cellShowTeacher', true);
+const showRoom    = getSetting('cellShowRoom', true);
+const showTotal   = getSetting('cellShowTotal', true);
+const showSeiji   = getSetting('cellShowSeiji', true);
+const showStats   = getSetting('cellShowStats', true);
 
-</div>`;
+cell.innerHTML = `
+  <div>
+    <div class="cell-name${alertedClass}">${cls.name}</div>
+    ${showTeacher ? `<div class="cell-teacher">${cls.teacher}</div>` : ''}
+    ${showRoom    ? `<div class="cell-room">${cls.room}</div>` : ''}
+    ${showTotal   ? `<div class="cell-total">全${getClassTotal(cls.id)}回</div>` : ''}
+  </div>
+  ${showSeiji ? `<div style="margin:8px 0">${seijiSVG}</div>` : ''}
+  ${showStats ? `<div class="cell-stats">
+    <span class="stat-num p">${cntP}</span>
+    <span class="stat-num l">${cntL}</span>
+    <span class="stat-num a">${cntA}</span>
+    <span class="stat-num">${cntN}</span>
+  </div>` : ''}`;
             
           cell.addEventListener('click', () => openModal(cls.id));
         }
@@ -2094,7 +2182,7 @@ const SUB_SETTING_CONTENTS = {
         <div class="settings-row">
           <div class="settings-row-left">
             <div class="settings-row-title">名前</div>
-            <div class="settings-row-sub">ログ送信時に使用</div>
+            <div class="settings-row-sub">ログ送信時に使用します</div>
           </div>
           <input class="name-input" type="text" id="settingName" placeholder="出席 花子" oninput="saveSetting('name',this.value)">
         </div>
@@ -2207,6 +2295,11 @@ const SUB_SETTING_CONTENTS = {
           <span class="toggle-slider"></span>
         </label>
       </div>
+    </div>
+    <div class="dash-section-title">時間割セルの表示項目</div>
+    <div class="settings-section">
+      <div id="cellItemList"></div>
+    </div>
     </div>`
   },
   'data': {
@@ -2270,9 +2363,13 @@ function openSubSetting(key) {
   const cnEl = document.getElementById('settingClassName');
   if (cnEl) cnEl.value = getClassName();
   if (key === 'no-attendance') renderNoAttSubjectList();
-  if (key === 'style') renderColorThemeUI();
+  if (key === 'style') { renderColorThemeUI(); renderCellItemList(); }
   const splashEl = document.getElementById('toggleSplash');
 if (splashEl) splashEl.checked = getSetting('showSplash', true);
+['cellShowTeacher','cellShowRoom','cellShowTotal','cellShowSeiji','cellShowStats'].forEach(k => {
+  const el = document.getElementById(k);
+  if (el) el.checked = getSetting(k, true);
+});
 }
 
 function closeSubSetting() {
@@ -2290,12 +2387,23 @@ function getNextAttendanceTarget() {
   const today = jsDay();
   if (!today) return null;
   const now = nowMinutes();
+  const nowSec = new Date().getHours()*3600 + new Date().getMinutes()*60 + new Date().getSeconds();
   const todays = getClasses()
     .filter(c => c.day === today && !isNoAttendance(c.id))
-    .sort((a,b)=>a.period-b.period);
+    .sort((a,b) => a.period - b.period);
   for (const c of todays) {
     const eMin = timeToMinutes(PERIODS[c.period-1].end);
-    if (now <= eMin + TIME_BUFFER) return c;
+    if (now > eMin + TIME_BUFFER) continue;
+    // 記録があり、最早・平均・最遅すべてが済（カウントダウンが0以下）かチェック
+    const tt = attendanceTargetTimes(c);
+    if (tt) {
+      const allPassed =
+        parseInt(Math.round(tt.earliest * 60)) <= nowSec &&
+        parseInt(Math.round(tt.avg      * 60)) <= nowSec &&
+        parseInt(Math.round(tt.latest   * 60)) <= nowSec;
+      if (allPassed) continue; // すべて済なら次のコマへ
+    }
+    return c;
   }
   return null;
 }
