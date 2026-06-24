@@ -1373,7 +1373,7 @@ display: flex; align-items: center; gap: 12px;
       <div class="section-label">記録一覧</div>
       <div id="recordsTableWrap"></div>
       <div class="cell-color-section" id="cellColorSection"></div>
-      <div class="section-label">メモ</div>
+      <div class="section-label" style="margin-top: 20px;">メモ</div>
       <textarea class="memo-textarea" id="memoTextarea" placeholder="授業のメモ"></textarea>
       <button class="memo-save-btn" onclick="saveMemo()">
         <span class="mi mi-16">save</span> メモを保存
@@ -1741,7 +1741,8 @@ function loadRecordsMerged(classId) {
   if (!cls) return loadRecords(classId).map(r => ({...r, _classId: classId}));
   const sameName = getClasses().filter(c => c.name === cls.name);
   if (sameName.length <= 1) return loadRecords(classId).map(r => ({...r, _classId: classId}));
-  return sameName.flatMap(c => loadRecords(c.id).map(r => ({...r, _classId: c.id})));
+  return sameName.flatMap(c => loadRecords(c.id).map(r => ({...r, _classId: c.id})))
+  .sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
 }
 
 // 合算後の出席・遅刻・欠席カウントを返す
@@ -3039,8 +3040,11 @@ function renderTable(recs) {
         <td><span style="font-family:Roboto Condensed,monospace;font-size:12px">${formatTime(r.time)}</span>${convNote}</td>
         <td><span class="status-badge ${STATUS_CLASS[r.status]}"><span class="mi" style="font-size:13px">${STATUS_ICONS_MI[r.status]}</span> ${STATUS_LABELS[r.status]}</span></td>
         <td style="white-space:nowrap;padding:4px 4px">
-          <button class="outlier-btn${isOut?' active':''}" onclick="toggleOutlier('${r._classId}',${r.id})" title="${isOut?'外れ値を解除':'外れ値に設定'}"><span class="mi mi-18">${isOut?'filter_alt_off':'filter_alt'}</span></button><button class="delete-btn" onclick="deleteRecord('${r._classId}',${r.id})"><span class="mi mi-18">delete</span></button>
-        </td>
+  <div style="display:flex;gap:4px;align-items:center;">
+    <button class="outlier-btn${isOut?' active':''}" onclick="toggleOutlier('${r._classId}',${r.id})" title="${isOut?'外れ値を解除':'外れ値に設定'}"><span class="mi mi-18">${isOut?'filter_alt_off':'filter_alt'}</span></button>
+    <button class="delete-btn" onclick="deleteRecord('${r._classId}',${r.id})"><span class="mi mi-18">delete</span></button>
+  </div>
+</td>
       </tr>`;
     }).join('')
   }</tbody></table>`;
