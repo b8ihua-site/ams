@@ -18,8 +18,8 @@ a {color:var(--brand);}
 --surface: #ffffff;
 --border: #e2e6ea;
 --text-primary: #1a1d23;
---text-secondary: #6b7280;
---text-muted: #9ca3af;
+--text-secondary: #7f7f7f;
+--text-muted: #b1b1b1;
 --accent: #DC4848;
 --accent-light: #eff6ff;
 --present: #10b981;
@@ -838,9 +838,20 @@ display: flex; align-items: center; gap: 12px;
 .tl-band-time { position:absolute; left:0; width:46px; text-align:right; transform:translateY(-50%); font-family:'Roboto Condensed',monospace; font-size:9px; font-weight:700; white-space:nowrap; z-index:3; }
 .tl-avg-dot { position:absolute; width:9px; height:9px; border-radius:50%; border:2px solid var(--surface); transform:translate(-50%,-50%); box-shadow:0 1px 3px rgba(0,0,0,0.25); z-index:4; }
 .tl-avg-time { position:absolute; transform:translateY(-50%); background:var(--surface); font-family:'Roboto Condensed',monospace; font-size:9px; font-weight:700; padding:1px 5px; border-radius:5px; white-space:nowrap; z-index:4; }
-.tl-card { position:absolute; border-radius:14px; overflow:hidden; background:var(--surface); border:1px solid var(--border); cursor:pointer; display:flex; padding:10px 12px; transition:transform .15s; }
-.tl-card:active { transform:scale(0.98); }
-.tl-card-body { display:flex; flex-direction:column; min-width:0; flex:1; justify-content:center; gap:2px; }
+.tl-card {
+  position:absolute; border-radius:14px; 
+  background: rgba(255,255,255,0.25);
+  backdrop-filter: blur(8px) saturate(100%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.6);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.8);
+  cursor:pointer; display:flex; padding:10px 12px; transition:transform .15s;
+  z-index: 8;
+}.tl-card:active { transform:scale(0.98); }
+.tl-card-body { display:flex; flex-direction:column; min-width:0; flex:1; justify-content:center; gap:2px;}
+
+
+
 .tl-card-name { font-size:13px; font-weight:700; letter-spacing:-0.2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .tl-card-name.alerted { color:var(--brand); }
 .tl-card-meta { font-size:10.5px; color:var(--text-secondary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
@@ -848,8 +859,9 @@ display: flex; align-items: center; gap: 12px;
 .tl-card-chips { display:flex; gap:3px; align-items:center; margin-top:3px; }
 .tl-card.current { border-color:var(--current); box-shadow:0 6px 20px var(--current-light); }
 .tl-card.past { opacity:0.5; }
-.tl-card.noatt { background:#f3f4f6; }
-.tl-now-line { position:absolute; right:0; height:0; border-top:2px solid var(--brand); z-index:5; pointer-events:none; }
+.tl-card.noatt {
+  background: rgba(243,244,246,0.6);
+}.tl-now-line { position:absolute; right:0; height:0; border-top:2px solid var(--brand); z-index:5; pointer-events:none; }
 .tl-now-dot { position:absolute; width:9px; height:9px; border-radius:50%; background:var(--brand); transform:translate(-50%,-50%); box-shadow:0 0 0 3px var(--current-light); z-index:6; pointer-events:none; }
 .tl-now-label { position:absolute; transform:translateY(-50%); background:var(--brand); color:#fff; font-family:'Roboto Condensed',monospace; font-size:9px; font-weight:700; padding:1px 5px; border-radius:5px; z-index:7; pointer-events:none; }
 .tl-empty { text-align:center; padding:70px 20px; color:var(--text-muted); }
@@ -1254,8 +1266,8 @@ display: flex; align-items: center; gap: 12px;
       <span class="toggle-btn-label">時間割</span>
     </button>
     <button class="toggle-btn" id="nav-timeline" onclick="switchView('timeline')">
-      <span class="mi">today</span>
-      <span class="toggle-btn-label">予定</span>
+      <span class="mi">view_agenda</span>
+      <span class="toggle-btn-label">今日</span>
     </button>
   </div>
 </div>
@@ -1363,7 +1375,14 @@ document.getElementById('rateThresh').addEventListener('change', () => { saveSet
 
 
 function initSplash() {
-  const splash = document.getElementById('splashScreen');
+  const showSplash = getSetting('showSplash', true);
+  if (!showSplash) {
+    document.getElementById('splashScreen').style.display = 'none';
+    const done = localStorage.getItem(ONBOARDING_KEY);
+    if (!done) showOnboarding();
+    return;
+  }
+    const splash = document.getElementById('splashScreen');
   const content = document.getElementById('splashContent');
   const logo = document.getElementById('splashLogo');
 
@@ -2175,7 +2194,20 @@ const SUB_SETTING_CONTENTS = {
             <span class="mi mi-18">refresh</span> デフォルトに戻す
           </button>
         </div>
-      </div>`
+      </div>
+      <div class="dash-section-title">その他</div>
+    <div class="settings-section">
+      <div class="settings-row">
+        <div class="settings-row-left">
+          <div class="settings-row-title">スプラッシュスクリーン</div>
+          <div class="settings-row-sub">起動時のロゴ画面を表示する</div>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="toggleSplash" onchange="saveSetting('showSplash',this.checked)">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </div>`
   },
   'data': {
     title: 'データの管理',
@@ -2239,6 +2271,8 @@ function openSubSetting(key) {
   if (cnEl) cnEl.value = getClassName();
   if (key === 'no-attendance') renderNoAttSubjectList();
   if (key === 'style') renderColorThemeUI();
+  const splashEl = document.getElementById('toggleSplash');
+if (splashEl) splashEl.checked = getSetting('showSplash', true);
 }
 
 function closeSubSetting() {
@@ -2486,8 +2520,7 @@ const cntP = merged.p, cntL = merged.l, cntA = merged.a, cntN = merged.n;    con
   // ── 現在時刻ライン: ドットから右方向のみ、ブランドカラー ──
   if (nowMin>=rangeStart && nowMin<=rangeEnd){
     const nY=Y(nowMin);
-    parts.push(`<div class="tl-now-line" id="tlNowLine" style="top:${nY}px;left:${TL_AXIS_X}px"></div>`);
-    parts.push(`<div class="tl-now-dot" id="tlNowDot" style="left:${TL_AXIS_X}px;top:${nY}px"></div>`);
+parts.push(`<div class="tl-now-line" id="tlNowLine" style="top:${nY}px;left:${TL_AXIS_X}px;right:-14px"></div>`);    parts.push(`<div class="tl-now-dot" id="tlNowDot" style="left:${TL_AXIS_X}px;top:${nY}px"></div>`);
     parts.push(`<div class="tl-now-label" id="tlNowLabel" style="left:${TL_AXIS_X+9}px;top:${nY}px">${fmtMin(nowMin)}</div>`);
   }
 
