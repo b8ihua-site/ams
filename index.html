@@ -1306,7 +1306,7 @@ display: flex; align-items: center; gap: 12px;
 <div class="overlay" id="overlay">
   <div class="modal" id="modal">
 
-    <div class="modal-header" style="padding:12px 20px 16px;border-bottom:none;">
+    <div class="modal-header" style="padding:12px 20px 16px;border-bottom:none; margin-top: 50px;">
   <button onclick="closeModal()" style="border:none;background:none;cursor:pointer;color:#1a1d23;display:flex;align-items:center;padding:0;margin-bottom:12px;">
     <span class="mi mi-22">arrow_back_ios</span>
   </button>
@@ -3050,9 +3050,12 @@ function renderTable(recs) {
         <td>${r.date}</td>
         <td><span style="font-family:Roboto Condensed,monospace;font-size:12px">${formatTime(r.time)}</span>${convNote}</td>
         <td><span class="status-badge ${STATUS_CLASS[r.status]}"><span class="mi" style="font-size:13px">${STATUS_ICONS_MI[r.status]}</span> ${STATUS_LABELS[r.status]}</span></td>
-        <td style="white-space:nowrap;padding:4px 4px">
-          <button class="outlier-btn${isOut?' active':''}" onclick="toggleOutlier('${r._classId}',${r.id})" title="${isOut?'外れ値を解除':'外れ値に設定'}"><span class="mi mi-18">${isOut?'filter_alt_off':'filter_alt'}</span></button><button class="delete-btn" onclick="deleteRecord('${r._classId}',${r.id})"><span class="mi mi-18">delete</span></button>
-        </td>
+<td style="white-space:nowrap;padding:4px 4px">
+  <div style="display:flex;gap:4px;align-items:center;">
+    <button class="outlier-btn${isOut?' active':''}" onclick="toggleOutlier('${r._classId}',${r.id})" title="${isOut?'外れ値を解除':'外れ値に設定'}"><span class="mi mi-18">${isOut?'filter_alt_off':'filter_alt'}</span></button>
+    <button class="delete-btn" onclick="deleteRecord('${r._classId}',${r.id})"><span class="mi mi-18">delete</span></button>
+  </div>
+</td>
       </tr>`;
     }).join('')
   }</tbody></table>`;
