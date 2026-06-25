@@ -26,11 +26,11 @@ a {color:var(--brand);}
 --late-light: #eeffeb;
 --absent: #d10158;
 --absent-light: #fef2f2;
---current: #9b0041;
+--current: #b92d5d;
 --current-light: #fff0f0;
---brand: #9b0041;
+--brand: #b92d5d;
 --brandbar: #ffffff;
---header-text: #9b0041;
+--header-text: #b92d5d;
 --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
 --shadow-md: 0 4px 16px rgba(0,0,0,0.10);
 --shadow-lg: 0 8px 32px rgba(0,0,0,0.14);
@@ -218,7 +218,7 @@ opacity: 1; pointer-events: all; transform: scale(1);
 
 
 
-.header-class-name { font-size: 17px; font-weight: 700; letter-spacing: -0.3px; color: var(--text-primary); font-family:"Lexend"; font-weight:100;}
+.header-class-name { font-size: 17px; font-weight: 700; letter-spacing: -0.3px; color: var(--text-primary); font-family:"Lexend"; font-weight:400;}
 .header-datetime { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; }
 .header-clock { font-family: 'Roboto Condensed', monospace; font-size: 18px; font-weight: 500; color: var(--brand); letter-spacing: 1px; line-height: 1; margin-top:10px;}
 .header-date { font-family: 'Roboto Condensed', monospace; font-size: 10px; font-weight: 400; color: var(--text-muted); letter-spacing: 0.3px; }
@@ -892,6 +892,39 @@ display: flex; align-items: center; gap: 12px;
 .tl-empty { text-align:center; padding:70px 20px; color:var(--text-muted); }
 .tl-empty .mi { font-size:48px; opacity:0.35; }
 .tl-empty-text { font-size:14px; margin-top:12px; }
+/* ─── DOG STREAK ─── */
+.dog-streak-overlay {
+  position: fixed; inset: 0; z-index: 9000;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  pointer-events: none;
+}
+.dog-streak-box {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  animation: dogPop 0.3s cubic-bezier(0.32,0.72,0,1);
+}
+.dog-streak-img { width: 80px; height: auto; image-rendering: pixelated; }
+.dog-streak-label {
+  font-family: 'Roboto Condensed', monospace;
+  font-size: 22px; font-weight: 700;
+  color: var(--brand);
+  background: white; border-radius: 20px;
+  padding: 4px 16px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+@keyframes dogPop {
+  from { transform: scale(0.5); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+.confetti-piece {
+  position: fixed; width: 8px; height: 8px; border-radius: 2px;
+  pointer-events: none; z-index: 8999;
+  animation: confettiFall linear forwards;
+}
+@keyframes confettiFall {
+  0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
 </style>
 </head>
 <body>
@@ -1361,7 +1394,7 @@ display: flex; align-items: center; gap: 12px;
       <div class="section-label">記録一覧</div>
       <div id="recordsTableWrap"></div>
       <div class="cell-color-section" id="cellColorSection"></div>
-      <div class="section-label">メモ</div>
+      <div class="section-label" style="margin-top: 20px;">メモ</div>
       <textarea class="memo-textarea" id="memoTextarea" placeholder="授業のメモ"></textarea>
       <button class="memo-save-btn" onclick="saveMemo()">
         <span class="mi mi-16">save</span> メモを保存
@@ -1570,14 +1603,14 @@ async function loadPreset(filename, label) {
   } catch (e) {
     // Fallback: restore grid and show error
     grid.innerHTML = `
-      <button class="preset-btn" onclick="loadPreset('M1F','1年前期')"><span class="pb-year">M1</span><span class="pb-sem">前期</span></button>
-      <button class="preset-btn" onclick="loadPreset('M1S','1年後期')"><span class="pb-year">M1</span><span class="pb-sem">後期</span></button>
-      <button class="preset-btn" onclick="loadPreset('M2F','2年前期')"><span class="pb-year">M2</span><span class="pb-sem">前期</span></button>
-      <button class="preset-btn" onclick="loadPreset('M2S','2年後期')"><span class="pb-year">M2</span><span class="pb-sem">後期</span></button>
-      <button class="preset-btn" onclick="loadPreset('M3F','3年前期')"><span class="pb-year">M3</span><span class="pb-sem">前期</span></button>
-      <button class="preset-btn" onclick="loadPreset('M3S','3年後期')"><span class="pb-year">M3</span><span class="pb-sem">後期</span></button>
-      <button class="preset-btn" onclick="loadPreset('M4F','4年前期')"><span class="pb-year">M4</span><span class="pb-sem">前期</span></button>
-      <button class="preset-btn" onclick="loadPreset('M4S','4年後期')"><span class="pb-year">M4</span><span class="pb-sem">後期</span></button>`;
+  <button class="preset-btn" onclick="loadPreset('M1F','1年前期')"><span class="pb-sem">1年前期</span><span class="pb-year">M1F</span></button>
+  <button class="preset-btn" onclick="loadPreset('M1S','1年後期')"><span class="pb-sem">1年後期</span><span class="pb-year">M1S</span></button>
+  <button class="preset-btn" onclick="loadPreset('M2F','2年前期')"><span class="pb-sem">2年前期</span><span class="pb-year">M2F</span></button>
+  <button class="preset-btn" onclick="loadPreset('M2S','2年後期')"><span class="pb-sem">2年後期</span><span class="pb-year">M2S</span></button>
+  <button class="preset-btn" onclick="loadPreset('M3F','3年前期')"><span class="pb-sem">3年前期</span><span class="pb-year">M3F</span></button>
+  <button class="preset-btn" onclick="loadPreset('M3S','3年後期')"><span class="pb-sem">3年後期</span><span class="pb-year">M3S</span></button>
+  <button class="preset-btn" onclick="loadPreset('M4F','4年前期')"><span class="pb-sem">4年前期</span><span class="pb-year">M4F</span></button>
+  <button class="preset-btn" onclick="loadPreset('M4S','4年後期')"><span class="pb-sem">4年後期</span><span class="pb-year">M4S</span></button>`;
     if (skipBtn) skipBtn.style.display = '';
     showToast(`${filename}.json が見つかりません`, 'error');
   }
@@ -1690,17 +1723,18 @@ const COLOR_VARS = [
 ];
 
 const DEFAULT_COLORS = {
-  '--brand':          '#9b0041',
+  '--brand':          '#b92d5d',
   '--brandbar':       '#ffffff',
-  '--header-text':    '#9b0041',
+  '--header-text':    '#b92d5d',
   '--bg':             '#ffffff',
   '--surface':        '#ffffff',
   '--present':        '#1067b9',
   '--late':           '#7d40b6',
   '--absent':         '#d10158',
-  '--accent':         '#9b0041',
+  '--accent':         '#b92d5d',
   '--text-primary':   '#1a1d23',
   '--text-secondary': '#7f7f7f',
+'--border':         '#e2e6ea', 
 };
 
 // ─── STORAGE HELPERS ───
@@ -1753,7 +1787,8 @@ function loadRecordsMerged(classId) {
   if (!cls) return loadRecords(classId).map(r => ({...r, _classId: classId}));
   const sameName = getClasses().filter(c => c.name === cls.name);
   if (sameName.length <= 1) return loadRecords(classId).map(r => ({...r, _classId: classId}));
-  return sameName.flatMap(c => loadRecords(c.id).map(r => ({...r, _classId: c.id})));
+  return sameName.flatMap(c => loadRecords(c.id).map(r => ({...r, _classId: c.id})))
+  .sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
 }
 
 // 合算後の出席・遅刻・欠席カウントを返す
@@ -1927,10 +1962,38 @@ function saveClassName(val) {
   saveSetting('className', name);
   updateClassNameDisplay();
 }
+function getGreeting() {
+  const h = new Date().getHours();
+  const greetings =
+    h < 4  ? ['夜更かしですね', 'お疲れ様です'] :
+    h < 6  ? ['おはようございます', '早起きですね', '今日も頑張りましょう'] :
+    h < 9  ? ['おはようございます', 'いい朝ですね', '今日も頑張りましょう'] :
+    h < 12 ? ['おはようございます', '今日も頑張りましょう'] :
+    h < 13 ? ['午後も頑張りましょう', 'こんにちは'] :
+    h < 18 ? ['こんにちは', 'お疲れ様です'] :
+    h < 19 ? ['お疲れ様でした', '今日もお疲れ様でした'] :
+             ['こんばんは', 'お疲れ様です'];
+  return greetings[Math.floor(Math.random() * greetings.length)];
+}
+
 function updateClassNameDisplay() {
   const name = getClassName();
-  document.getElementById('headerClassName').textContent = name;
+  const el = document.getElementById('headerClassName');
   
+  // あいさつ表示
+  el.style.transition = 'none';
+  el.style.opacity = '1';
+  el.textContent = getGreeting();
+  
+  // 1秒後にフェードでクラス名へ
+  setTimeout(() => {
+    el.style.transition = 'opacity 0.6s ease';
+    el.style.opacity = '0';
+    setTimeout(() => {
+      el.textContent = name;
+      el.style.opacity = '1';
+    }, 600);
+  }, 1000);
 }
 
 // ─── DRAWER ───
@@ -2367,7 +2430,19 @@ const SUB_SETTING_CONTENTS = {
             <span class="toggle-slider"></span>
           </label>
         </div>
-      </div>`
+        <div class="settings-row">
+  <div class="settings-row-left">
+    <div class="settings-row-title">連続出席ボーナス</div>
+    <div class="settings-row-sub">出席連続時にdogとコンフェッティを表示</div>
+  </div>
+  <label class="toggle">
+    <input type="checkbox" id="toggleDogStreak" checked onchange="saveSetting('dogStreak',this.checked);">
+    <span class="toggle-slider"></span>
+  </label>
+</div>
+      </div>
+      
+      `
   },
   'no-attendance': {
     title: '出席を記録しない科目',
@@ -2893,6 +2968,18 @@ function recordAttendance(status) {
   recs.push({ id:Date.now(), date, time, status });
   recs.sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
   saveRecords(currentClassId, recs);
+
+  // ストリーク判定
+if (status === 'present') {
+  presentStreak++;
+  if (presentStreak >= 2) {
+    showDogStreak(presentStreak);
+    addDogCount();
+  }
+} else {
+  presentStreak = 0;
+}
+
   refreshModal(); buildTimetable();
   if (document.getElementById('view-timeline').classList.contains('active')) renderTimeline(false);
   showToast(STATUS_LABELS[status] + ' を記録しました', STATUS_ICONS_MI[status]);
@@ -3101,6 +3188,16 @@ document.getElementById('overviewCards').innerHTML=`
   const presentHex = cssColorToHex(getComputedStyle(document.documentElement).getPropertyValue('--present').trim()) || '#10b981';
 const lateHex    = cssColorToHex(getComputedStyle(document.documentElement).getPropertyValue('--late').trim())    || '#f59e0b';
 const absentHex  = cssColorToHex(getComputedStyle(document.documentElement).getPropertyValue('--absent').trim())  || '#ef4444';
+
+// dogカウント表示
+const dogCount = getDogCount();
+document.getElementById('overviewCards').insertAdjacentHTML('afterend', `
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;padding:10px 14px;background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow-sm);">
+    <img src="${DOG_FRAMES.tail1}" style="width:28px;image-rendering:pixelated;">
+    <span style="font-size:13px;font-weight:600;flex:1;">連続出席ボーナス</span>
+    <span style="font-family:'Roboto Condensed',monospace;font-size:20px;font-weight:700;color:var(--brand);">×${dogCount}</span>
+  </div>
+`);
 
 const col = attendRate >= 80 ? presentHex : attendRate >= 70 ? lateHex : absentHex;
   const rb=document.getElementById('rateBar');
@@ -3465,7 +3562,7 @@ function loadSettingsUI() {
   const absThreshEl2 = document.getElementById('absThresh');
   const rateThreshEl2 = document.getElementById('rateThresh');
   if (absThreshEl2) absThreshEl2.value = getSetting('absThresh', 2);
-  if (rateThreshEl2) rateThreshEl2.value = getSetting('rateThresh', 75);
+  if (rateThreshEl2) rateThreshEl2.value = getSetting('rateThresh', 60);
 }
 function renderNoAttSubjectList() {
   const CLASSES = getClasses();
@@ -3499,6 +3596,82 @@ function resetAllData() {
   buildTimetable();
   if (document.getElementById('view-timeline').classList.contains('active')) renderTimeline(false);
   showToast('全データをリセットしました', 'delete');
+}
+
+// ─── DOG STREAK ─── 
+const DOG_FRAMES = {
+  tail1: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAZCAYAAAC/zUevAAAACXBIWXMAADXUAAA11AFeZeUIAAACh0lEQVRIDbWWv2tUQRDHdy9HwENI4DSNjUewTJnCP+Aa4eRESTBiYQSbNCGxEa4U7CS1YGUREhACB/4XilaCIlfZBM7iikjgvPV9JzvLzGbfvpdAFo7d+bEzn503u5ztdrvmqkez2cymyFv1VqfFpGST2gplFYRK/PH9G3NtaTkZ8su3H2YwGMD/wiA28zncztamWV1eNPMLN0PiMgh2uNdbw1KBVH2OBm+O5gAQ6SvFT8ND+KgKTqfT7L4UxKUBspkyxhjiHMCTl3ul21F6+WPHVDXYlpplTyQBZrNZap9BIgB0Oh0zmUzMeDwmPw9A67g/ynpDVQJNyAMVYIB2u03JkFAOJByNRgFA2rCuWxG+om7/7U6I4dyMAHAlHz5/RUn4pCI4+SdOHuLUXTBE8AfAxq7uAwDyNS27olz6YnYSLATOLNTnEADhnqMaDIA4vf5j8/f4lwqJh0oM64GEKr9UjeldGcABIB5rLwakGh7tG2vnzOev3/FSQmfReOJN4LeC45moMYNdfo7gHCdmGQCH717T0w2AXn+dTDI4rwsYiscyx/CzOyjirPsDyUpEfiSeqwb3xP0HG+bD3nbY83Rb91EwnC3kAQkAag9hqyBQQi6biguA67dWik/SMK54S2xDtZfy7T96BhkgAQCKLIQooZOnxUYei7fv8rJ0/jc9Idvpn9+UEJ+ABwNAlj3BdjXPt24oubV0R8k5Ya7ZSpolABwqIZJRLqn0ybFb9sjVQ5wc/5TIKjkbaldCnMIMjw5of5SAY9IMf9kDyhgJtSH8PupwTi7BorhK9H7JKsDxohAquBfKgievdjJA2X9MeU0TyThBGQDnquVXpxKpRCkdJ5ZzLb//PBnTtTvcHLkAAAAASUVORK5CYII=',
+  tail2: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAZCAYAAAC/zUevAAAACXBIWXMAADXUAAA11AFeZeUIAAACkUlEQVRIDbWWP0ucQRDGd89DyBGIcImNTQ5JmdIiH+CawMFBghIlRSLYpBGTRrgyYCdXB1KlEIWAcJBvkZBUgYhcZSNciisMwnmb9xl3lpl13z8nuHDu7uzsPL+dnX3Rttttc9etXq8XShSv6q1OT5Mzm7SWGMsglPDXz3vm3uJyMuSPX39Mr9eD/8wgtuA63M67t2ZlecHMP3gUhPMg2OF5ZxVDBVJ2HTXeHPUBILKXTr8NjuCjMli2KQVxa4Aysbz1GOIGwMaHft5eg9TLHzvOmg1ZE0mA6XTKsVUPIQC0Wi0zHo/NaDSidQ9AY66PmWoCRcgNGWCAZrNJYhCUDYLD4TAAyDWMOSOTySReUnN+ou5gfycsODclADzJF5u7JMInhZM8rRz7k4c4VQcMEfwBsP5e1wEA+ZnmPVFOfdY7CRYCFwxUYQqA8M6RDQZAnE73lfl3fqpC4kMlmi3ICJ4u/8IWVZjeygAOAHFb3eqRaXB8YKydM99//saXEjaLAhT3z98KiieK0x1++mjWruNcrwkRFhcmPQTAURYAVwKATneNHISA4XEGE4urYB4EoPZGTQhPmxWlygYDwAcAX/rbwf31dp9PTjaG8Q6FB5TXEQLKQRZMBec1ANxfepplpGZc9i2xNVVe7EZ99+Ub9AChqyBj9oevJAkhTuHkaXkz+oXHz+Q0Ob6aXJD98u8ZCeIKuDEA5kXXQf7zjYe8j/rG4hM1L5rM1RvJZQkAh1KIZJRbGr04dqsauXOIi/MTiazEeaEyhDiFGRwf0v5IgGNSD39ZA2oxmlSG8PuowllcgkVx1dT7JbMAx1khVHA/yQuefNrJAHn/Y8pnmhBjgTwA1qrkVyUTKaGUjYVlX8nvP+KM2OVkTnfrAAAAAElFTkSuQmCC'
+};
+
+let presentStreak = 0;
+
+function spawnConfetti() {
+  const colors = [
+    getComputedStyle(document.documentElement).getPropertyValue('--brand').trim(),
+    getComputedStyle(document.documentElement).getPropertyValue('--present').trim(),
+    getComputedStyle(document.documentElement).getPropertyValue('--late').trim(),
+    '#fbbf24', '#34d399'
+  ];
+  for (let i = 0; i < 40; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti-piece';
+    el.style.left = Math.random() * 100 + 'vw';
+    el.style.top = '-10px';
+    el.style.background = colors[Math.floor(Math.random() * colors.length)];
+    el.style.animationDuration = (1.5 + Math.random() * 2) + 's';
+    el.style.animationDelay = (Math.random() * 0.5) + 's';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 4000);
+  }
+}
+
+function showDogStreak(streak) {
+  // 既存のオーバーレイ削除
+  document.querySelectorAll('.dog-streak-overlay').forEach(e => e.remove());
+
+  const overlay = document.createElement('div');
+  overlay.className = 'dog-streak-overlay';
+
+  const box = document.createElement('div');
+  box.className = 'dog-streak-box';
+
+  const img = document.createElement('img');
+  img.className = 'dog-streak-img';
+
+  const label = document.createElement('div');
+  label.className = 'dog-streak-label';
+  label.textContent = `🔥 ${streak}連続出席！`;
+
+  box.appendChild(img);
+  box.appendChild(label);
+  overlay.appendChild(box);
+  document.body.appendChild(overlay);
+
+  // しっぽアニメ
+  let frame = 0;
+  const frames = [DOG_FRAMES.tail1, DOG_FRAMES.tail2];
+  img.src = frames[0];
+  const timer = setInterval(() => {
+    frame = (frame + 1) % frames.length;
+    img.src = frames[frame];
+  }, 250);
+
+  spawnConfetti();
+
+  setTimeout(() => {
+    clearInterval(timer);
+    overlay.style.transition = 'opacity 0.4s';
+    overlay.style.opacity = '0';
+    setTimeout(() => overlay.remove(), 400);
+  }, 2500);
+}
+
+function getDogCount() {
+  return parseInt(localStorage.getItem('ams_dog_count') || '0');
+}
+function addDogCount() {
+  localStorage.setItem('ams_dog_count', getDogCount() + 1);
 }
 
 // ─── TOAST ───
