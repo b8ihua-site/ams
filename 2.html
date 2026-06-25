@@ -900,17 +900,25 @@ display: flex; align-items: center; gap: 12px;
   pointer-events: none;
 }
 .dog-streak-box {
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
   animation: dogPop 0.3s cubic-bezier(0.32,0.72,0,1);
+  background: rgba(255,255,255,0.45);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.7);
+  border-radius: 28px;
+  padding: 28px 40px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.9);
 }
 .dog-streak-img { width: 80px; height: auto; image-rendering: pixelated; }
 .dog-streak-label {
   font-family: 'Roboto Condensed', monospace;
-  font-size: 22px; font-weight: 700;
-  color: var(--brand);
-  background: white; border-radius: 20px;
-  padding: 4px 16px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  font-size: 22px; font-weight: 500;
+  color: var(--text-primary);
+  background: none;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
 }
 @keyframes dogPop {
   from { transform: scale(0.5); opacity: 0; }
@@ -965,7 +973,7 @@ display: flex; align-items: center; gap: 12px;
       <div style="width:20%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 36px 0;text-align:center;">
         <img src="3.PNG" style="width:100%;object-fit:contain;margin-bottom:28px;">
         <div style="font-family:'Noto Sans JP',sans-serif;font-size:24px;font-weight:700;color:#1a1d23;margin-bottom:14px;letter-spacing:-0.5px;line-height:1.2;">出席率がすぐに分かる</div>
-        <div style="font-size:14px;color:#6b7280;line-height:1.9;font-family:'Noto Sans JP',sans-serif;">ダッシュボードで科目ごとの出席率を確認。欠席が増えるとアラートでお知らせします。</div>
+        <div style="font-size:14px;color:#6b7280;line-height:1.9;font-family:'Noto Sans JP',sans-serif;">ダッシュボードで科目ごとの出席率を確認。欠席が増えると警告でお知らせします。</div>
       </div>
       <!-- Slide 4 -->
       <div style="width:20%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 36px 0;text-align:center;">
@@ -1116,7 +1124,7 @@ display: flex; align-items: center; gap: 12px;
         <span class="di-icon"><span class="mi mi-22">edit</span></span> 時間割を編集
       </button>
       <button class="drawer-item" onclick="switchView('alerts'); closeDrawer()">
-        <span class="di-icon"><span class="mi mi-22">notifications</span></span> アラート
+        <span class="di-icon"><span class="mi mi-22">notifications</span></span> 警告
       </button>
     </div>
   
@@ -1207,13 +1215,16 @@ display: flex; align-items: center; gap: 12px;
  <!-- ALERTS VIEW -->
 <div class="view" id="view-alerts">
   <div class="settings-wrap">
-    
-    <div class="dash-section-title">アラート</div>
+    <div style="display:flex;align-items:center;gap:10px;font-size:22px;font-weight:700;letter-spacing:0.5px;margin-bottom:5px; margin-top:20px;">
+  <span class="mi" style="font-size:26px;">notifications</span>警告
+</div>
+<div style="font-size:11px;color:var(--text-muted);margin-bottom:26px;">基準を超過すると，科目名がブランドカラーになります</div>
+    <div class="dash-section-title">基準</div>
     <div class="settings-section">
       <div class="settings-row">
         <div class="settings-row-left">
-          <div class="settings-row-title">欠席回数でアラート</div>
-          <div class="settings-row-sub">残りの許容欠席数でアラート</div>
+          <div class="settings-row-title">欠席回数で警告</div>
+          <div class="settings-row-sub">残りの許容欠席数で警告</div>
         </div>
         <div style="display:flex;align-items:center;gap:6px">
           <label class="toggle">
@@ -1226,8 +1237,8 @@ display: flex; align-items: center; gap: 12px;
       </div>
       <div class="settings-row">
         <div class="settings-row-left">
-          <div class="settings-row-title">出席率でアラート</div>
-          <div class="settings-row-sub">現時点での出席率でアラート</div>
+          <div class="settings-row-title">出席率で警告</div>
+          <div class="settings-row-sub">現時点での出席率で警告</div>
         </div>
         <div style="display:flex;align-items:center;gap:6px">
           <label class="toggle">
@@ -1239,7 +1250,7 @@ display: flex; align-items: center; gap: 12px;
         </div>
       </div>
     </div>
-    <div class="dash-section-title">現在のアラート</div>
+    <div class="dash-section-title">現在の警告</div>
     <div id="alertList"></div>
   </div>
 </div>
@@ -1814,7 +1825,7 @@ function calcTotalAttendanceRate(allClasses) {
   return Math.round(totalScore / totalCount * 100);
 }
 
-// ─── アラート判定 ───
+// ─── 警告判定 ───
 function getAlertedClassIds() {
 const absAlertOn = getSetting('absAlertOn', true);
 const rateAlertOn = getSetting('rateAlertOn', true);
@@ -2971,14 +2982,12 @@ function recordAttendance(status) {
   recs.sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
   saveRecords(currentClassId, recs);
 
-// ストリーク判定
+// ストリーク判定（表示なし、カウントのみ）
 if (status === 'present') {
   const streak = (parseInt(localStorage.getItem('ams_streak') || '0')) + 1;
   localStorage.setItem('ams_streak', streak);
-  if (streak >= 2 && getSetting('dogStreak', true)) {
-    showDogStreak(streak);
-    addDogCount();
-  }
+  const best = parseInt(localStorage.getItem('ams_streak_best') || '0');
+  if (streak > best) localStorage.setItem('ams_streak_best', streak);
 } else if (status === 'absent' || status === 'late') {
   localStorage.setItem('ams_streak', '0');
 }
@@ -3010,43 +3019,31 @@ if (dayOfWeek > 0 && getSetting('dogStreak', true)) {
 }
 
 function showFullAttendance() {
+  addDogCount();
   document.querySelectorAll('.dog-streak-overlay').forEach(e => e.remove());
-
   const overlay = document.createElement('div');
   overlay.className = 'dog-streak-overlay';
-
   const box = document.createElement('div');
   box.className = 'dog-streak-box';
-
   const img = document.createElement('img');
   img.className = 'dog-streak-img';
-
   const label = document.createElement('div');
   label.className = 'dog-streak-label';
-  label.textContent = '🎉 フル出席！';
-
+  label.textContent = 'フル出席🎉';
   box.appendChild(img);
   box.appendChild(label);
   overlay.appendChild(box);
   document.body.appendChild(overlay);
-
   let frame = 0;
   const frames = [DOG_FRAMES.tail1, DOG_FRAMES.tail2];
   img.src = frames[0];
-  const timer = setInterval(() => {
-    frame = (frame + 1) % frames.length;
-    img.src = frames[frame];
-  }, 250);
-
-  spawnConfetti();
-  spawnConfetti(); // 2回分豪華に
-
-  setTimeout(() => {
-    clearInterval(timer);
-    overlay.style.transition = 'opacity 0.4s';
-    overlay.style.opacity = '0';
-    setTimeout(() => overlay.remove(), 400);
-  }, 3000);
+  const timer = setInterval(() => { frame = (frame+1)%frames.length; img.src = frames[frame]; }, 250);
+  //setTimeout(() => {
+    //clearInterval(timer);
+    //overlay.style.transition = 'opacity 0.4s';
+    //overlay.style.opacity = '0';
+   // setTimeout(() => overlay.remove(), 400);
+  //}, 3000);
 }
 
 function deleteRecord(classId, recId) {
@@ -3253,13 +3250,22 @@ document.getElementById('overviewCards').innerHTML=`
 const lateHex    = cssColorToHex(getComputedStyle(document.documentElement).getPropertyValue('--late').trim())    || '#f59e0b';
 const absentHex  = cssColorToHex(getComputedStyle(document.documentElement).getPropertyValue('--absent').trim())  || '#ef4444';
 
-// dogカウント表示
-const dogCount = getDogCount();
+const streak = parseInt(localStorage.getItem('ams_streak') || '0');
+const streakBest = parseInt(localStorage.getItem('ams_streak_best') || '0');
+const fullCount = getDogCount();
 document.getElementById('overviewCards').insertAdjacentHTML('afterend', `
-  <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;padding:10px 14px;background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow-sm);">
-    <img src="${DOG_FRAMES.tail1}" style="width:28px;image-rendering:pixelated;">
-    <span style="font-size:13px;font-weight:600;flex:1;">連続出席ボーナス</span>
-    <span style="font-family:'Roboto Condensed',monospace;font-size:20px;font-weight:700;color:var(--brand);">×${dogCount}</span>
+  <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;">
+    <div style="display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow-sm);">
+      <span class="mi" style="font-size:22px;color:var(--brand)">local_fire_department</span>
+      <span style="font-size:13px;font-weight:600;flex:1;">連続出席</span>
+      <span style="font-family:'Roboto Condensed',monospace;font-size:16px;font-weight:700;color:var(--text-primary);">現在 ${streak}連続</span>
+      <span style="font-family:'Roboto Condensed',monospace;font-size:12px;color:var(--text-muted);margin-left:8px;">最高 ${streakBest}</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow-sm);">
+      <img src="${DOG_FRAMES.tail1}" style="width:28px;image-rendering:pixelated;">
+      <span style="font-size:13px;font-weight:600;flex:1;">フル出席</span>
+      <span style="font-family:'Roboto Condensed',monospace;font-size:20px;font-weight:500;color:var(--text-primary);">×${fullCount}</span>
+    </div>
   </div>
 `);
 
@@ -3402,7 +3408,7 @@ const rate = mergedRecs.length > 0 ? Math.round((pCnt + lateCnt * 0.5) / mergedR
 
   const wrap = document.getElementById('alertList');
   if (!alerts.length) {
-    wrap.innerHTML = '<div style="text-align:center;color:var(--text-muted);font-size:13px;padding:20px;display:flex;align-items:center;justify-content:center;gap:8px"><span class="mi mi-18">check_circle</span> アラートなし</div>';
+    wrap.innerHTML = '<div style="text-align:center;color:var(--text-muted);font-size:13px;padding:20px;display:flex;align-items:center;justify-content:center;gap:8px"><span class="mi mi-18">check_circle</span> 警告なし</div>';
   } else {
     wrap.innerHTML = alerts.map(a => `<div class="alert-row ${a.type}">
       <span class="ar-icon"><span class="mi mi-22">${a.type==='warn'?'error':'warning'}</span></span>
@@ -3731,33 +3737,6 @@ function showDogStreak(streak) {
   }, 2500);
 }
 
-function showFullAttendance() {
-  document.querySelectorAll('.dog-streak-overlay').forEach(e => e.remove());
-  const overlay = document.createElement('div');
-  overlay.className = 'dog-streak-overlay';
-  const box = document.createElement('div');
-  box.className = 'dog-streak-box';
-  const img = document.createElement('img');
-  img.className = 'dog-streak-img';
-  const label = document.createElement('div');
-  label.className = 'dog-streak-label';
-  label.textContent = '🎉 フル出席！';
-  box.appendChild(img);
-  box.appendChild(label);
-  overlay.appendChild(box);
-  document.body.appendChild(overlay);
-  let frame = 0;
-  const frames = [DOG_FRAMES.tail1, DOG_FRAMES.tail2];
-  img.src = frames[0];
-  const timer = setInterval(() => { frame = (frame+1)%frames.length; img.src = frames[frame]; }, 250);
-  spawnConfetti(); spawnConfetti();
-  setTimeout(() => {
-    clearInterval(timer);
-    overlay.style.transition = 'opacity 0.4s';
-    overlay.style.opacity = '0';
-    setTimeout(() => overlay.remove(), 400);
-  }, 3000);
-}
 
 
 function getDogCount() {
