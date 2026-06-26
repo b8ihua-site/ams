@@ -166,7 +166,7 @@ animation: spin 0.8s linear infinite;
   display: flex; align-items: center; justify-content: space-between;
   padding: 10px 18px;
   background: var(--brandbar-glass, rgba(220,72,72,0.45));
-  backdrop-filter: blur(8px) saturate(180%);
+  backdrop-filter: blur(2px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   border-bottom: 1px solid rgba(255,255,255,0.2);
   box-shadow: 0 2px 12px rgba(0,0,0,0.06);
@@ -209,7 +209,7 @@ opacity: 1; pointer-events: all; transform: scale(1);
   padding: 10px 16px;
   gap: 12px;
   background: rgba(255,255,255,0.45);
-  backdrop-filter: blur(8px) saturate(180%);
+  backdrop-filter: blur(2px) saturate(180%);
   -webkit-backdrop-filter: blur(8px) saturate(180%);
   border: 1px solid rgba(255,255,255,0.6);
   border-radius: var(--radius);
@@ -900,25 +900,23 @@ display: flex; align-items: center; gap: 12px;
   pointer-events: none;
 }
 .dog-streak-box {
-  display: flex; flex-direction: column; align-items: center; gap: 12px;
+  display: flex; flex-direction: column; align-items: center; gap: 0;
   animation: dogPop 0.3s cubic-bezier(0.32,0.72,0,1);
-  background: rgba(255,255,255,0.45);
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  border: 1px solid rgba(255,255,255,0.7);
-  border-radius: 28px;
-  padding: 28px 40px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.9);
 }
 .dog-streak-img { width: 80px; height: auto; image-rendering: pixelated; }
 .dog-streak-label {
   font-family: 'Roboto Condensed', monospace;
-  font-size: 22px; font-weight: 500;
-  color: var(--text-primary);
-  background: none;
-  border-radius: 0;
-  padding: 0;
-  box-shadow: none;
+  font-size: 28px; font-weight: 700;
+  color: white;
+  text-align: center;
+  line-height: 1.4;
+  background: color-mix(in srgb, var(--brand) 55%, transparent);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid color-mix(in srgb, var(--brand) 35%, white);
+  border-radius: 24px;
+  padding: 20px 36px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.3);
 }
 @keyframes dogPop {
   from { transform: scale(0.5); opacity: 0; }
@@ -3025,25 +3023,17 @@ function showFullAttendance() {
   overlay.className = 'dog-streak-overlay';
   const box = document.createElement('div');
   box.className = 'dog-streak-box';
-  const img = document.createElement('img');
-  img.className = 'dog-streak-img';
   const label = document.createElement('div');
   label.className = 'dog-streak-label';
-  label.textContent = 'フル出席🎉';
-  box.appendChild(img);
+  label.innerHTML = 'フル出席🎉<br><span style="font-size:13px;font-weight:400;opacity:0.85;">本日もお疲れ様でした！</span>';
   box.appendChild(label);
   overlay.appendChild(box);
   document.body.appendChild(overlay);
-  let frame = 0;
-  const frames = [DOG_FRAMES.tail1, DOG_FRAMES.tail2];
-  img.src = frames[0];
-  const timer = setInterval(() => { frame = (frame+1)%frames.length; img.src = frames[frame]; }, 250);
-  //setTimeout(() => {
-    //clearInterval(timer);
-    //overlay.style.transition = 'opacity 0.4s';
-    //overlay.style.opacity = '0';
-   // setTimeout(() => overlay.remove(), 400);
-  //}, 3000);
+  // setTimeout(() => {
+  //   overlay.style.transition = 'opacity 0.4s';
+  //   overlay.style.opacity = '0';
+  //   setTimeout(() => overlay.remove(), 400);
+  // }, 3000);
 }
 
 function deleteRecord(classId, recId) {
