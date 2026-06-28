@@ -1394,7 +1394,35 @@ body.share-view .cell { cursor: pointer; }
   </div>
 </div>
 
-  
+<!-- フォロー中ユーザーの時間割ビュー -->
+<div class="overlay" id="followedUserOverlay" style="z-index:700">
+  <div class="modal" id="followedUserModal">
+    <div style="padding:12px 20px 16px;border-bottom:none;margin-top:50px;">
+      <button onclick="closeFollowedUserView()" style="border:none;background:none;cursor:pointer;color:var(--text-primary);display:flex;align-items:center;padding:0;margin-bottom:12px;">
+        <span class="mi mi-22">arrow_back_ios</span>
+      </button>
+      <div style="padding:16px 0 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;">
+        <div class="auth-avatar" id="followedUserAvatar" style="width:52px;height:52px;border-radius:14px;font-size:22px;">?</div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:20px;font-weight:700;" id="followedUserName">-</div>
+          <div style="font-size:13px;color:var(--text-muted);" id="followedUserMeta">@-</div>
+        </div>
+        <div style="font-size:11px;color:var(--text-muted);background:var(--bg);border-radius:8px;padding:5px 10px;border:1px solid var(--border);">閲覧のみ</div>
+      </div>
+    </div>
+    <div style="padding:10px 10px 100px;">
+      <div class="day-labels" id="followedUserDayLabels">
+        <div class="day-label" data-day="1">月</div>
+        <div class="day-label" data-day="2">火</div>
+        <div class="day-label" data-day="3">水</div>
+        <div class="day-label" data-day="4">木</div>
+        <div class="day-label" data-day="5">金</div>
+      </div>
+      <div id="followedUserTimetableGrid"></div>
+    </div>
+  </div>
+</div>
+
 <!-- MY PAGE VIEW -->
 <div class="overlay" id="myPageOverlay" style="z-index:600">
   <div class="modal" id="myPageModal">
@@ -1647,6 +1675,7 @@ body.share-view .cell { cursor: pointer; }
 <script>
 let isShareView = false;
 let shareViewData = null;
+let _fromFollowedView = false;
 // ─── SPLASH & ONBOARDING ───
 const ONBOARDING_KEY = 'ams_onboarding_done';
 let obCurrentStep = 0;
@@ -3055,7 +3084,17 @@ function openModal(classId) {
   refreshModal();
   document.getElementById('overlay').classList.add('open');
 }
-function closeModal() { document.getElementById('overlay').classList.remove('open'); currentClassId=null; }
+function closeModal() {
+  document.getElementById('overlay').classList.remove('open');
+  document.getElementById('overlay').style.zIndex = '';
+  currentClassId = null;
+  if (_fromFollowedView) {
+    _fromFollowedView = false;
+    isShareView = false;
+    shareViewData = null;
+    document.body.classList.remove('share-view');
+  }
+}
 document.getElementById('overlay').addEventListener('click', e => { if(e.target===document.getElementById('overlay')) closeModal(); });
 
 function saveMemo() {
@@ -4185,6 +4224,32 @@ function renderMyPage() {
       </div>
     </div>
 
+    <div class="mypage-section-title">フォロー</div>
+    <div class="settings-section">
+      <div style="padding:14px 16px;border-bottom:1px solid var(--border);">
+        <div style="font-size:13px;font-weight:600;margin-bottom:10px;">ユーザーを検索してフォロー</div>
+        <div style="display:flex;gap:8px;">
+          <input type="text" id="followSearchInput" placeholder="ユーザー名"
+            style="flex:1;border:1.5px solid var(--border);border-radius:10px;padding:10px 12px;font-size:14px;font-family:'Roboto Condensed',monospace;background:var(--bg);color:var(--text-primary);outline:none;box-sizing:border-box;"
+            onfocus="this.style.borderColor=getBrandHex()" onblur="this.style.borderColor=''"
+            onkeydown="if(event.key==='Enter')searchFollowUser()">
+          <button onclick="searchFollowUser()" class="settings-btn"><span class="mi mi-18">search</span></button>
+        </div>
+        <div id="followSearchResult" style="margin-top:10px;"></div>
+      </div>
+      <div style="padding:14px 16px;border-bottom:1px solid var(--border);">
+        <div style="font-size:13px;font-weight:600;margin-bottom:10px;display:flex;align-items:center;gap:8px;">
+          フォローリクエスト
+          <span id="pendingBadge" style="display:none;background:var(--brand);color:white;border-radius:99px;padding:1px 8px;font-size:11px;font-weight:700;"></span>
+        </div>
+        <div id="pendingRequestsList"><div style="font-size:12px;color:var(--text-muted);">読み込み中...</div></div>
+      </div>
+      <div style="padding:14px 16px;">
+        <div style="font-size:13px;font-weight:600;margin-bottom:10px;">フォロー中</div>
+        <div id="followingList"><div style="font-size:12px;color:var(--text-muted);">読み込み中...</div></div>
+      </div>
+    </div>
+    
     <div class="mypage-section-title">アカウント</div>
     <div class="settings-section">
       <div class="settings-row">
@@ -4208,6 +4273,8 @@ function renderMyPage() {
       </div>
     </div>
   `;
+  loadPendingRequests();
+  loadFollowing();
 }
 
 // プロフィール更新
@@ -4328,6 +4395,261 @@ if (_shareToken) {
   fbAuth.onAuthStateChanged(() => {
     if (isShareView) return; // 二重実行防止
     initShareView(_shareToken);
+  });
+}
+
+// ─── FOLLOW SYSTEM ───
+
+async function searchFollowUser() {
+  const input = document.getElementById('followSearchInput');
+  const resultEl = document.getElementById('followSearchResult');
+  if (!input || !resultEl) return;
+  const username = input.value.toLowerCase().trim();
+  if (!username) return;
+  if (username === fbUserProfile?.username) {
+    resultEl.innerHTML = '<div style="font-size:12px;color:var(--text-muted);">自分のユーザー名は検索できません</div>';
+    return;
+  }
+  resultEl.innerHTML = '<div style="font-size:12px;color:var(--text-muted);">検索中...</div>';
+  try {
+    const unSnap = await fbDb.collection('usernames').doc(username).get();
+    if (!unSnap.exists) {
+      resultEl.innerHTML = '<div style="font-size:12px;color:var(--text-muted);">ユーザーが見つかりません</div>';
+      return;
+    }
+    const targetUid = unSnap.data().uid;
+    const userSnap = await fbDb.collection('users').doc(targetUid).get();
+    if (!userSnap.exists) { resultEl.innerHTML = '<div style="font-size:12px;color:var(--text-muted);">ユーザーが見つかりません</div>'; return; }
+    const userData = userSnap.data();
+    const displayName = userData.displayName || username;
+    const isPublic = userData.isPublic || false;
+
+    const followId = `${currentFbUser.uid}_${targetUid}`;
+    const followSnap = await fbDb.collection('follows').doc(followId).get();
+    let actionHtml = '';
+    if (followSnap.exists) {
+      const status = followSnap.data().status;
+      actionHtml = status === 'accepted'
+        ? '<span style="font-size:12px;color:var(--present);font-weight:700;">✓ フォロー中</span>'
+        : '<span style="font-size:12px;color:var(--text-muted);">申請中...</span>';
+    } else {
+      const btnLabel = isPublic ? 'フォロー' : '申請する';
+      actionHtml = `<button onclick="sendFollowRequest('${targetUid}','${username}','${escHtml(displayName)}',${isPublic})"
+        style="border:none;background:var(--brand);color:white;border-radius:8px;padding:7px 14px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;">${btnLabel}</button>`;
+    }
+    resultEl.innerHTML = `
+      <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;background:var(--bg);border-radius:10px;border:1px solid var(--border);">
+        <div class="auth-avatar" style="width:36px;height:36px;border-radius:9px;font-size:14px;flex-shrink:0;">${displayName.charAt(0).toUpperCase()}</div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:14px;font-weight:700;">${escHtml(displayName)}</div>
+          <div style="font-size:11px;color:var(--text-muted);">@${escHtml(username)} · ${isPublic ? '公開' : '非公開'}</div>
+        </div>
+        ${actionHtml}
+      </div>`;
+  } catch(e) {
+    console.error(e);
+    resultEl.innerHTML = '<div style="font-size:12px;color:var(--absent);">エラーが発生しました</div>';
+  }
+}
+
+async function sendFollowRequest(targetUid, targetUsername, targetDisplayName, isPublic) {
+  if (!currentFbUser) return;
+  const followId = `${currentFbUser.uid}_${targetUid}`;
+  const status = isPublic ? 'accepted' : 'pending';
+  try {
+    await fbDb.collection('follows').doc(followId).set({
+      follower: currentFbUser.uid,
+      followerUsername: fbUserProfile.username,
+      followerDisplayName: fbUserProfile.displayName,
+      target: targetUid,
+      targetUsername,
+      targetDisplayName,
+      status,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    showToast(isPublic ? 'フォローしました' : 'フォロー申請を送りました', 'check_circle');
+    searchFollowUser();
+    loadFollowing();
+  } catch(e) {
+    showToast('エラーが発生しました', 'error');
+  }
+}
+
+async function loadPendingRequests() {
+  if (!currentFbUser) return;
+  const wrap = document.getElementById('pendingRequestsList');
+  const badge = document.getElementById('pendingBadge');
+  if (!wrap) return;
+  try {
+    const snap = await fbDb.collection('follows')
+      .where('target', '==', currentFbUser.uid)
+      .where('status', '==', 'pending').get();
+    if (badge) { badge.style.display = snap.empty ? 'none' : 'inline'; if (!snap.empty) badge.textContent = snap.size; }
+    if (snap.empty) { wrap.innerHTML = '<div style="font-size:12px;color:var(--text-muted);">申請はありません</div>'; return; }
+    wrap.innerHTML = snap.docs.map(doc => {
+      const d = doc.data();
+      return `<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);">
+        <div class="auth-avatar" style="width:32px;height:32px;border-radius:8px;font-size:13px;flex-shrink:0;">${(d.followerDisplayName||'?').charAt(0).toUpperCase()}</div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:13px;font-weight:700;">${escHtml(d.followerDisplayName||'')}</div>
+          <div style="font-size:11px;color:var(--text-muted);">@${escHtml(d.followerUsername||'')}</div>
+        </div>
+        <div style="display:flex;gap:6px;">
+          <button onclick="acceptFollowRequest('${doc.id}')"
+            style="border:none;background:var(--present-light);color:var(--present);border-radius:8px;padding:6px 12px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;">承認</button>
+          <button onclick="rejectFollowRequest('${doc.id}')"
+            style="border:none;background:var(--absent-light);color:var(--absent);border-radius:8px;padding:6px 12px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;">拒否</button>
+        </div>
+      </div>`;
+    }).join('');
+  } catch(e) {
+    if (e.message && e.message.includes('index')) {
+      wrap.innerHTML = '<div style="font-size:12px;color:var(--text-muted);">コンソールのリンクからインデックスを作成してください</div>';
+    } else {
+      wrap.innerHTML = '<div style="font-size:12px;color:var(--absent);">読み込み失敗</div>';
+    }
+  }
+}
+
+async function acceptFollowRequest(followId) {
+  try {
+    await fbDb.collection('follows').doc(followId).update({ status: 'accepted' });
+    showToast('フォローを承認しました', 'check_circle');
+    loadPendingRequests();
+  } catch(e) { showToast('エラーが発生しました', 'error'); }
+}
+
+async function rejectFollowRequest(followId) {
+  try {
+    await fbDb.collection('follows').doc(followId).delete();
+    showToast('フォロー申請を拒否しました', 'close');
+    loadPendingRequests();
+  } catch(e) { showToast('エラーが発生しました', 'error'); }
+}
+
+async function loadFollowing() {
+  if (!currentFbUser) return;
+  const wrap = document.getElementById('followingList');
+  if (!wrap) return;
+  try {
+    const snap = await fbDb.collection('follows')
+      .where('follower', '==', currentFbUser.uid)
+      .where('status', '==', 'accepted').get();
+    if (snap.empty) { wrap.innerHTML = '<div style="font-size:12px;color:var(--text-muted);">フォロー中のユーザーはいません</div>'; return; }
+    wrap.innerHTML = snap.docs.map(doc => {
+      const d = doc.data();
+      return `<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);">
+        <div class="auth-avatar" style="width:32px;height:32px;border-radius:8px;font-size:13px;flex-shrink:0;">${(d.targetDisplayName||'?').charAt(0).toUpperCase()}</div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:13px;font-weight:700;">${escHtml(d.targetDisplayName||'')}</div>
+          <div style="font-size:11px;color:var(--text-muted);">@${escHtml(d.targetUsername||'')}</div>
+        </div>
+        <div style="display:flex;gap:6px;">
+          <button onclick="openFollowedUserView('${d.target}','${escHtml(d.targetDisplayName||'')}','${escHtml(d.targetUsername||'')}')"
+            style="border:none;background:var(--present-light);color:var(--present);border-radius:8px;padding:6px 12px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;">
+            <span class="mi mi-16">grid_on</span> 時間割
+          </button>
+          <button onclick="unfollowUser('${d.target}')"
+            style="border:none;background:var(--bg);color:var(--text-muted);border-radius:8px;padding:6px 10px;font-family:inherit;font-size:12px;cursor:pointer;border:1px solid var(--border);">解除</button>
+        </div>
+      </div>`;
+    }).join('');
+  } catch(e) { wrap.innerHTML = '<div style="font-size:12px;color:var(--absent);">読み込み失敗</div>'; }
+}
+
+async function unfollowUser(targetUid) {
+  if (!confirm('フォローを解除しますか？')) return;
+  const followId = `${currentFbUser.uid}_${targetUid}`;
+  try {
+    await fbDb.collection('follows').doc(followId).delete();
+    showToast('フォローを解除しました', 'close');
+    loadFollowing();
+  } catch(e) { showToast('エラーが発生しました', 'error'); }
+}
+
+async function openFollowedUserView(uid, displayName, username) {
+  try {
+    const ttSnap = await fbDb.doc(`users/${uid}/data/timetable`).get();
+    if (!ttSnap.exists) { showToast('時間割データがありません', 'error'); return; }
+    const ttData = ttSnap.data();
+    const recsSnap = await fbDb.collection(`users/${uid}/records`).get();
+    const records = {};
+    recsSnap.forEach(docSnap => { records[docSnap.id] = docSnap.data().records || []; });
+
+    document.getElementById('followedUserAvatar').textContent = displayName.charAt(0).toUpperCase();
+    document.getElementById('followedUserName').textContent = displayName;
+    document.getElementById('followedUserMeta').textContent = `@${username} · ${ttData.className || ''}`;
+
+    buildFollowedTimetable(ttData.classes || [], records, ttData.noAttendance || []);
+    document.getElementById('followedUserOverlay').classList.add('open');
+  } catch(e) {
+    console.error(e);
+    showToast('時間割の読み込みに失敗しました', 'error');
+  }
+}
+
+function closeFollowedUserView() {
+  document.getElementById('followedUserOverlay').classList.remove('open');
+}
+
+function buildFollowedTimetable(classes, records, noAttendance) {
+  const grid = document.getElementById('followedUserTimetableGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  const today = jsDay();
+  const brandHex = getBrandHex();
+  document.querySelectorAll('#followedUserDayLabels .day-label').forEach(el =>
+    el.classList.toggle('today', +el.dataset.day === today));
+  PERIODS.forEach(period => {
+    const row = document.createElement('div'); row.className = 'period-row';
+    const cells = document.createElement('div'); cells.className = 'period-cells';
+    for (let day = 1; day <= 5; day++) {
+      const cls = classes.find(c => c.day === day && c.period === period.id);
+      const cell = document.createElement('div');
+      if (!cls) { cell.className = 'cell empty'; }
+      else {
+        cell.className = 'cell';
+        if (noAttendance.includes(cls.id)) {
+          cell.classList.add('no-attendance');
+          cell.innerHTML = `<div class="cell-name">${escHtml(cls.name)}</div>
+            <div class="cell-teacher">${escHtml(cls.teacher)}</div>
+            <div class="cell-room">${escHtml(cls.room)}</div>`;
+        } else {
+          if (day === today) {
+            const nm = nowMinutes(), pStart = timeToMinutes(period.start), pEnd = timeToMinutes(period.end);
+            if (nm >= pStart && nm <= pEnd) cell.classList.add('current-class');
+          }
+          const recs = records[cls.id] || [];
+          const cntP = recs.filter(r => r.status === 'present').length;
+          const cntL = recs.filter(r => r.status === 'late').length;
+          const cntA = recs.filter(r => r.status === 'absent').length;
+          const cntN = recs.filter(r => r.status === 'none').length;
+          const seijiSVG = renderSimpleSVG(cntA, cntL, Math.floor(15 / 3), brandHex);
+          cell.innerHTML = `<div class="cell-name">${escHtml(cls.name)}</div>
+            <div class="cell-teacher">${escHtml(cls.teacher)}</div>
+            <div class="cell-room">${escHtml(cls.room)}</div>
+            <div style="margin:8px 0">${seijiSVG}</div>
+<div class="cell-stats">
+              <span class="stat-num p">${cntP}</span>
+              <span class="stat-num l">${cntL}</span>
+              <span class="stat-num a">${cntA}</span>
+              <span class="stat-num">${cntN}</span>
+            </div>`;
+          const capturedCls = cls;
+cell.addEventListener('click', () => {
+            document.body.classList.add('share-view');
+            _fromFollowedView = true;
+            shareViewData = { classes, records, noAttendance };
+            isShareView = true;
+            document.getElementById('overlay').style.zIndex = '800';
+            openModal(capturedCls.id);
+          });
+        }
+      }
+      cells.appendChild(cell);
+    }
+    row.appendChild(cells);
+    grid.appendChild(row);
   });
 }
 </script>
