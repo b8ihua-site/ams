@@ -26,11 +26,11 @@ a {color:var(--brand);}
 --late-light: #eeffeb;
 --absent: #d10158;
 --absent-light: #fef2f2;
---current: #b92d5d;
+--current: #9b0041;
 --current-light: #fff0f0;
---brand: #b92d5d;
+--brand: #9b0041;
 --brandbar: #ffffff;
---header-text: #b92d5d;
+--header-text: #9b0041;
 --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
 --shadow-md: 0 4px 16px rgba(0,0,0,0.10);
 --shadow-lg: 0 8px 32px rgba(0,0,0,0.14);
@@ -218,7 +218,7 @@ opacity: 1; pointer-events: all; transform: scale(1);
 
 
 
-.header-class-name { font-size: 17px; font-weight: 700; letter-spacing: -0.3px; color: var(--text-primary); font-family:"Lexend"; font-weight:400;}
+.header-class-name { font-size: 17px; font-weight: 700; letter-spacing: -0.3px; color: var(--text-primary); font-family:"Lexend"; font-weight:100;}
 .header-datetime { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; }
 .header-clock { font-family: 'Roboto Condensed', monospace; font-size: 18px; font-weight: 500; color: var(--brand); letter-spacing: 1px; line-height: 1; margin-top:10px;}
 .header-date { font-family: 'Roboto Condensed', monospace; font-size: 10px; font-weight: 400; color: var(--text-muted); letter-spacing: 0.3px; }
@@ -892,40 +892,90 @@ display: flex; align-items: center; gap: 12px;
 .tl-empty { text-align:center; padding:70px 20px; color:var(--text-muted); }
 .tl-empty .mi { font-size:48px; opacity:0.35; }
 .tl-empty-text { font-size:14px; margin-top:12px; }
-/* ─── DOG STREAK ─── */
-.dog-streak-overlay {
-  position: fixed; inset: 0; z-index: 9000;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  pointer-events: none;
+
+/* ─── SHARE BANNER ─── */
+.share-banner {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  background: var(--brand); color: white;
+  padding: 8px 16px;
+  display: flex; align-items: center; gap: 10px;
+  font-size: 13px; font-weight: 600;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
 }
-.dog-streak-box {
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-  animation: dogPop 0.3s cubic-bezier(0.32,0.72,0,1);
+.share-banner .mi { font-size: 18px; }
+body.share-view .header { top: 38px; }
+body.share-view .timetable-wrap { padding-top: 185px; }
+body.share-view .cell { cursor: default; }
+body.share-view .bottom-nav { display: none; }
+body.share-view .record-row { display: none; }
+body.share-view .action-btns { display: none; }
+body.share-view .memo-textarea { display: none; }
+body.share-view .memo-save-btn { display: none; }
+body.share-view .cell-color-section { display: none; }
+body.share-view .section-label:first-of-type { display: none; }
+body.share-view .cell { cursor: pointer; }
+
+/* ─── SHARE ─── */
+.share-url-box {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 10px; padding: 10px 12px; margin-bottom: 10px;
 }
-.dog-streak-img { width: 80px; height: auto; image-rendering: pixelated; }
-.dog-streak-label {
+.share-url-text {
+  flex: 1; font-family: 'Roboto Condensed', monospace;
+  font-size: 11px; color: var(--text-muted);
+  word-break: break-all; line-height: 1.5;
+}
+.share-url-copy-btn {
+  border: none; background: var(--brand); color: white;
+  border-radius: 8px; padding: 7px 12px;
+  font-family: inherit; font-size: 12px; font-weight: 700;
+  cursor: pointer; white-space: nowrap; flex-shrink: 0;
+  display: flex; align-items: center; gap: 5px;
+}
+.share-url-copy-btn:active { opacity: 0.8; }
+.mypage-section-title {
+  font-size: 11px; font-weight: 700; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 1px;
+  margin: 24px 0 8px;
+}
+.mypage-section-title:first-child { margin-top: 0; }
+
+/* ─── AUTH ─── */
+.auth-user-bar {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 20px 16px;
+}
+.auth-avatar {
+  width: 38px; height: 38px; border-radius: 10px;
+  background: var(--brand); color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; font-weight: 700; flex-shrink: 0;
   font-family: 'Roboto Condensed', monospace;
-  font-size: 22px; font-weight: 700;
-  color: var(--brand);
-  background: white; border-radius: 20px;
-  padding: 4px 16px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
 }
-@keyframes dogPop {
-  from { transform: scale(0.5); opacity: 0; }
-  to   { transform: scale(1);   opacity: 1; }
+.auth-login-btn {
+  display: flex; align-items: center; gap: 14px;
+  padding: 13px 20px; cursor: pointer;
+  border: none; background: none; width: 100%; text-align: left;
+  font-size: 14px; font-weight: 500; color: var(--brand);
+  border-bottom: 1px solid var(--border); font-family: inherit;
 }
-.confetti-piece {
-  position: fixed; width: 8px; height: 8px; border-radius: 2px;
-  pointer-events: none; z-index: 8999;
-  animation: confettiFall linear forwards;
+.auth-sync-indicator {
+  position: fixed; top: max(14px, env(safe-area-inset-top, 14px)); left: 50%;
+  transform: translateX(-50%);
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 20px; padding: 5px 14px;
+  font-size: 11px; font-weight: 500; color: var(--text-muted);
+  display: flex; align-items: center; gap: 5px;
+  z-index: 500; opacity: 0; transition: opacity 0.3s;
+  pointer-events: none; white-space: nowrap;
 }
-@keyframes confettiFall {
-  0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
-  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-}
+.auth-sync-indicator.show { opacity: 1; }
 </style>
+
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
 </head>
 <body>
 
@@ -1091,9 +1141,36 @@ display: flex; align-items: center; gap: 12px;
     </div>
     <div style="font-family:'Noto Sans JP',sans-serif;font-size:10px;color:var(--text-muted);letter-spacing:0.5px;margin-top:-4px;margin-bottom:-2px;">出席管理システム</div>
   </div>
+  <!-- Auth area in drawer -->
+</div>
+</div>
 
+    <!-- Auth area -->
+    <button class="auth-login-btn" id="drawerLoginBtn" onclick="openLoginModal(); closeDrawer()"
+      style="padding:12px 20px;gap:10px;border-bottom:none;">
+      <span class="mi mi-22" style="color:var(--brand)">account_circle</span>
+      <span>ログイン / 新規登録</span>
+    </button>
+    <div id="drawerLoginSub" style="font-size:11px;color:var(--text-muted);padding:0 20px 12px; margin-top:-10px;">ログインするともっと便利に！</div>
+    <div class="auth-user-bar" id="drawerUserInfo" style="display:none;">
+      <div class="auth-avatar" id="drawerAvatar">?</div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:14px;font-weight:700;" id="drawerDisplayName">-</div>
+        <div style="font-size:11px;color:var(--text-muted);" id="drawerUsername">@-</div>
       </div>
+      <button onclick="doLogout()" title="ログアウト"
+        style="border:none;background:none;cursor:pointer;color:var(--text-muted);display:flex;align-items:center;padding:4px;">
+        <span class="mi mi-22">logout</span>
+      </button>
     </div>
+    <button id="drawerMyPageBtn" style="display:none;width:100%;border:none;background:none;
+      font-family:inherit;cursor:pointer;padding:10px 20px 14px;
+      display:none;align-items:center;gap:10px;border-bottom:1px solid var(--border);"
+      onclick="openMyPage();closeDrawer()">
+      <span class="mi mi-20" style="color:var(--brand)">manage_accounts</span>
+      <span style="font-size:13px;font-weight:600;color:var(--brand);flex:1;text-align:left;">マイページ</span>
+      <span class="mi mi-20" style="color:var(--text-muted)">chevron_right</span>
+    </button>
     <div class="drawer-section">
 
       <div class="drawer-section-label">表示</div>
@@ -1318,6 +1395,24 @@ display: flex; align-items: center; gap: 12px;
 </div>
 
   
+<!-- MY PAGE VIEW -->
+<div class="overlay" id="myPageOverlay" style="z-index:600">
+  <div class="modal" id="myPageModal">
+    <div class="modal-header" style="padding:12px 20px 16px;border-bottom:none;margin-top:50px;">
+      <button onclick="closeMyPage()" style="border:none;background:none;cursor:pointer;color:var(--text-primary);display:flex;align-items:center;padding:0;margin-bottom:12px;">
+        <span class="mi mi-22">arrow_back_ios</span>
+      </button>
+      <div style="padding:16px 0 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;">
+        <div class="auth-avatar" id="myPageAvatar" style="width:52px;height:52px;border-radius:14px;font-size:22px;">?</div>
+        <div>
+          <div style="font-size:20px;font-weight:700;letter-spacing:-0.3px;" id="myPageDisplayName">-</div>
+          <div style="font-size:13px;color:var(--text-muted);" id="myPageUsername">@-</div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-body" id="myPageBody"></div>
+  </div>
+</div>
 
 <!-- BOTTOM NAV -->
 
@@ -1394,7 +1489,7 @@ display: flex; align-items: center; gap: 12px;
       <div class="section-label">記録一覧</div>
       <div id="recordsTableWrap"></div>
       <div class="cell-color-section" id="cellColorSection"></div>
-      <div class="section-label" style="margin-top: 20px;">メモ</div>
+      <div class="section-label">メモ</div>
       <textarea class="memo-textarea" id="memoTextarea" placeholder="授業のメモ"></textarea>
       <button class="memo-save-btn" onclick="saveMemo()">
         <span class="mi mi-16">save</span> メモを保存
@@ -1428,10 +1523,130 @@ display: flex; align-items: center; gap: 12px;
   </div>
 </div>
 
+<!-- ─── LOGIN MODAL ─── -->
+<div class="overlay" id="loginOverlay" style="z-index:600">
+  <div class="modal" id="loginModal">
+    <div class="modal-header" style="padding:12px 20px 0;border-bottom:none;margin-top:50px;">
+      <button onclick="closeLoginModal()" style="border:none;background:none;cursor:pointer;color:var(--text-primary);display:flex;align-items:center;padding:0;margin-bottom:12px;">
+        <span class="mi mi-22">arrow_back_ios</span>
+      </button>
+      <div style="padding:16px 0 20px;border-bottom:1px solid var(--border);">
+        <div style="font-size:22px;font-weight:700;letter-spacing:-0.3px;" id="loginModalTitle">ログイン</div>
+        <div style="font-size:13px;color:var(--text-secondary);margin-top:3px;">amsアカウントで、スマホでもiPadでも。<br>ログインしなくても使えます。</div>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex;background:var(--bg);border-radius:12px;padding:4px;gap:4px;margin-bottom:24px;">
+        <button id="tabLogin" onclick="switchAuthTab('login')"
+          style="flex:1;border:none;border-radius:9px;padding:10px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;background:var(--surface);color:var(--brand);box-shadow:var(--shadow-sm);transition:all 0.2s;">ログイン</button>
+        <button id="tabRegister" onclick="switchAuthTab('register')"
+          style="flex:1;border:none;border-radius:9px;padding:10px;font-family:inherit;font-size:13px;font-weight:500;cursor:pointer;background:transparent;color:var(--text-muted);transition:all 0.2s;">新規登録</button>
+      </div>
+
+      <!-- ログインフォーム -->
+      <div id="authLoginForm">
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div>
+            <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:6px;">ユーザー名</div>
+            <input type="text" id="loginUsername" placeholder="username" autocomplete="username"
+              style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:13px 14px;font-size:15px;font-family:'Roboto Condensed',monospace;background:var(--bg);color:var(--text-primary);outline:none;box-sizing:border-box;"
+              onfocus="this.style.borderColor=getBrandHex()" onblur="this.style.borderColor=''">
+          </div>
+          <div>
+            <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:6px;">パスワード</div>
+            <div style="position:relative;">
+  <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password"
+    style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:13px 44px 13px 14px;font-size:15px;font-family:inherit;background:var(--bg);color:var(--text-primary);outline:none;box-sizing:border-box;"
+    onfocus="this.style.borderColor=getBrandHex()" onblur="this.style.borderColor=''"
+    onkeydown="if(event.key==='Enter')doLogin()">
+  <button type="button" onclick="togglePw('loginPassword',this)" tabindex="-1"
+    style="position:absolute;right:12px;top:50%;transform:translateY(-50%);border:none;background:none;cursor:pointer;color:var(--text-muted);display:flex;align-items:center;padding:4px;">
+    <span class="mi mi-22">visibility</span>
+  </button>
+</div>
+          </div>
+          <div id="loginError" style="font-size:12px;color:var(--absent);background:var(--absent-light);border-radius:8px;padding:9px 12px;display:none;"></div>
+          <button id="loginBtn" onclick="doLogin()"
+            style="width:100%;border:none;border-radius:12px;background:var(--brand);color:white;padding:15px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 16px rgba(0,0,0,0.15);">
+            <span class="mi mi-20">login</span> ログイン
+          </button>
+        </div>
+      </div>
+
+      <!-- 新規登録フォーム -->
+      <div id="authRegisterForm" style="display:none;">
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div>
+            <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:6px;">
+ユーザー名<br><span style="font-weight:400;font-size:10px;">半角英数字およびアンダースコアが使えます</span>            </div>
+            <input type="text" id="regUsername" placeholder="shusseki0123" autocomplete="username"
+              style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:13px 14px;font-size:15px;font-family:'Roboto Condensed',monospace;background:var(--bg);color:var(--text-primary);outline:none;box-sizing:border-box;"
+              onfocus="this.style.borderColor=getBrandHex()" onblur="this.style.borderColor=''">
+          </div>
+          <div>
+            <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:6px;">
+表示名<br><span style="font-weight:400;font-size:10px;">ほかのユーザーに表示される名前です</span>            </div>
+            <input type="text" id="regDisplayName" placeholder="出席 花子"
+              style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:13px 14px;font-size:15px;font-family:inherit;background:var(--bg);color:var(--text-primary);outline:none;box-sizing:border-box;"
+              onfocus="this.style.borderColor=getBrandHex()" onblur="this.style.borderColor=''">
+          </div>
+          <div>
+            <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:6px;">
+パスワード<br><span style="font-weight:400;font-size:10px;">6文字以上</span>            </div>
+            <div style="position:relative;">
+  <input type="password" id="regPassword" placeholder="••••••••" autocomplete="new-password"
+    style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:13px 44px 13px 14px;font-size:15px;font-family:inherit;background:var(--bg);color:var(--text-primary);outline:none;box-sizing:border-box;"
+    onfocus="this.style.borderColor=getBrandHex()" onblur="this.style.borderColor=''">
+  <button type="button" onclick="togglePw('regPassword',this)" tabindex="-1"
+    style="position:absolute;right:12px;top:50%;transform:translateY(-50%);border:none;background:none;cursor:pointer;color:var(--text-muted);display:flex;align-items:center;padding:4px;">
+    <span class="mi mi-22">visibility</span>
+  </button>
+</div>
+          </div>
+          <div>
+            <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:6px;">パスワードの確認</div>
+            <div style="position:relative;">
+  <input type="password" id="regPasswordConfirm" placeholder="••••••••" autocomplete="new-password"
+    style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:13px 44px 13px 14px;font-size:15px;font-family:inherit;background:var(--bg);color:var(--text-primary);outline:none;box-sizing:border-box;"
+    onfocus="this.style.borderColor=getBrandHex()" onblur="this.style.borderColor=''"
+    onkeydown="if(event.key==='Enter')doRegister()">
+  <button type="button" onclick="togglePw('regPasswordConfirm',this)" tabindex="-1"
+    style="position:absolute;right:12px;top:50%;transform:translateY(-50%);border:none;background:none;cursor:pointer;color:var(--text-muted);display:flex;align-items:center;padding:4px;">
+    <span class="mi mi-22">visibility</span>
+  </button>
+</div>
+          </div>
+          <div style="font-size:11px;color:var(--text-muted);background:var(--bg);border-radius:8px;padding:10px 12px;border:1px solid var(--border);">
+            現在のローカルデータ（時間割・出席記録）はアカウントに引き継がれます
+          </div>
+          <div id="regError" style="font-size:12px;color:var(--absent);background:var(--absent-light);border-radius:8px;padding:9px 12px;display:none;"></div>
+          <button id="registerBtn" onclick="doRegister()"
+            style="width:100%;border:none;border-radius:12px;background:var(--brand);color:white;padding:15px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 16px rgba(0,0,0,0.15);">
+            <span class="mi mi-20">person_add</span> 登録する
+          </button>
+        </div>
+      </div>
+
+      <div style="text-align:center;margin-top:28px;padding-top:20px;">
+        <div style="font-size:11px;color:var(--text-muted);line-height:1.8;">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 同期インジケーター -->
+<div class="auth-sync-indicator" id="syncIndicator">
+  <span class="mi mi-18">sync</span><span id="syncText">同期中...</span>
+</div>
+
 <input type="file" id="importFileInput" accept=".json" style="display:none" onchange="handleImport(event)">
 <div class="toast" id="toast"></div>
 
 <script>
+let isShareView = false;
+let shareViewData = null;
 // ─── SPLASH & ONBOARDING ───
 const ONBOARDING_KEY = 'ams_onboarding_done';
 let obCurrentStep = 0;
@@ -1603,14 +1818,14 @@ async function loadPreset(filename, label) {
   } catch (e) {
     // Fallback: restore grid and show error
     grid.innerHTML = `
-  <button class="preset-btn" onclick="loadPreset('M1F','1年前期')"><span class="pb-sem">1年前期</span><span class="pb-year">M1F</span></button>
-  <button class="preset-btn" onclick="loadPreset('M1S','1年後期')"><span class="pb-sem">1年後期</span><span class="pb-year">M1S</span></button>
-  <button class="preset-btn" onclick="loadPreset('M2F','2年前期')"><span class="pb-sem">2年前期</span><span class="pb-year">M2F</span></button>
-  <button class="preset-btn" onclick="loadPreset('M2S','2年後期')"><span class="pb-sem">2年後期</span><span class="pb-year">M2S</span></button>
-  <button class="preset-btn" onclick="loadPreset('M3F','3年前期')"><span class="pb-sem">3年前期</span><span class="pb-year">M3F</span></button>
-  <button class="preset-btn" onclick="loadPreset('M3S','3年後期')"><span class="pb-sem">3年後期</span><span class="pb-year">M3S</span></button>
-  <button class="preset-btn" onclick="loadPreset('M4F','4年前期')"><span class="pb-sem">4年前期</span><span class="pb-year">M4F</span></button>
-  <button class="preset-btn" onclick="loadPreset('M4S','4年後期')"><span class="pb-sem">4年後期</span><span class="pb-year">M4S</span></button>`;
+      <button class="preset-btn" onclick="loadPreset('M1F','1年前期')"><span class="pb-year">M1</span><span class="pb-sem">前期</span></button>
+      <button class="preset-btn" onclick="loadPreset('M1S','1年後期')"><span class="pb-year">M1</span><span class="pb-sem">後期</span></button>
+      <button class="preset-btn" onclick="loadPreset('M2F','2年前期')"><span class="pb-year">M2</span><span class="pb-sem">前期</span></button>
+      <button class="preset-btn" onclick="loadPreset('M2S','2年後期')"><span class="pb-year">M2</span><span class="pb-sem">後期</span></button>
+      <button class="preset-btn" onclick="loadPreset('M3F','3年前期')"><span class="pb-year">M3</span><span class="pb-sem">前期</span></button>
+      <button class="preset-btn" onclick="loadPreset('M3S','3年後期')"><span class="pb-year">M3</span><span class="pb-sem">後期</span></button>
+      <button class="preset-btn" onclick="loadPreset('M4F','4年前期')"><span class="pb-year">M4</span><span class="pb-sem">前期</span></button>
+      <button class="preset-btn" onclick="loadPreset('M4S','4年後期')"><span class="pb-year">M4</span><span class="pb-sem">後期</span></button>`;
     if (skipBtn) skipBtn.style.display = '';
     showToast(`${filename}.json が見つかりません`, 'error');
   }
@@ -1723,26 +1938,27 @@ const COLOR_VARS = [
 ];
 
 const DEFAULT_COLORS = {
-  '--brand':          '#b92d5d',
+  '--brand':          '#9b0041',
   '--brandbar':       '#ffffff',
-  '--header-text':    '#b92d5d',
+  '--header-text':    '#9b0041',
   '--bg':             '#ffffff',
   '--surface':        '#ffffff',
   '--present':        '#1067b9',
   '--late':           '#7d40b6',
   '--absent':         '#d10158',
-  '--accent':         '#b92d5d',
+  '--accent':         '#9b0041',
   '--text-primary':   '#1a1d23',
   '--text-secondary': '#7f7f7f',
-'--border':         '#e2e6ea', 
 };
 
 // ─── STORAGE HELPERS ───
 function getClasses() {
+  if (isShareView && shareViewData) return shareViewData.classes || [];
   try { return JSON.parse(localStorage.getItem('ams_classes')) || DEFAULT_CLASSES; } catch { return DEFAULT_CLASSES; }
 }
 function saveClasses(c) { localStorage.setItem('ams_classes', JSON.stringify(c)); }
 function loadRecords(classId) {
+  if (isShareView && shareViewData) return (shareViewData.records && shareViewData.records[classId]) || [];
   try { return JSON.parse(localStorage.getItem('att_' + classId)) || []; } catch { return []; }
 }
 function saveRecords(classId, records) { localStorage.setItem('att_' + classId, JSON.stringify(records)); }
@@ -1764,7 +1980,10 @@ function saveCellColor(classId, color) {
   else localStorage.removeItem('ams_cellcolor_' + classId);
 }
 function saveNoAttendanceIds(ids) { localStorage.setItem('ams_no_att', JSON.stringify(ids)); }
-function isNoAttendance(classId) { return getNoAttendanceIds().includes(classId); }
+function isNoAttendance(classId) {
+  if (isShareView && shareViewData) return (shareViewData.noAttendance || []).includes(classId);
+  return getNoAttendanceIds().includes(classId);
+}
 function toggleNoAttendance(classId, val) {
   let ids = getNoAttendanceIds();
   if (val) { if (!ids.includes(classId)) ids.push(classId); }
@@ -1787,8 +2006,7 @@ function loadRecordsMerged(classId) {
   if (!cls) return loadRecords(classId).map(r => ({...r, _classId: classId}));
   const sameName = getClasses().filter(c => c.name === cls.name);
   if (sameName.length <= 1) return loadRecords(classId).map(r => ({...r, _classId: classId}));
-  return sameName.flatMap(c => loadRecords(c.id).map(r => ({...r, _classId: c.id})))
-  .sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
+  return sameName.flatMap(c => loadRecords(c.id).map(r => ({...r, _classId: c.id})));
 }
 
 // 合算後の出席・遅刻・欠席カウントを返す
@@ -1962,38 +2180,10 @@ function saveClassName(val) {
   saveSetting('className', name);
   updateClassNameDisplay();
 }
-function getGreeting() {
-  const h = new Date().getHours();
-  const greetings =
-    h < 4  ? ['夜更かしですね', 'お疲れ様です'] :
-    h < 6  ? ['おはようございます', '早起きですね', '今日も頑張りましょう'] :
-    h < 9  ? ['おはようございます', 'いい朝ですね', '今日も頑張りましょう'] :
-    h < 12 ? ['おはようございます', '今日も頑張りましょう'] :
-    h < 13 ? ['午後も頑張りましょう', 'こんにちは'] :
-    h < 18 ? ['こんにちは', 'お疲れ様です'] :
-    h < 19 ? ['お疲れ様でした', '今日もお疲れ様でした'] :
-             ['こんばんは', 'お疲れ様です'];
-  return greetings[Math.floor(Math.random() * greetings.length)];
-}
-
 function updateClassNameDisplay() {
   const name = getClassName();
-  const el = document.getElementById('headerClassName');
+  document.getElementById('headerClassName').textContent = name;
   
-  // あいさつ表示
-  el.style.transition = 'none';
-  el.style.opacity = '1';
-  el.textContent = getGreeting();
-  
-  // 1秒後にフェードでクラス名へ
-  setTimeout(() => {
-    el.style.transition = 'opacity 0.6s ease';
-    el.style.opacity = '0';
-    setTimeout(() => {
-      el.textContent = name;
-      el.style.opacity = '1';
-    }, 600);
-  }, 1000);
 }
 
 // ─── DRAWER ───
@@ -2289,7 +2479,7 @@ if (cellColor) cell.style.background = cellColor;
     <span class="stat-num"></span>
     <span class="stat-num"></span>
   </div>`;
-          cell.addEventListener('click', () => openModal(cls.id));
+cell.addEventListener('click', () => openModal(cls.id));
         } else {
           if (day===today) {
             const nm=nowMinutes(), pStart=timeToMinutes(period.start), pEnd=timeToMinutes(period.end);
@@ -2337,7 +2527,7 @@ cell.innerHTML = `
   <div class="cell-name${alertedClass}">${cls.name}</div>
   ${cellParts}`;
             
-          cell.addEventListener('click', () => openModal(cls.id));
+cell.addEventListener('click', () => openModal(cls.id));
         }
       }
       cells.appendChild(cell);
@@ -2430,19 +2620,7 @@ const SUB_SETTING_CONTENTS = {
             <span class="toggle-slider"></span>
           </label>
         </div>
-        <div class="settings-row">
-  <div class="settings-row-left">
-    <div class="settings-row-title">連続出席ボーナス</div>
-    <div class="settings-row-sub">出席連続時にdogとコンフェッティを表示</div>
-  </div>
-  <label class="toggle">
-    <input type="checkbox" id="toggleDogStreak" checked onchange="saveSetting('dogStreak',this.checked);">
-    <span class="toggle-slider"></span>
-  </label>
-</div>
-      </div>
-      
-      `
+      </div>`
   },
   'no-attendance': {
     title: '出席を記録しない科目',
@@ -2968,18 +3146,6 @@ function recordAttendance(status) {
   recs.push({ id:Date.now(), date, time, status });
   recs.sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
   saveRecords(currentClassId, recs);
-
-  // ストリーク判定
-if (status === 'present') {
-  presentStreak++;
-  if (presentStreak >= 2) {
-    showDogStreak(presentStreak);
-    addDogCount();
-  }
-} else {
-  presentStreak = 0;
-}
-
   refreshModal(); buildTimetable();
   if (document.getElementById('view-timeline').classList.contains('active')) renderTimeline(false);
   showToast(STATUS_LABELS[status] + ' を記録しました', STATUS_ICONS_MI[status]);
@@ -3188,16 +3354,6 @@ document.getElementById('overviewCards').innerHTML=`
   const presentHex = cssColorToHex(getComputedStyle(document.documentElement).getPropertyValue('--present').trim()) || '#10b981';
 const lateHex    = cssColorToHex(getComputedStyle(document.documentElement).getPropertyValue('--late').trim())    || '#f59e0b';
 const absentHex  = cssColorToHex(getComputedStyle(document.documentElement).getPropertyValue('--absent').trim())  || '#ef4444';
-
-// dogカウント表示
-const dogCount = getDogCount();
-document.getElementById('overviewCards').insertAdjacentHTML('afterend', `
-  <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;padding:10px 14px;background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow-sm);">
-    <img src="${DOG_FRAMES.tail1}" style="width:28px;image-rendering:pixelated;">
-    <span style="font-size:13px;font-weight:600;flex:1;">連続出席ボーナス</span>
-    <span style="font-family:'Roboto Condensed',monospace;font-size:20px;font-weight:700;color:var(--brand);">×${dogCount}</span>
-  </div>
-`);
 
 const col = attendRate >= 80 ? presentHex : attendRate >= 70 ? lateHex : absentHex;
   const rb=document.getElementById('rateBar');
@@ -3562,7 +3718,7 @@ function loadSettingsUI() {
   const absThreshEl2 = document.getElementById('absThresh');
   const rateThreshEl2 = document.getElementById('rateThresh');
   if (absThreshEl2) absThreshEl2.value = getSetting('absThresh', 2);
-  if (rateThreshEl2) rateThreshEl2.value = getSetting('rateThresh', 60);
+  if (rateThreshEl2) rateThreshEl2.value = getSetting('rateThresh', 75);
 }
 function renderNoAttSubjectList() {
   const CLASSES = getClasses();
@@ -3598,82 +3754,6 @@ function resetAllData() {
   showToast('全データをリセットしました', 'delete');
 }
 
-// ─── DOG STREAK ─── 
-const DOG_FRAMES = {
-  tail1: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAZCAYAAAC/zUevAAAACXBIWXMAADXUAAA11AFeZeUIAAACh0lEQVRIDbWWv2tUQRDHdy9HwENI4DSNjUewTJnCP+Aa4eRESTBiYQSbNCGxEa4U7CS1YGUREhACB/4XilaCIlfZBM7iikjgvPV9JzvLzGbfvpdAFo7d+bEzn503u5ztdrvmqkez2cymyFv1VqfFpGST2gplFYRK/PH9G3NtaTkZ8su3H2YwGMD/wiA28zncztamWV1eNPMLN0PiMgh2uNdbw1KBVH2OBm+O5gAQ6SvFT8ND+KgKTqfT7L4UxKUBspkyxhjiHMCTl3ul21F6+WPHVDXYlpplTyQBZrNZap9BIgB0Oh0zmUzMeDwmPw9A67g/ynpDVQJNyAMVYIB2u03JkFAOJByNRgFA2rCuWxG+om7/7U6I4dyMAHAlHz5/RUn4pCI4+SdOHuLUXTBE8AfAxq7uAwDyNS27olz6YnYSLATOLNTnEADhnqMaDIA4vf5j8/f4lwqJh0oM64GEKr9UjeldGcABIB5rLwakGh7tG2vnzOev3/FSQmfReOJN4LeC45moMYNdfo7gHCdmGQCH717T0w2AXn+dTDI4rwsYiscyx/CzOyjirPsDyUpEfiSeqwb3xP0HG+bD3nbY83Rb91EwnC3kAQkAag9hqyBQQi6biguA67dWik/SMK54S2xDtZfy7T96BhkgAQCKLIQooZOnxUYei7fv8rJ0/jc9Idvpn9+UEJ+ABwNAlj3BdjXPt24oubV0R8k5Ya7ZSpolABwqIZJRLqn0ybFb9sjVQ5wc/5TIKjkbaldCnMIMjw5of5SAY9IMf9kDyhgJtSH8PupwTi7BorhK9H7JKsDxohAquBfKgievdjJA2X9MeU0TyThBGQDnquVXpxKpRCkdJ5ZzLb//PBnTtTvcHLkAAAAASUVORK5CYII=',
-  tail2: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAZCAYAAAC/zUevAAAACXBIWXMAADXUAAA11AFeZeUIAAACkUlEQVRIDbWWP0ucQRDGd89DyBGIcImNTQ5JmdIiH+CawMFBghIlRSLYpBGTRrgyYCdXB1KlEIWAcJBvkZBUgYhcZSNciisMwnmb9xl3lpl13z8nuHDu7uzsPL+dnX3Rttttc9etXq8XShSv6q1OT5Mzm7SWGMsglPDXz3vm3uJyMuSPX39Mr9eD/8wgtuA63M67t2ZlecHMP3gUhPMg2OF5ZxVDBVJ2HTXeHPUBILKXTr8NjuCjMli2KQVxa4Aysbz1GOIGwMaHft5eg9TLHzvOmg1ZE0mA6XTKsVUPIQC0Wi0zHo/NaDSidQ9AY66PmWoCRcgNGWCAZrNJYhCUDYLD4TAAyDWMOSOTySReUnN+ou5gfycsODclADzJF5u7JMInhZM8rRz7k4c4VQcMEfwBsP5e1wEA+ZnmPVFOfdY7CRYCFwxUYQqA8M6RDQZAnE73lfl3fqpC4kMlmi3ICJ4u/8IWVZjeygAOAHFb3eqRaXB8YKydM99//saXEjaLAhT3z98KiieK0x1++mjWruNcrwkRFhcmPQTAURYAVwKATneNHISA4XEGE4urYB4EoPZGTQhPmxWlygYDwAcAX/rbwf31dp9PTjaG8Q6FB5TXEQLKQRZMBec1ANxfepplpGZc9i2xNVVe7EZ99+Ub9AChqyBj9oevJAkhTuHkaXkz+oXHz+Q0Ob6aXJD98u8ZCeIKuDEA5kXXQf7zjYe8j/rG4hM1L5rM1RvJZQkAh1KIZJRbGr04dqsauXOIi/MTiazEeaEyhDiFGRwf0v5IgGNSD39ZA2oxmlSG8PuowllcgkVx1dT7JbMAx1khVHA/yQuefNrJAHn/Y8pnmhBjgTwA1qrkVyUTKaGUjYVlX8nvP+KM2OVkTnfrAAAAAElFTkSuQmCC'
-};
-
-let presentStreak = 0;
-
-function spawnConfetti() {
-  const colors = [
-    getComputedStyle(document.documentElement).getPropertyValue('--brand').trim(),
-    getComputedStyle(document.documentElement).getPropertyValue('--present').trim(),
-    getComputedStyle(document.documentElement).getPropertyValue('--late').trim(),
-    '#fbbf24', '#34d399'
-  ];
-  for (let i = 0; i < 40; i++) {
-    const el = document.createElement('div');
-    el.className = 'confetti-piece';
-    el.style.left = Math.random() * 100 + 'vw';
-    el.style.top = '-10px';
-    el.style.background = colors[Math.floor(Math.random() * colors.length)];
-    el.style.animationDuration = (1.5 + Math.random() * 2) + 's';
-    el.style.animationDelay = (Math.random() * 0.5) + 's';
-    document.body.appendChild(el);
-    setTimeout(() => el.remove(), 4000);
-  }
-}
-
-function showDogStreak(streak) {
-  // 既存のオーバーレイ削除
-  document.querySelectorAll('.dog-streak-overlay').forEach(e => e.remove());
-
-  const overlay = document.createElement('div');
-  overlay.className = 'dog-streak-overlay';
-
-  const box = document.createElement('div');
-  box.className = 'dog-streak-box';
-
-  const img = document.createElement('img');
-  img.className = 'dog-streak-img';
-
-  const label = document.createElement('div');
-  label.className = 'dog-streak-label';
-  label.textContent = `🔥 ${streak}連続出席！`;
-
-  box.appendChild(img);
-  box.appendChild(label);
-  overlay.appendChild(box);
-  document.body.appendChild(overlay);
-
-  // しっぽアニメ
-  let frame = 0;
-  const frames = [DOG_FRAMES.tail1, DOG_FRAMES.tail2];
-  img.src = frames[0];
-  const timer = setInterval(() => {
-    frame = (frame + 1) % frames.length;
-    img.src = frames[frame];
-  }, 250);
-
-  spawnConfetti();
-
-  setTimeout(() => {
-    clearInterval(timer);
-    overlay.style.transition = 'opacity 0.4s';
-    overlay.style.opacity = '0';
-    setTimeout(() => overlay.remove(), 400);
-  }, 2500);
-}
-
-function getDogCount() {
-  return parseInt(localStorage.getItem('ams_dog_count') || '0');
-}
-function addDogCount() {
-  localStorage.setItem('ams_dog_count', getDogCount() + 1);
-}
-
 // ─── TOAST ───
 function showToast(msg, icon) {
   const t=document.getElementById('toast');
@@ -3693,6 +3773,563 @@ setInterval(()=>{ if(document.getElementById('view-timeline').classList.contains
 initSplash();
 
 
+</script>
+
+<script>
+
+// ─── FIREBASE ───
+firebase.initializeApp({
+  apiKey: "AIzaSyDUK2zTNV9Y-DU7LnMPjJkSAl-nxXt54Ek",
+  authDomain: "ams-project-d2ae1.firebaseapp.com",
+  projectId: "ams-project-d2ae1",
+  storageBucket: "ams-project-d2ae1.firebasestorage.app",
+  messagingSenderId: "147139619218",
+  appId: "1:147139619218:web:33973c071b123b0680b94b"
+});
+const fbAuth = firebase.auth();
+const fbDb   = firebase.firestore();
+
+let currentFbUser  = null;
+let fbUserProfile  = null;
+let fbSyncTimer    = null;
+let fbIsDownloading = false;
+
+// ─── AUTH STATE ───
+fbAuth.onAuthStateChanged(async (user) => {
+  currentFbUser = user;
+  if (user) {
+    try {
+      const snap = await fbDb.collection('users').doc(user.uid).get();
+      if (snap.exists) fbUserProfile = snap.data();
+      await fbDownload();
+      buildTimetable();
+      updateClassNameDisplay();
+    } catch(e) { console.error('Auth init:', e); }
+  } else {
+    fbUserProfile = null;
+  }
+  updateAuthDrawer();
+});
+
+// ─── DRAWER UI ───
+function updateAuthDrawer() {
+  const loginBtn = document.getElementById('drawerLoginBtn');
+  const userInfo = document.getElementById('drawerUserInfo');
+  if (!loginBtn) return;
+const loginSub = document.getElementById('drawerLoginSub');
+  const myPageBtn = document.getElementById('drawerMyPageBtn');
+  if (currentFbUser && fbUserProfile) {
+    loginBtn.style.display = 'none';
+    if (loginSub) loginSub.style.display = 'none';
+    if (myPageBtn) myPageBtn.style.display = 'flex';
+    userInfo.style.display = 'flex';
+        const dn = fbUserProfile.displayName || 'User';
+    document.getElementById('drawerDisplayName').textContent = dn;
+    document.getElementById('drawerUsername').textContent = '@' + (fbUserProfile.username || '');
+    document.getElementById('drawerAvatar').textContent = dn.charAt(0).toUpperCase();
+} else {
+    loginBtn.style.display = 'flex';
+    if (loginSub) loginSub.style.display = 'block';
+    if (myPageBtn) myPageBtn.style.display = 'none';
+    userInfo.style.display = 'none';
+  }
+}
+
+// ─── SYNC INDICATOR ───
+function showSyncIndicator(text) {
+  const el = document.getElementById('syncIndicator');
+  const tx = document.getElementById('syncText');
+  if (tx) tx.textContent = text;
+  if (el) el.classList.add('show');
+}
+function hideSyncIndicator() {
+  const el = document.getElementById('syncIndicator');
+  if (el) el.classList.remove('show');
+}
+
+// ─── UPLOAD ───
+async function fbUpload() {
+  if (!currentFbUser) return;
+  const uid = currentFbUser.uid;
+  const CLASSES = getClasses();
+  showSyncIndicator('同期中...');
+  try {
+    const batch = fbDb.batch();
+
+    batch.set(fbDb.doc(`users/${uid}/data/timetable`), {
+      classes: CLASSES,
+      noAttendance: getNoAttendanceIds(),
+      className: getClassName(),
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    CLASSES.forEach(c => {
+      batch.set(fbDb.doc(`users/${uid}/records/${c.id}`), {
+        records: loadRecords(c.id),
+        memo: loadMemo(c.id) || '',
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    });
+
+    const settings = { updatedAt: firebase.firestore.FieldValue.serverTimestamp() };
+    COLOR_VARS.forEach(cv => {
+      const v = localStorage.getItem('ams_color_' + cv.key);
+      if (v) settings['c_' + cv.key.replace(/^--/, '')] = v;
+    });
+    CLASSES.forEach(c => {
+      const v = localStorage.getItem('ams_total_' + c.id);
+      if (v) settings['t_' + c.id] = v;
+    });
+    batch.set(fbDb.doc(`users/${uid}/data/settings`), settings);
+
+await batch.commit();
+    if (fbUserProfile?.shareToken) {
+      const shareUpdate = {
+        className: getClassName(),
+        classes: CLASSES,
+        noAttendance: getNoAttendanceIds(),
+        records: {},
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      };
+      CLASSES.forEach(c => { shareUpdate.records[c.id] = loadRecords(c.id); });
+      await fbDb.collection('publicShares').doc(fbUserProfile.shareToken).update(shareUpdate);
+    }
+    showSyncIndicator('同期完了 ✓');
+    setTimeout(hideSyncIndicator, 1500);
+  } catch(e) {
+    console.error('fbUpload:', e);
+    showSyncIndicator('同期エラー');
+    setTimeout(hideSyncIndicator, 2000);
+  }
+}
+
+// ─── DOWNLOAD ───
+async function fbDownload() {
+  if (!currentFbUser) return;
+  const uid = currentFbUser.uid;
+  fbIsDownloading = true;
+  showSyncIndicator('データを読み込み中...');
+  try {
+    const ttSnap = await fbDb.doc(`users/${uid}/data/timetable`).get();
+    if (ttSnap.exists) {
+      const d = ttSnap.data();
+      if (d.classes && d.classes.length > 0)
+        localStorage.setItem('ams_classes', JSON.stringify(d.classes));
+      if (d.noAttendance)
+        localStorage.setItem('ams_no_att', JSON.stringify(d.noAttendance));
+      if (d.className)
+        localStorage.setItem('ams_set_className', d.className);
+    }
+
+    const recsSnap = await fbDb.collection(`users/${uid}/records`).get();
+    recsSnap.forEach(docSnap => {
+      const d = docSnap.data();
+      if (d.records) localStorage.setItem('att_' + docSnap.id, JSON.stringify(d.records));
+      if (d.memo)    localStorage.setItem('memo_' + docSnap.id, d.memo);
+    });
+
+    const settSnap = await fbDb.doc(`users/${uid}/data/settings`).get();
+    if (settSnap.exists) {
+      Object.entries(settSnap.data()).forEach(([k, v]) => {
+        if (k.startsWith('c_')) {
+          const cssKey = '--' + k.slice(2);
+          document.documentElement.style.setProperty(cssKey, v);
+          localStorage.setItem('ams_color_' + cssKey, v);
+        } else if (k.startsWith('t_')) {
+          localStorage.setItem('ams_total_' + k.slice(2), v);
+        }
+      });
+      updateDerivedColors();
+    }
+    hideSyncIndicator();
+  } catch(e) {
+    console.error('fbDownload:', e);
+    hideSyncIndicator();
+  } finally {
+    fbIsDownloading = false;
+  }
+}
+
+// ─── 自動同期（保存関数をパッチ） ───
+function scheduleFbSync() {
+  if (!currentFbUser || fbIsDownloading) return;
+  clearTimeout(fbSyncTimer);
+  fbSyncTimer = setTimeout(fbUpload, 2500);
+}
+
+const _oSaveClasses     = saveClasses;
+const _oSaveRecords     = saveRecords;
+const _oSaveMemo        = saveMemoStorage;
+const _oSaveNoAtt       = saveNoAttendanceIds;
+const _oSaveSetting     = saveSetting;
+
+saveClasses         = function(c)    { _oSaveClasses(c);    scheduleFbSync(); };
+saveRecords         = function(id,r) { _oSaveRecords(id,r); scheduleFbSync(); };
+saveMemoStorage     = function(id,t) { _oSaveMemo(id,t);    scheduleFbSync(); };
+saveNoAttendanceIds = function(ids)  { _oSaveNoAtt(ids);    scheduleFbSync(); };
+saveSetting         = function(k,v)  { _oSaveSetting(k,v);  scheduleFbSync(); };
+
+// 5分ごとに念のため同期
+setInterval(() => { if (currentFbUser) fbUpload(); }, 5 * 60 * 1000);
+
+// ─── 新規登録 ───
+async function doRegister() {
+  const username    = (document.getElementById('regUsername').value || '').toLowerCase().trim();
+  const displayName = (document.getElementById('regDisplayName').value || '').trim();
+  const password    = document.getElementById('regPassword').value;
+  const confirm     = document.getElementById('regPasswordConfirm').value;
+  const errEl = document.getElementById('regError');
+  const btn   = document.getElementById('registerBtn');
+
+  errEl.style.display = 'none';
+  if (!username || !displayName || !password) {
+    errEl.textContent = 'すべての項目を入力してください';
+    errEl.style.display = 'block'; return;
+  }
+  if (!/^[a-z0-9_]{3,20}$/.test(username)) {
+    errEl.textContent = 'ユーザー名は3〜20文字の半角英数字・アンダースコアで';
+    errEl.style.display = 'block'; return;
+  }
+  if (password.length < 6) {
+    errEl.textContent = 'パスワードは6文字以上で入力してください';
+    errEl.style.display = 'block'; return;
+  }
+  if (password !== confirm) {
+    errEl.textContent = 'パスワードが一致しません';
+    errEl.style.display = 'block'; return;
+  }
+
+  btn.innerHTML = '<span class="mi mi-20">hourglass_empty</span> 登録中...';
+  btn.disabled = true;
+  try {
+    const unSnap = await fbDb.collection('usernames').doc(username).get();
+    if (unSnap.exists) throw new Error('このユーザー名は既に使われています');
+
+    const cred = await fbAuth.createUserWithEmailAndPassword(
+      `${username}@ams.b8ihua.com`, password);
+    const uid = cred.user.uid;
+
+    await Promise.all([
+      fbDb.collection('usernames').doc(username).set({ uid }),
+      fbDb.collection('users').doc(uid).set({
+        username, displayName,
+        isPublic: false, shareMemo: false, shareToken: null,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      })
+    ]);
+
+    fbUserProfile = { username, displayName, isPublic: false, shareMemo: false };
+    await fbUpload();
+    updateAuthDrawer();
+    closeLoginModal();
+    showToast('登録完了！ようこそ ' + displayName + ' さん', 'check_circle');
+  } catch(e) {
+    const msg = e.code === 'auth/email-already-in-use'
+      ? 'このユーザー名は既に使われています' : e.message;
+    errEl.textContent = msg;
+    errEl.style.display = 'block';
+    btn.innerHTML = '<span class="mi mi-20">person_add</span> 登録する';
+    btn.disabled = false;
+  }
+}
+
+// ─── ログイン ───
+async function doLogin() {
+  const username = (document.getElementById('loginUsername').value || '').toLowerCase().trim();
+  const password = document.getElementById('loginPassword').value;
+  const errEl = document.getElementById('loginError');
+  const btn   = document.getElementById('loginBtn');
+
+  errEl.style.display = 'none';
+  if (!username || !password) {
+    errEl.textContent = 'ユーザー名とパスワードを入力してください';
+    errEl.style.display = 'block'; return;
+  }
+
+  btn.innerHTML = '<span class="mi mi-20">hourglass_empty</span> ログイン中...';
+  btn.disabled = true;
+  try {
+    const unSnap = await fbDb.collection('usernames').doc(username).get();
+    if (!unSnap.exists) throw new Error('ユーザー名が見つかりません');
+
+    await fbAuth.signInWithEmailAndPassword(`${username}@ams.b8ihua.com`, password);
+    closeLoginModal();
+    showToast('ログインしました！', 'check_circle');
+  } catch(e) {
+    const msg = (e.code === 'auth/wrong-password' || e.code === 'auth/invalid-credential')
+      ? 'パスワードが違います'
+      : e.code === 'auth/too-many-requests'
+      ? 'しばらく時間をおいてから再試行してください'
+      : e.message;
+    errEl.textContent = msg;
+    errEl.style.display = 'block';
+    btn.innerHTML = '<span class="mi mi-20">login</span> ログイン';
+    btn.disabled = false;
+  }
+}
+
+// ─── ログアウト ───
+async function doLogout() {
+  await fbAuth.signOut();
+  currentFbUser = null; fbUserProfile = null;
+  updateAuthDrawer();
+  closeDrawer();
+  showToast('ログアウトしました', 'logout');
+}
+
+// ─── モーダル操作 ───
+function openLoginModal() {
+  document.getElementById('loginOverlay').classList.add('open');
+  switchAuthTab('login');
+}
+function closeLoginModal() {
+  document.getElementById('loginOverlay').classList.remove('open');
+}
+function switchAuthTab(tab) {
+  const isLogin = tab === 'login';
+  document.getElementById('authLoginForm').style.display    = isLogin ? 'block' : 'none';
+  document.getElementById('authRegisterForm').style.display = isLogin ? 'none'  : 'block';
+  document.getElementById('loginModalTitle').textContent    = isLogin ? 'ログイン' : '新規登録';
+  const on  = 'flex:1;border:none;border-radius:9px;padding:10px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;background:var(--surface);color:var(--brand);box-shadow:var(--shadow-sm);';
+  const off = 'flex:1;border:none;border-radius:9px;padding:10px;font-family:inherit;font-size:13px;font-weight:500;cursor:pointer;background:transparent;color:var(--text-muted);';
+  document.getElementById('tabLogin').style.cssText    = isLogin ? on : off;
+  document.getElementById('tabRegister').style.cssText = isLogin ? off : on;
+}
+
+function togglePw(inputId, btn) {
+  const input = document.getElementById(inputId);
+  const icon = btn.querySelector('.mi');
+  if (input.type === 'password') {
+    input.type = 'text';
+    icon.textContent = 'visibility_off';
+  } else {
+    input.type = 'password';
+    icon.textContent = 'visibility';
+  }
+}
+
+// ─── MY PAGE ───
+function openMyPage() {
+  renderMyPage();
+  document.getElementById('myPageOverlay').classList.add('open');
+}
+function closeMyPage() {
+  document.getElementById('myPageOverlay').classList.remove('open');
+}
+
+function renderMyPage() {
+  const dn = fbUserProfile?.displayName || '-';
+  const un = fbUserProfile?.username || '-';
+  const isPublic = fbUserProfile?.isPublic || false;
+  const shareMemo = fbUserProfile?.shareMemo || false;
+  const token = fbUserProfile?.shareToken || null;
+  const shareUrl = token ? `${location.origin}${location.pathname}?share=${token}` : null;
+
+  document.getElementById('myPageAvatar').textContent = dn.charAt(0).toUpperCase();
+  document.getElementById('myPageDisplayName').textContent = dn;
+  document.getElementById('myPageUsername').textContent = '@' + un;
+
+  document.getElementById('myPageBody').innerHTML = `
+    <div class="mypage-section-title">公開設定</div>
+    <div class="settings-section">
+      <div class="settings-row">
+        <div class="settings-row-left">
+          <div class="settings-row-title">アカウントを公開</div>
+          <div class="settings-row-sub">オンにするとフォロー申請なしで閲覧可能</div>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="mpIsPublic" ${isPublic ? 'checked' : ''}
+            onchange="updateProfile('isPublic', this.checked)">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      <div class="settings-row">
+        <div class="settings-row-left">
+          <div class="settings-row-title">メモを共有</div>
+          <div class="settings-row-sub">フォロワーにメモを公開する</div>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="mpShareMemo" ${shareMemo ? 'checked' : ''}
+            onchange="updateProfile('shareMemo', this.checked)">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="mypage-section-title">URL共有</div>
+    <div class="settings-section">
+      <div style="padding:14px 16px;">
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:12px;line-height:1.7;">
+          URLを知っている人なら誰でも、あなたの現在の時間割・出席状況をリアルタイムで見られます。<br>いつでも無効化できます。
+        </div>
+        ${shareUrl ? `
+          <div class="share-url-box">
+            <div class="share-url-text">${shareUrl}</div>
+            <button class="share-url-copy-btn" onclick="copyShareUrl('${shareUrl}')">
+              <span class="mi mi-16">content_copy</span>コピー
+            </button>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button onclick="copyShareUrl('${shareUrl}')" style="flex:1;border:none;background:var(--present-light);color:var(--present);border-radius:10px;padding:11px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;">
+              <span class="mi mi-18">share</span> URLをコピー
+            </button>
+            <button onclick="revokeShareUrl()" style="flex:1;border:none;background:var(--absent-light);color:var(--absent);border-radius:10px;padding:11px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;">
+              <span class="mi mi-18">link_off</span> 無効化
+            </button>
+          </div>
+        ` : `
+          <button onclick="generateShareUrl()" style="width:100%;border:none;background:var(--brand);color:white;border-radius:10px;padding:13px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 16px rgba(0,0,0,0.12);">
+            <span class="mi mi-20">link</span> 共有URLを発行する
+          </button>
+        `}
+      </div>
+    </div>
+
+    <div class="mypage-section-title">アカウント</div>
+    <div class="settings-section">
+      <div class="settings-row">
+        <div class="settings-row-left">
+          <div class="settings-row-title">表示名を変更</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <input type="text" id="mpDisplayNameInput" value="${dn}"
+            style="border:1px solid var(--border);border-radius:8px;padding:7px 10px;font-size:13px;font-family:inherit;background:var(--bg);color:var(--text-primary);outline:none;width:120px;"
+            onfocus="this.style.borderColor=getBrandHex()" onblur="this.style.borderColor=''">
+          <button onclick="updateDisplayName()" class="settings-btn">変更</button>
+        </div>
+      </div>
+      <div class="settings-row" style="border-bottom:none;">
+        <div class="settings-row-left">
+          <div class="settings-row-title">ログアウト</div>
+        </div>
+        <button class="settings-btn danger" onclick="doLogout();closeMyPage();">
+          <span class="mi mi-18">logout</span> ログアウト
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+// プロフィール更新
+async function updateProfile(field, value) {
+  if (!currentFbUser) return;
+  try {
+    await fbDb.collection('users').doc(currentFbUser.uid).update({ [field]: value });
+    fbUserProfile[field] = value;
+    showToast('設定を保存しました', 'check_circle');
+  } catch(e) {
+    showToast('保存に失敗しました', 'error');
+  }
+}
+
+// 表示名変更
+async function updateDisplayName() {
+  if (!currentFbUser) return;
+  const val = (document.getElementById('mpDisplayNameInput')?.value || '').trim();
+  if (!val) { showToast('表示名を入力してください', 'error'); return; }
+  try {
+    await fbDb.collection('users').doc(currentFbUser.uid).update({ displayName: val });
+    fbUserProfile.displayName = val;
+    updateAuthDrawer();
+    renderMyPage();
+    showToast('表示名を変更しました', 'check_circle');
+  } catch(e) {
+    showToast('変更に失敗しました', 'error');
+  }
+}
+
+// 共有URL発行
+async function generateShareUrl() {
+  if (!currentFbUser) return;
+  const token = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
+  try {
+    await fbDb.collection('users').doc(currentFbUser.uid).update({ shareToken: token });
+    const CLASSES = getClasses();
+    const shareData = {
+      uid: currentFbUser.uid,
+      username: fbUserProfile.username,
+      displayName: fbUserProfile.displayName,
+      className: getClassName(),
+      classes: CLASSES,
+      noAttendance: getNoAttendanceIds(),
+      records: {},
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
+    CLASSES.forEach(c => { shareData.records[c.id] = loadRecords(c.id); });
+    await fbDb.collection('publicShares').doc(token).set(shareData);
+    fbUserProfile.shareToken = token;
+    renderMyPage();
+    showToast('共有URLを発行しました', 'link');
+  } catch(e) {
+    showToast('発行に失敗しました', 'error');
+  }
+}
+
+// 共有URL無効化
+async function revokeShareUrl() {
+  if (!currentFbUser || !fbUserProfile?.shareToken) return;
+  if (!confirm('共有URLを無効化します。このURLは使えなくなります。')) return;
+  try {
+    await fbDb.collection('publicShares').doc(fbUserProfile.shareToken).delete();
+    await fbDb.collection('users').doc(currentFbUser.uid).update({ shareToken: null });
+    fbUserProfile.shareToken = null;
+    renderMyPage();
+    showToast('共有URLを無効化しました', 'link_off');
+  } catch(e) {
+    showToast('無効化に失敗しました', 'error');
+  }
+}
+
+// URLコピー
+function copyShareUrl(url) {
+  navigator.clipboard.writeText(url)
+    .then(() => showToast('URLをコピーしました', 'content_copy'))
+    .catch(() => showToast('コピーに失敗しました', 'error'));
+}
+
+// ─── SHARE VIEW ───
+async function initShareView(token) {
+  isShareView = true;
+  document.body.classList.add('share-view');
+  try {
+    const snap = await fbDb.collection('publicShares').doc(token).get();
+    if (!snap.exists) {
+      document.body.innerHTML = `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;gap:16px;color:var(--text-muted);">
+        <span class="mi" style="font-size:48px;">link_off</span>
+        <div style="font-size:16px;font-weight:700;">このURLは無効です</div>
+        <div style="font-size:13px;">共有が解除されたか、URLが間違っています</div>
+      </div>`;
+      return;
+    }
+    shareViewData = snap.data();
+
+    // バナー表示
+    const banner = document.createElement('div');
+    banner.className = 'share-banner';
+    banner.innerHTML = `<span class="mi">person</span>
+      <span>${escHtml(shareViewData.displayName || '')} (@${escHtml(shareViewData.username || '')}) の時間割</span>
+      <span style="margin-left:auto;font-size:11px;opacity:0.8;font-weight:400;">閲覧のみ</span>`;
+    document.body.prepend(banner);
+
+    // ヘッダーのクラス名を更新
+    const cnEl = document.getElementById('headerClassName');
+    if (cnEl) cnEl.textContent = shareViewData.className || shareViewData.displayName || '';
+
+    buildTimetable();
+  } catch(e) {
+    console.error('initShareView:', e);
+  }
+}
+
+// URLパラメータチェック
+const _shareToken = new URLSearchParams(location.search).get('share');
+if (_shareToken) {
+  // Firebaseロード後に実行
+  fbAuth.onAuthStateChanged(() => {
+    if (isShareView) return; // 二重実行防止
+    initShareView(_shareToken);
+  });
+}
 </script>
 
 </body>
