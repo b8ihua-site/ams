@@ -1014,6 +1014,45 @@ body.share-view .cell { cursor: pointer; }
   0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
   100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
 }
+
+/* ─── HELP PAGE ─── */
+.help-body{padding:8px 18px 80px;}
+.help-toc{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:16px 0 28px;}
+.help-toc-item{display:flex;align-items:center;gap:8px;padding:11px 12px;background:var(--surface);border:1px solid var(--border);border-radius:11px;font-size:12px;font-weight:600;color:var(--text-primary);cursor:pointer;font-family:inherit;text-align:left;transition:transform 0.15s;}
+.help-toc-item:active{transform:scale(0.97);}
+.help-toc-item .mi{font-size:17px;}
+.help-section{margin-bottom:30px;}
+.help-section-head{display:flex;align-items:center;gap:11px;margin-bottom:12px;}
+.help-section-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.help-section-icon .mi{color:#fff;font-size:20px;}
+.help-section-title{font-size:17px;font-weight:700;letter-spacing:-0.3px;}
+.help-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;box-shadow:var(--shadow-sm);margin-bottom:10px;}
+.help-card:last-child{margin-bottom:0;}
+.help-card p{font-size:13px;line-height:1.9;color:var(--text-secondary);margin-bottom:10px;}
+.help-card p:last-child{margin-bottom:0;}
+.help-card strong{color:var(--text-primary);font-weight:700;}
+.help-card .accent{color:var(--brand);font-weight:700;}
+.help-step{display:flex;gap:12px;margin-bottom:14px;}
+.help-step:last-child{margin-bottom:0;}
+.help-step-num{width:24px;height:24px;border-radius:50%;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;font-family:'Roboto Condensed',monospace;}
+.help-step-text{font-size:13px;line-height:1.75;color:var(--text-secondary);padding-top:1px;}
+.help-step-text b{color:var(--text-primary);}
+.help-status-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:4px 0 12px;}
+.help-status-item{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:700;}
+.help-status-item .mi{font-size:18px;}
+.hs-present{background:var(--present-light);color:var(--present);}
+.hs-late{background:var(--late-light);color:var(--late);}
+.hs-absent{background:var(--absent-light);color:var(--absent);}
+.hs-none{background:#f3f4f6;color:#6b7280;}
+.help-status-sub{font-size:10px;font-weight:500;opacity:0.85;display:block;margin-top:1px;}
+.help-tip{display:flex;gap:10px;align-items:flex-start;background:var(--current-light);border-radius:11px;padding:12px 14px;margin-top:12px;}
+.help-tip .mi{color:var(--brand);flex-shrink:0;font-size:18px;margin-top:1px;}
+.help-tip-text{font-size:12px;line-height:1.75;color:var(--text-secondary);}
+.help-tip-text b{color:var(--brand);}
+.help-formula{background:var(--bg);border:1px dashed var(--border);border-radius:10px;padding:12px 14px;margin:10px 0;font-size:13px;text-align:center;color:var(--text-primary);font-weight:600;line-height:1.6;}
+.help-formula .accent{color:var(--brand);}
+.help-divider{height:1px;background:var(--border);margin:8px 0 4px;}
+.help-foot{text-align:center;font-size:11px;color:var(--text-muted);padding:20px 0 0;line-height:1.8;}
 </style>
 
 <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
@@ -1041,33 +1080,39 @@ body.share-view .cell { cursor: pointer; }
     <button onclick="skipOnboarding()" style="border:none;background:none;font-size:13px;color:#9ca3af;font-family:'Noto Sans JP',sans-serif;cursor:pointer;padding:4px 0;">スキップ</button>
   </div>
   <div style="flex:1;overflow:hidden;position:relative;margin-top:48px;">
-    <div id="obSlider" style="display:flex;width:500%;height:100%;transition:transform 0.4s cubic-bezier(0.32,0.72,0,1);">
+    <div id="obSlider" style="display:flex;width:600%;height:100%;transition:transform 0.4s cubic-bezier(0.32,0.72,0,1);">
       <!-- Slide 1 -->
-      <div style="width:20%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 36px 0;text-align:center;">
+      <div style="width:16.6666%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 36px 0;text-align:center;">
         <img src="1.PNG" style="width:100%;object-fit:contain;margin-bottom:28px;">
         <div style="font-family:'Noto Sans JP',sans-serif;font-size:24px;font-weight:700;color:#1a1d23;margin-bottom:14px;letter-spacing:-0.5px;line-height:1.2;">AMSへようこそ</div>
         <div style="font-size:14px;color:#6b7280;line-height:1.9;font-family:'Noto Sans JP',sans-serif;">授業の出席をかんたんに管理・傾向分析できるアプリです。さっそく使い方を見てみましょう。</div>
       </div>
       <!-- Slide 2 -->
-      <div style="width:20%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 36px 0;text-align:center;">
+      <div style="width:16.6666%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 36px 0;text-align:center;">
         <img src="2.PNG" style="width:100%;object-fit:contain;margin-bottom:28px;">
         <div style="font-family:'Noto Sans JP',sans-serif;font-size:24px;font-weight:700;color:#1a1d23;margin-bottom:14px;letter-spacing:-0.5px;line-height:1.2;">時間割で出席を管理</div>
         <div style="font-size:14px;color:#6b7280;line-height:1.9;font-family:'Noto Sans JP',sans-serif;">コマをタップするだけで出席・遅刻・欠席を記録できます。出席が取られた時刻はグラフにして、推移を確認できます。時間割の編集・追加も自由自在です。</div>
       </div>
       <!-- Slide 3 -->
-      <div style="width:20%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 36px 0;text-align:center;">
+      <div style="width:16.6666%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 36px 0;text-align:center;">
         <img src="3.PNG" style="width:100%;object-fit:contain;margin-bottom:28px;">
         <div style="font-family:'Noto Sans JP',sans-serif;font-size:24px;font-weight:700;color:#1a1d23;margin-bottom:14px;letter-spacing:-0.5px;line-height:1.2;">出席率がすぐに分かる</div>
         <div style="font-size:14px;color:#6b7280;line-height:1.9;font-family:'Noto Sans JP',sans-serif;">ダッシュボードで科目ごとの出席率を確認。欠席が増えると警告でお知らせします。</div>
       </div>
       <!-- Slide 4 -->
-      <div style="width:20%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 36px 0;text-align:center;">
+      <div style="width:16.6666%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 36px 0;text-align:center;">
         <img src="4.PNG" style="width:100%;object-fit:contain;margin-bottom:28px;">
         <div style="font-family:'Noto Sans JP',sans-serif;font-size:24px;font-weight:700;color:#1a1d23;margin-bottom:14px;letter-spacing:-0.5px;line-height:1.2;">ホーム画面に追加して<br>もっと便利に</div>
         <div style="font-size:14px;color:#6b7280;line-height:1.9;font-family:'Noto Sans JP',sans-serif;">共有<span class="mi" style="font-size:14px;color:6b7280;">ios_share</span>からホーム画面に追加<span class="mi2" style="font-size:14px;color:6b7280;">add_box</span>でより便利に利用できます。</div>
       </div>
+      <!-- Slide: フォロー機能 -->
+      <div style="width:16.6666%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 36px 0;text-align:center;">
+        <img src="6.PNG" style="width:100%;object-fit:contain;margin-bottom:28px;">
+        <div style="font-family:'Noto Sans JP',sans-serif;font-size:24px;font-weight:700;color:#1a1d23;margin-bottom:14px;letter-spacing:-0.5px;line-height:1.2;">友達の時間割を<br>チェックできる</div>
+        <div style="font-size:14px;color:#6b7280;line-height:1.9;font-family:'Noto Sans JP',sans-serif;">ログインしてフォローすると、友達の出席状況や時間割をリアルタイムで確認できます。共有URLを使えばアカウントなしでも見せ合えます。</div>
+      </div>
       <!-- Slide 5 -->
-      <div style="width:20%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 36px 0;text-align:center;">
+      <div style="width:16.6666%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 36px 0;text-align:center;">
         <img src="5.PNG" style="width:100%;object-fit:contain;margin-bottom:28px;">
         <div style="font-family:'Noto Sans JP',sans-serif;font-size:24px;font-weight:700;color:#1a1d23;margin-bottom:14px;letter-spacing:-0.5px;line-height:1.2;">準備完了！</div>
         <div style="font-size:14px;color:#6b7280;line-height:1.9;font-family:'Noto Sans JP',sans-serif;">さっそく使ってみましょう。<br>データはブラウザ内に保存されますが、こまめにバックアップを取ると安全です。</div>
@@ -1077,6 +1122,7 @@ body.share-view .cell { cursor: pointer; }
   <div style="padding:20px 28px;padding-bottom:max(28px,env(safe-area-inset-bottom,28px));display:flex;flex-direction:column;align-items:center;gap:18px;">
     <div style="display:flex;gap:8px;align-items:center;" id="obDots">
       <div class="ob-dot active"></div>
+      <div class="ob-dot"></div>
       <div class="ob-dot"></div>
       <div class="ob-dot"></div>
       <div class="ob-dot"></div>
@@ -1423,6 +1469,13 @@ font-family:inherit;cursor:pointer;padding:10px 20px 14px;
   <span class="mi settings-nav-chevron">chevron_right</span>
 </button>
 
+<button class="settings-nav-row" onclick="openHelpPage()">
+  <div class="settings-nav-icon" style="background:#0891b2">
+    <span class="mi" style="font-size:20px;color:white">help</span>
+  </div>
+  <div class="settings-nav-label">アプリの使い方</div>
+  <span class="mi settings-nav-chevron">chevron_right</span>
+</button>
       </div>
     </div>
   </div>
@@ -1465,6 +1518,169 @@ font-family:inherit;cursor:pointer;padding:10px 20px 14px;
         <div class="day-label" data-day="5">金</div>
       </div>
       <div id="followedUserTimetableGrid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── HELP PAGE ─── -->
+<div class="overlay" id="helpOverlay" style="z-index:650">
+  <div class="modal" id="helpModal">
+    <div style="padding:12px 20px 0;margin-top:50px;">
+      <button onclick="closeHelpPage()" style="border:none;background:none;cursor:pointer;color:var(--text-primary);display:flex;align-items:center;padding:0;margin-bottom:12px;">
+        <span class="mi mi-22">arrow_back_ios</span>
+      </button>
+      <div style="padding:4px 0 18px;border-bottom:1px solid var(--border);">
+        <div style="font-size:24px;font-weight:700;letter-spacing:-0.5px;">アプリの使い方</div>
+        <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">amsの機能と使い方ガイド</div>
+      </div>
+    </div>
+    <div class="help-body">
+
+      <div class="help-toc">
+        <button class="help-toc-item" onclick="helpScrollTo('h-basic')"><span class="mi" style="color:#5856d6">touch_app</span>基本操作</button>
+        <button class="help-toc-item" onclick="helpScrollTo('h-record')"><span class="mi" style="color:#1067b9">how_to_reg</span>出席の記録</button>
+        <button class="help-toc-item" onclick="helpScrollTo('h-rate')"><span class="mi" style="color:#d10158">percent</span>出席率と警告</button>
+        <button class="help-toc-item" onclick="helpScrollTo('h-icon')"><span class="mi" style="color:#7d40b6">grid_view</span>欠席アイコン</button>
+        <button class="help-toc-item" onclick="helpScrollTo('h-chart')"><span class="mi" style="color:#0891b2">show_chart</span>出席時刻分析</button>
+        <button class="help-toc-item" onclick="helpScrollTo('h-timeline')"><span class="mi" style="color:#f0b767">splitscreen</span>今日の予定</button>
+        <button class="help-toc-item" onclick="helpScrollTo('h-stats')"><span class="mi" style="color:#9bc734">bar_chart</span>統計</button>
+        <button class="help-toc-item" onclick="helpScrollTo('h-log')"><span class="mi" style="color:#788de9">list_alt</span>履歴・保存</button>
+        <button class="help-toc-item" onclick="helpScrollTo('h-edit')"><span class="mi" style="color:#5ac8d4">edit_calendar</span>時間割編集</button>
+        <button class="help-toc-item" onclick="helpScrollTo('h-style')"><span class="mi" style="color:#ee979e">palette</span>カスタマイズ</button>
+        <button class="help-toc-item" onclick="helpScrollTo('h-account')"><span class="mi" style="color:#5856d6">cloud</span>ログイン同期</button>
+        <button class="help-toc-item" onclick="helpScrollTo('h-share')"><span class="mi" style="color:#1067b9">group</span>共有・フォロー</button>
+      </div>
+
+      <div class="help-section" id="h-basic">
+        <div class="help-section-head"><div class="help-section-icon" style="background:#5856d6"><span class="mi">touch_app</span></div><div class="help-section-title">基本操作</div></div>
+        <div class="help-card">
+          <div class="help-step"><div class="help-step-num">1</div><div class="help-step-text">時間割の<b>コマをタップ</b>すると、その授業の記録画面が開きます。</div></div>
+          <div class="help-step"><div class="help-step-num">2</div><div class="help-step-text"><b>出席・遅刻・欠席・出席なし</b>のいずれかを選んで記録します。</div></div>
+          <div class="help-step"><div class="help-step-num">3</div><div class="help-step-text">記録するとセルに出欠数が表示され、<b>統計・履歴・警告</b>に自動反映されます。</div></div>
+          <div class="help-tip"><span class="mi">swipe</span><div class="help-tip-text">画面下のトグルで<b>「時間割」</b>と<b>「今日」</b>を切替。左上の<b>≡メニュー</b>から統計・履歴・警告・設定へ移動できます。</div></div>
+        </div>
+      </div>
+
+      <div class="help-section" id="h-record">
+        <div class="help-section-head"><div class="help-section-icon" style="background:#1067b9"><span class="mi">how_to_reg</span></div><div class="help-section-title">出席を記録する</div></div>
+        <div class="help-card">
+          <p>記録画面で<strong>日付と時刻</strong>を指定し（初期値は現在時刻）、ステータスを選びます。</p>
+          <div class="help-status-grid">
+            <div class="help-status-item hs-present"><span class="mi">check_circle</span><div>出席<span class="help-status-sub">通常の出席</span></div></div>
+            <div class="help-status-item hs-late"><span class="mi">schedule</span><div>遅刻<span class="help-status-sub">出席率は0.5換算</span></div></div>
+            <div class="help-status-item hs-absent"><span class="mi">cancel</span><div>欠席<span class="help-status-sub">出席率0</span></div></div>
+            <div class="help-status-item hs-none"><span class="mi">block</span><div>出席なし<span class="help-status-sub">休講・出欠不問</span></div></div>
+          </div>
+          <p><strong>記録一覧</strong>から個別記録を削除でき、<strong>授業回数（全体）</strong>を設定できます。これが警告や欠席アイコンの基準になります。</p>
+          <div class="help-tip"><span class="mi">merge</span><div class="help-tip-text"><b>同じ授業名のコマ</b>（週2回ある科目など）は、出欠数が自動で<b>合算</b>されて集計されます。</div></div>
+        </div>
+      </div>
+
+      <div class="help-section" id="h-rate">
+        <div class="help-section-head"><div class="help-section-icon" style="background:#d10158"><span class="mi">percent</span></div><div class="help-section-title">出席率と警告のしくみ</div></div>
+        <div class="help-card">
+          <p><strong>出席率</strong>は記録回数のうち、出席・遅刻の重みづけで計算されます。</p>
+          <div class="help-formula">出席率 ＝ <span class="accent">出席×1 ＋ 遅刻×0.5</span> ÷ 記録した総回数</div>
+          <p>「出席なし」はこの計算に<strong>含まれません</strong>。</p>
+          <div class="help-divider"></div>
+          <p style="margin-top:12px;"><strong>警告</strong>は2種類。基準を超えると、時間割や統計で<span class="accent">科目名がブランドカラー</span>になります。</p>
+          <div class="help-step"><div class="help-step-num"><span class="mi" style="font-size:14px">block</span></div><div class="help-step-text"><b>欠席回数で警告</b>：残りの許容欠席数が設定値以下になると警告。</div></div>
+          <div class="help-step"><div class="help-step-num"><span class="mi" style="font-size:14px">percent</span></div><div class="help-step-text"><b>出席率で警告</b>：出席率が設定値（初期60%）を下回ると警告。</div></div>
+          <div class="help-formula">許容欠席数 ＝ <span class="accent">全授業回数 ÷ 3</span>（端数切り捨て）</div>
+          <div class="help-tip"><span class="mi">tune</span><div class="help-tip-text">基準の回数・％は<b>メニュー › 警告</b>から変更できます。遅刻は0.5回分の欠席として数えます。</div></div>
+        </div>
+      </div>
+
+      <div class="help-section" id="h-icon">
+        <div class="help-section-head"><div class="help-section-icon" style="background:#7d40b6"><span class="mi">grid_view</span></div><div class="help-section-title">欠席アイコン</div></div>
+        <div class="help-card">
+          <p>各コマに、<strong>許容欠席数に対して今どれだけ欠席したか</strong>が一目で分かるアイコンが出ます。遅刻は半分ぶんとして数えます。</p>
+          <div class="help-step"><div class="help-step-num"><span class="mi" style="font-size:14px">apps</span></div><div class="help-step-text"><b>simple</b>：ドット表示。塗りが欠席ぶん、グレーが残り許容数。</div></div>
+          <div class="help-step"><div class="help-step-num"><span class="mi" style="font-size:14px">draw</span></div><div class="help-step-text"><b>kanji</b>：「正」の字で表示。書き順どおりに欠席が積み上がります。</div></div>
+          <div class="help-tip"><span class="mi">palette</span><div class="help-tip-text">表示スタイルは<b>設定 › スタイル › 欠席数アイコンのスタイル</b>で切替できます。</div></div>
+        </div>
+      </div>
+
+      <div class="help-section" id="h-chart">
+        <div class="help-section-head"><div class="help-section-icon" style="background:#0891b2"><span class="mi">show_chart</span></div><div class="help-section-title">出席時刻の分析</div></div>
+        <div class="help-card">
+          <p>記録画面の<strong>「出席確認時刻の推移」</strong>グラフで、毎回の出席登録時刻の傾向が見えます。点線は平均です。</p>
+          <div class="help-step"><div class="help-step-num"><span class="mi" style="font-size:14px">sync_alt</span></div><div class="help-step-text"><b>時限換算</b>：別の限の時間帯（前後5分の余裕つき）で記録された時刻は、自動でこのコマの時限に換算。二重リングの点が換算済みです。</div></div>
+          <div class="help-step"><div class="help-step-num"><span class="mi" style="font-size:14px">filter_alt</span></div><div class="help-step-text"><b>外れ値</b>：記録一覧の<span class="mi" style="font-size:13px;vertical-align:-2px">filter_alt</span>ボタンで指定すると×印になり、<b>平均から除外</b>されます。</div></div>
+          <div class="help-tip"><span class="mi">insights</span><div class="help-tip-text">この平均・最早・最遅は、<b>今日の予定</b>の「出席まで」カウントダウンにも使われます。</div></div>
+        </div>
+      </div>
+
+      <div class="help-section" id="h-timeline">
+        <div class="help-section-head"><div class="help-section-icon" style="background:#f0b767"><span class="mi">splitscreen</span></div><div class="help-section-title">今日の予定（タイムライン）</div></div>
+        <div class="help-card">
+          <p>その日の授業を<strong>時刻軸のタイムライン</strong>で表示。現在時刻のラインが今どこにいるかを示します。</p>
+          <div class="help-step"><div class="help-step-num"><span class="mi" style="font-size:14px">timer</span></div><div class="help-step-text">上部カードに<b>「出席まで」</b>のカウントダウン。過去記録から<b>最早・平均・最遅</b>の3目安を毎秒更新します。</div></div>
+          <div class="help-step"><div class="help-step-num"><span class="mi" style="font-size:14px">bar_chart</span></div><div class="help-step-text">軸の横の<b>帯</b>は過去の出席時刻の範囲。濃い帯は中心50%（四分位範囲）です。</div></div>
+          <div class="help-tip"><span class="mi">swipe</span><div class="help-tip-text">カードは左右に<b>スワイプ／矢印</b>で、次のコマの出席予測へ切替できます。</div></div>
+        </div>
+      </div>
+
+      <div class="help-section" id="h-stats">
+        <div class="help-section-head"><div class="help-section-icon" style="background:#9bc734"><span class="mi">bar_chart</span></div><div class="help-section-title">統計</div></div>
+        <div class="help-card">
+          <p><strong>メニュー › 統計</strong>で全体の状況をまとめて確認できます。</p>
+          <div class="help-step"><div class="help-step-num"><span class="mi" style="font-size:14px">summarize</span></div><div class="help-step-text"><b>要約</b>：出席・遅刻・欠席・出席なしの合計と、全体の出席率。</div></div>
+          <div class="help-step"><div class="help-step-num"><span class="mi" style="font-size:14px">local_fire_department</span></div><div class="help-step-text"><b>連続出席</b>：出席が続くほど増加。欠席・遅刻でリセット。最高記録も残ります。</div></div>
+          <div class="help-step"><div class="help-step-num"><span class="mi" style="font-size:14px">pets</span></div><div class="help-step-text"><b>フル出席</b>：その日の対象授業をすべて出席（または出席なし）で埋めると、犬が登場してカウント＋1。</div></div>
+          <div class="help-step"><div class="help-step-num"><span class="mi" style="font-size:14px">calendar_month</span></div><div class="help-step-text"><b>カレンダー</b>：日ごとの記録をドットで可視化。</div></div>
+        </div>
+      </div>
+
+      <div class="help-section" id="h-log">
+        <div class="help-section-head"><div class="help-section-icon" style="background:#788de9"><span class="mi">list_alt</span></div><div class="help-section-title">履歴とバックアップ</div></div>
+        <div class="help-card">
+          <p><strong>メニュー › 履歴</strong>で全記録を一覧でき、出席・遅刻・欠席で絞り込めます。</p>
+          <div class="help-step"><div class="help-step-num"><span class="mi" style="font-size:14px">save</span></div><div class="help-step-text"><b>JSONバックアップ</b>：全データをファイルに保存。あとから完全復元できます。</div></div>
+          <div class="help-step"><div class="help-step-num"><span class="mi" style="font-size:14px">table_chart</span></div><div class="help-step-text"><b>CSV／TXT出力</b>：表計算ソフトや提出用テキストとして書き出し。</div></div>
+          <div class="help-tip"><span class="mi">warning</span><div class="help-tip-text">データは<b>端末のブラウザ内</b>に保存されます。機種変更やキャッシュ削除に備え、<b>JSONバックアップは定期的に</b>。（ログインすればクラウド同期されます）</div></div>
+        </div>
+      </div>
+
+      <div class="help-section" id="h-edit">
+        <div class="help-section-head"><div class="help-section-icon" style="background:#5ac8d4"><span class="mi">edit_calendar</span></div><div class="help-section-title">時間割の編集とプリセット</div></div>
+        <div class="help-card">
+          <div class="help-step"><div class="help-step-num"><span class="mi" style="font-size:14px">edit</span></div><div class="help-step-text"><b>編集</b>：コマの追加・削除や、授業名・教員・教室・曜日・時限の変更。</div></div>
+          <div class="help-step"><div class="help-step-num"><span class="mi" style="font-size:14px">grid_on</span></div><div class="help-step-text"><b>プリセット</b>：学年・学期（M1F〜M4S）を選ぶと、その時間割をまとめて読み込めます。</div></div>
+          <div class="help-step"><div class="help-step-num"><span class="mi" style="font-size:14px">event_busy</span></div><div class="help-step-text"><b>出席を記録しない科目</b>：休講科目などをグレーアウトし、集計対象から外せます。</div></div>
+        </div>
+      </div>
+
+      <div class="help-section" id="h-style">
+        <div class="help-section-head"><div class="help-section-icon" style="background:#ee979e"><span class="mi">palette</span></div><div class="help-section-title">見た目のカスタマイズ</div></div>
+        <div class="help-card">
+          <p><strong>設定 › スタイル</strong>でアプリの見た目を調整できます。</p>
+          <div class="help-step"><div class="help-step-num"><span class="mi" style="font-size:14px">format_color_fill</span></div><div class="help-step-text"><b>カラーテーマ</b>：ブランド色・背景・出欠の色などを自由に変更。いつでも初期化できます。</div></div>
+          <div class="help-step"><div class="help-step-num"><span class="mi" style="font-size:14px">drag_indicator</span></div><div class="help-step-text"><b>セルの表示項目</b>：教員・教室・回数などの表示/非表示とドラッグ並べ替え。</div></div>
+          <div class="help-step"><div class="help-step-num"><span class="mi" style="font-size:14px">animation</span></div><div class="help-step-text"><b>スプラッシュ画面</b>の表示や、欠席アイコンのスタイルもここで設定。</div></div>
+        </div>
+      </div>
+
+      <div class="help-section" id="h-account">
+        <div class="help-section-head"><div class="help-section-icon" style="background:#5856d6"><span class="mi">cloud</span></div><div class="help-section-title">ログインとデータ同期</div></div>
+        <div class="help-card">
+          <p><strong>≡メニュー › ログイン / 新規登録</strong>からアカウントを作ると、データがクラウドに保存されます。</p>
+          <div class="help-step"><div class="help-step-num"><span class="mi" style="font-size:14px">devices</span></div><div class="help-step-text">スマホとiPadなど<b>複数端末で同じデータ</b>を使えます。変更は自動同期。</div></div>
+          <div class="help-step"><div class="help-step-num"><span class="mi" style="font-size:14px">login</span></div><div class="help-step-text">ユーザー名とパスワードだけで登録OK。登録時、<b>今あるローカルデータはそのまま引き継がれます</b>。</div></div>
+          <div class="help-tip"><span class="mi">info</span><div class="help-tip-text">ログインしなくても、ほぼすべての機能はそのまま使えます。</div></div>
+        </div>
+      </div>
+
+      <div class="help-section" id="h-share">
+        <div class="help-section-head"><div class="help-section-icon" style="background:#1067b9"><span class="mi">group</span></div><div class="help-section-title">共有とフォロー</div></div>
+        <div class="help-card">
+          <p>ログイン後、<strong>マイページ</strong>から友だちと出席状況を共有できます。</p>
+          <div class="help-step"><div class="help-step-num"><span class="mi" style="font-size:14px">link</span></div><div class="help-step-text"><b>共有URL</b>：URLを発行すると、知っている人があなたの時間割・出席状況を閲覧専用で見られます。いつでも無効化可。</div></div>
+          <div class="help-step"><div class="help-step-num"><span class="mi" style="font-size:14px">person_add</span></div><div class="help-step-text"><b>フォロー</b>：ユーザー名で検索して申請。承認されると相手の時間割を見られます（公開アカウントは申請なしでフォロー可）。</div></div>
+        </div>
+      </div>
+
+      <div class="help-foot"></div> 
     </div>
   </div>
 </div>
@@ -1725,21 +1941,27 @@ let _fromFollowedView = false;
 // ─── SPLASH & ONBOARDING ───
 const ONBOARDING_KEY = 'ams_onboarding_done';
 let obCurrentStep = 0;
-const OB_TOTAL = 5;
+const OB_TOTAL = 6;
 
 document.getElementById('absThresh').addEventListener('change', () => { saveSetting('absThresh', document.getElementById('absThresh').value); renderAlerts(); buildTimetable(); });
 document.getElementById('rateThresh').addEventListener('change', () => { saveSetting('rateThresh', document.getElementById('rateThresh').value); renderAlerts(); buildTimetable(); });
 
 
 function initSplash() {
+  // 共有URL閲覧時は、スプラッシュ・オンボーディング・プリセット選択を出さない
+  if (new URLSearchParams(location.search).get('share')) {
+    document.getElementById('splashScreen').style.display = 'none';
+    return;
+  }
+
   const showSplash = getSetting('showSplash', true);
-if (!showSplash) {
-  document.getElementById('splashScreen').style.display = 'none';
-  updateClassNameDisplay(); // ← OFF時はここで即時
-  const done = localStorage.getItem(ONBOARDING_KEY);
-  if (!done) showOnboarding();
-  return;
-}
+  if (!showSplash) {
+    document.getElementById('splashScreen').style.display = 'none';
+    updateClassNameDisplay(); // ← OFF時はここで即時
+    const done = localStorage.getItem(ONBOARDING_KEY);
+    if (!done) showOnboarding();
+    return;
+  }
 
   
   const splash = document.getElementById('splashScreen');
@@ -1798,7 +2020,7 @@ function finishOnboarding() {
 
 function updateObUI() {
   const slider = document.getElementById('obSlider');
-  slider.style.transform = `translateX(-${obCurrentStep * 20}%)`;
+  slider.style.transform = `translateX(-${obCurrentStep * 16.6666}%)`;
   document.querySelectorAll('.ob-dot').forEach((d, i) => {
     d.classList.toggle('active', i === obCurrentStep);
   });
@@ -2275,19 +2497,27 @@ function getGreeting() {
 function updateClassNameDisplay() {
   const name = getClassName();
   const el = document.getElementById('headerClassName');
-  
+
   // あいさつ表示
   el.style.transition = 'none';
   el.style.opacity = '1';
   el.textContent = getGreeting();
-  
+
   // 1秒後にフェードでクラス名へ
   setTimeout(() => {
     el.style.transition = 'opacity 0.6s ease';
     el.style.opacity = '0';
     setTimeout(() => {
+      // ① 一旦クリアして再描画を強制（残骸を消す）
+      el.textContent = '';
+      void el.offsetWidth;
+      // ② opacity:0 のまま新テキストを確定描画
       el.textContent = name;
-      el.style.opacity = '1';
+      void el.offsetWidth;
+      // ③ 次フレームでフェードイン
+      requestAnimationFrame(() => {
+        el.style.opacity = '1';
+      });
     }, 600);
   }, 1000);
 }
@@ -3938,8 +4168,8 @@ function resetAllData() {
 
 // ─── DOG STREAK ───
 const DOG_FRAMES = {
-  tail1: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAZCAYAAAC/zUevAAAACXBIWXMAADXUAAA11AFeZeUIAAACh0lEQVRIDbWWv2tUQRDHdy9HwENI4DSNjUewTJnCP+Aa4eRESTBiYQSbNCGxEa4U7CS1YGUREhACB/4XilaCIlfZBM7iikjgvPV9JzvLzGbfvpdAFo7d+bEzn503u5ztdrvmqkez2cymyFv1VqfFpGST2gplFYRK/PH9G3NtaTkZ8su3H2YwGMD/wiA28zncztamWV1eNPMLN0PiMgh2uNdbw1KBVH2OBm+O5gAQ6SvFT8ND+KgKTqfT7L4UxKUBspkyxhjiHMCTl3ul21F6+WPHVDXYlpplTyQBZrNZap9BIgB0Oh0zmUzMeDwmPw9A67g/ynpDVQJNyAMVYIB2u03JkFAOJByNRgFA2rCuWxG+om7/7U6I4dyMAHAlHz5/RUn4pCI4+SdOHuLUXTBE8AfAxq7uAwDyNS27olz6YnYSLATOLNTnEADhnqMaDIA4vf5j8/f4lwqJh0oM64GEKr9UjeldGcABIB5rLwakGh7tG2vnzOev3/FSQmfReOJN4LeC45moMYNdfo7gHCdmGQCH717T0w2AXn+dTDI4rwsYiscyx/CzOyjirPsDyUpEfiSeqwb3xP0HG+bD3nbY83Rb91EwnC3kAQkAag9hqyBQQi6biguA67dWik/SMK54S2xDtZfy7T96BhkgAQCKLIQooZOnxUYei7fv8rJ0/jc9Idvpn9+UEJ+ABwNAlj3BdjXPt24oubV0R8k5Ya7ZSpolABwqIZJRLqn0ybFb9sjVQ5wc/5TIKjkbaldCnMIMjw5of5SAY9IMf9kDyhgJtSH8PupwTi7BorhK9H7JKsDxohAquBfKgievdjJA2X9MeU0TyThBGQDnquVXpxKpRCkdJ5ZzLb//PBnTtTvcHLkAAAAASUVORK5CYII=',
-  tail2: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAZCAYAAAC/zUevAAAACXBIWXMAADXUAAA11AFeZeUIAAACkUlEQVRIDbWWP0ucQRDGd89DyBGIcImNTQ5JmdIiH+CawMFBghIlRSLYpBGTRrgyYCdXB1KlEIWAcJBvkZBUgYhcZSNciisMwnmb9xl3lpl13z8nuHDu7uzsPL+dnX3Rttttc9etXq8XShSv6q1OT5Mzm7SWGMsglPDXz3vm3uJyMuSPX39Mr9eD/8wgtuA63M67t2ZlecHMP3gUhPMg2OF5ZxVDBVJ2HTXeHPUBILKXTr8NjuCjMli2KQVxa4Aysbz1GOIGwMaHft5eg9TLHzvOmg1ZE0mA6XTKsVUPIQC0Wi0zHo/NaDSidQ9AY66PmWoCRcgNGWCAZrNJYhCUDYLD4TAAyDWMOSOTySReUnN+ou5gfycsODclADzJF5u7JMInhZM8rRz7k4c4VQcMEfwBsP5e1wEA+ZnmPVFOfdY7CRYCFwxUYQqA8M6RDQZAnE73lfl3fqpC4kMlmi3ICJ4u/8IWVZjeygAOAHFb3eqRaXB8YKydM99//saXEjaLAhT3z98KiieK0x1++mjWruNcrwkRFhcmPQTAURYAVwKATneNHISA4XEME4urYB4EoPZGTQhPmxWlygYDwAcAX/rbwf31dp9PTjaG8Q6FB5TXEQLKQRZMBec1ANxfepplpGZc9i2xNVVe7EZ99+Ub9AChqyBj9oevJAkhTuHkaXkz+oXHz+Q0Ob6aXJD98u8ZCeIKuDEA5kXXQf7zjYe8j/rG4hM1L5rM1RvJZQkAh1KIZJRbGr04dqsauXOIi/MTiazEeaEyhDiFGRwf0v5IgGNSD39ZA2oxmlSG8PuowllcgkVx1dT7JbMAx1khVHA/yQuefNrJAHn/Y8pnmhBjgTwA1qrkVyUTKaGUjYVlX8nvP+KM2OVkTnfrAAAAAElFTkSuQmCC'
+tail1: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAZCAYAAAC/zUevAAAACXBIWXMAADXUAAA11AFeZeUIAAACh0lEQVRIDbWWv2tUQRDHdy9HwENI4DSNjUewTJnCP+Aa4eRESTBiYQSbNCGxEa4U7CS1YGUREhACB/4XilaCIlfZBM7iikjgvPV9JzvLzGbfvpdAFo7d+bEzn503u5ztdrvmqkez2cymyFv1VqfFpGST2gplFYRK/PH9G3NtaTkZ8su3H2YwGMD/wiA28zncztamWV1eNPMLN0PiMgh2uNdbw1KBVH2OBm+O5gAQ6SvFT8ND+KgKTqfT7L4UxKUBspkyxhjiHMCTl3ul21F6+WPHVDXYlpplTyQBZrNZap9BIgB0Oh0zmUzMeDwmPw9A67g/ynpDVQJNyAMVYIB2u03JkFAOJByNRgFA2rCuWxG+om7/7U6I4dyMAHAlHz5/RUn4pCI4+SdOHuLUXTBE8AfAxq7uAwDyNS27olz6YnYSLATOLNTnEADhnqMaDIA4vf5j8/f4lwqJh0oM64GEKr9UjeldGcABIB5rLwakGh7tG2vnzOev3/FSQmfReOJN4LeC45moMYNdfo7gHCdmGQCH717T0w2AXn+dTDI4rwsYiscyx/CzOyjirPsDyUpEfiSeqwb3xP0HG+bD3nbY83Rb91EwnC3kAQkAag9hqyBQQi6biguA67dWik/SMK54S2xDtZfy7T96BhkgAQCKLIQooZOnxUYei7fv8rJ0/jc9Idvpn9+UEJ+ABwNAlj3BdjXPt24oubV0R8k5Ya7ZSpolABwqIZJRLqn0ybFb9sjVQ5wc/5TIKjkbaldCnMIMjw5of5SAY9IMf9kDyhgJtSH8PupwTi7BorhK9H7JKsDxohAquBfKgievdjJA2X9MeU0TyThBGQDnquVXpxKpRCkdJ5ZzLb//PBnTtTvcHLkAAAAASUVORK5CYII=',
+    tail2: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAZCAYAAAC/zUevAAAACXBIWXMAADXUAAA11AFeZeUIAAACkUlEQVRIDbWWP0ucQRDGd89DyBGIcImNTQ5JmdIiH+CawMFBghIlRSLYpBGTRrgyYCdXB1KlEIWAcJBvkZBUgYhcZSNciisMwnmb9xl3lpl13z8nuHDu7uzsPL+dnX3Rttttc9etXq8XShSv6q1OT5Mzm7SWGMsglPDXz3vm3uJyMuSPX39Mr9eD/8wgtuA63M67t2ZlecHMP3gUhPMg2OF5ZxVDBVJ2HTXeHPUBILKXTr8NjuCjMli2KQVxa4Aysbz1GOIGwMaHft5eg9TLHzvOmg1ZE0mA6XTKsVUPIQC0Wi0zHo/NaDSidQ9AY66PmWoCRcgNGWCAZrNJYhCUDYLD4TAAyDWMOSOTySReUnN+ou5gfycsODclADzJF5u7JMInhZM8rRz7k4c4VQcMEfwBsP5e1wEA+ZnmPVFOfdY7CRYCFwxUYQqA8M6RDQZAnE73lfl3fqpC4kMlmi3ICJ4u/8IWVZjeygAOAHFb3eqRaXB8YKydM99//saXEjaLAhT3z98KiieK0x1++mjWruNcrwkRFhcmPQTAURYAVwKATneNHISA4XEGE4urYB4EoPZGTQhPmxWlygYDwAcAX/rbwf31dp9PTjaG8Q6FB5TXEQLKQRZMBec1ANxfepplpGZc9i2xNVVe7EZ99+Ub9AChqyBj9oevJAkhTuHkaXkz+oXHz+Q0Ob6aXJD98u8ZCeIKuDEA5kXXQf7zjYe8j/rG4hM1L5rM1RvJZQkAh1KIZJRbGr04dqsauXOIi/MTiazEeaEyhDiFGRwf0v5IgGNSD39ZA2oxmlSG8PuowllcgkVx1dT7JbMAx1khVHA/yQuefNrJAHn/Y8pnmhBjgTwA1qrkVyUTKaGUjYVlX8nvP+KM2OVkTnfrAAAAAElFTkSuQmCC',
 };
 
 function spawnConfetti() {
@@ -4013,6 +4243,12 @@ function showFullAttendance() {
   box.appendChild(label);
   overlay.appendChild(box);
   document.body.appendChild(overlay);
+setTimeout(() => {
+clearInterval(timer);
+overlay.style.transition = 'opacity 0.4s';
+ overlay.style.opacity = '0';
+setTimeout(() => overlay.remove(), 400);
+}, 3000);
 }
 
 function getDogCount() {
@@ -4384,6 +4620,26 @@ function openMyPage() {
 function closeMyPage() {
   document.getElementById('myPageOverlay').classList.remove('open');
 }
+
+// ─── HELP PAGE ───
+function openHelpPage() {
+  const m = document.getElementById('helpModal');
+  if (m) m.scrollTop = 0;
+  document.getElementById('helpOverlay').classList.add('open');
+}
+function closeHelpPage() {
+  document.getElementById('helpOverlay').classList.remove('open');
+}
+function helpScrollTo(id) {
+  const el = document.getElementById(id);
+  const modal = document.getElementById('helpModal');
+  if (!el || !modal) return;
+  const top = el.getBoundingClientRect().top - modal.getBoundingClientRect().top + modal.scrollTop - 12;
+  modal.scrollTo({ top, behavior: 'smooth' });
+}
+document.getElementById('helpOverlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('helpOverlay')) closeHelpPage();
+});
 
 function renderMyPage() {
   const dn = fbUserProfile?.displayName || '-';
