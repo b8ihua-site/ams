@@ -6,7 +6,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Roboto+Condensed:wght@400;700&family=Lexend:wght@400;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
-<title>ams | 出席管理システム</title>
+<title>abSense | 出席管理システム</title>
 
   <link rel="apple-touch-icon" sizes="180x180" href="ams_icon2.PNG">
 
@@ -219,6 +219,8 @@ opacity: 1; pointer-events: all; transform: scale(1);
 
 
 .header-class-name { font-size: 17px; font-weight: 700; letter-spacing: -0.3px; color: var(--text-primary); font-family:"Lexend"; font-weight:400;}
+.header-class-name { will-change: opacity; transform: translateZ(0); }
+.header-class-name .cn-text { display: inline-block; transition: opacity 0.6s ease; will-change: opacity; }
 .header-datetime { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; }
 .header-clock { font-family: 'Roboto Condensed', monospace; font-size: 18px; font-weight: 500; color: var(--brand); letter-spacing: 1px; line-height: 1; margin-top:10px;}
 .header-date { font-family: 'Roboto Condensed', monospace; font-size: 10px; font-weight: 400; color: var(--text-muted); letter-spacing: 0.3px; }
@@ -1084,7 +1086,7 @@ body.share-view .cell { cursor: pointer; }
       <!-- Slide 1 -->
       <div style="width:16.6666%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 36px 0;text-align:center;">
         <img src="1.PNG" style="width:100%;object-fit:contain;margin-bottom:28px;">
-        <div style="font-family:'Noto Sans JP',sans-serif;font-size:24px;font-weight:700;color:#1a1d23;margin-bottom:14px;letter-spacing:-0.5px;line-height:1.2;">AMSへようこそ</div>
+        <div style="font-family:'Noto Sans JP',sans-serif;font-size:24px;font-weight:700;color:#1a1d23;margin-bottom:14px;letter-spacing:-0.5px;line-height:1.2;">abSenseへようこそ</div>
         <div style="font-size:14px;color:#6b7280;line-height:1.9;font-family:'Noto Sans JP',sans-serif;">授業の出席をかんたんに管理・傾向分析できるアプリです。さっそく使い方を見てみましょう。</div>
       </div>
       <!-- Slide 2 -->
@@ -1224,9 +1226,8 @@ body.share-view .cell { cursor: pointer; }
     <path fill="var(--brand)" d="M516.58,410.78c-1.08,108.82-89.61,196.71-198.69,196.71s-197.61-87.89-198.69-196.71H0c4.04,173.76,146.15,313.39,320.89,313.39s316.85-139.62,320.89-313.39h-125.21Z"/>
   </svg>
   <div style="display:flex;flex-direction:column;justify-content:flex-end;">
-    <div style="font-family:'Noto Sans JP',sans-serif;color:#363636;display:flex;align-items:baseline;gap:2px;">
-      <span style="font-size:18px;font-weight:500;">出席研</span>
-      <span style="font-size:23px;font-weight:400;">ams</span>
+    <div style="font-family:'Lexend',sans-serif;color:#363636;display:flex;align-items:baseline;">
+      <span style="font-size:23px;font-weight:400;letter-spacing:-0.5px;">abSense</span>
     </div>
     <div style="font-family:'Noto Sans JP',sans-serif;font-size:10px;color:var(--text-muted);letter-spacing:0.5px;margin-top:-4px;margin-bottom:-2px;">出席管理システム</div>
   </div>
@@ -1531,7 +1532,7 @@ font-family:inherit;cursor:pointer;padding:10px 20px 14px;
       </button>
       <div style="padding:4px 0 18px;border-bottom:1px solid var(--border);">
         <div style="font-size:24px;font-weight:700;letter-spacing:-0.5px;">アプリの使い方</div>
-        <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">amsの機能と使い方ガイド</div>
+        <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">abSenseの機能と使い方ガイド</div>
       </div>
     </div>
     <div class="help-body">
@@ -1822,7 +1823,7 @@ font-family:inherit;cursor:pointer;padding:10px 20px 14px;
       </button>
       <div style="padding:16px 0 20px;border-bottom:1px solid var(--border);">
         <div style="font-size:22px;font-weight:700;letter-spacing:-0.3px;" id="loginModalTitle">ログイン</div>
-        <div style="font-size:13px;color:var(--text-secondary);margin-top:3px;">amsアカウントで、スマホでもiPadでも。<br>ログインしなくても使えます。</div>
+        <div style="font-size:13px;color:var(--text-secondary);margin-top:3px;">abSenseアカウントで、スマホでもiPadでも。<br>ログインしなくても使えます。</div>
       </div>
     </div>
     <div class="modal-body">
@@ -2494,32 +2495,39 @@ function getGreeting() {
   return greetings[Math.floor(Math.random() * greetings.length)];
 }
 
+let _cnTimers = [];
 function updateClassNameDisplay() {
   const name = getClassName();
   const el = document.getElementById('headerClassName');
+  if (!el) return;
+
+  // 連続呼び出し時に前回のタイマーが残って表示が混ざらないよう全キャンセル
+  _cnTimers.forEach(clearTimeout);
+  _cnTimers = [];
+
+  // テキストは毎回新しい<span>に差し替える（同じノードの書き換えだと
+  // 一部が再描画されず「M4Fれ様です」のような残像が出るため）
+  const show = (text, fadeIn) => {
+    const span = document.createElement('span');
+    span.className = 'cn-text';
+    span.textContent = text;
+    if (fadeIn) span.style.opacity = '0';
+    el.replaceChildren(span);
+    if (fadeIn) {
+      void span.offsetWidth;
+      requestAnimationFrame(() => { span.style.opacity = '1'; });
+    }
+    return span;
+  };
 
   // あいさつ表示
-  el.style.transition = 'none';
-  el.style.opacity = '1';
-  el.textContent = getGreeting();
+  const greet = show(getGreeting(), false);
 
   // 1秒後にフェードでクラス名へ
-  setTimeout(() => {
-    el.style.transition = 'opacity 0.6s ease';
-    el.style.opacity = '0';
-    setTimeout(() => {
-      // ① 一旦クリアして再描画を強制（残骸を消す）
-      el.textContent = '';
-      void el.offsetWidth;
-      // ② opacity:0 のまま新テキストを確定描画
-      el.textContent = name;
-      void el.offsetWidth;
-      // ③ 次フレームでフェードイン
-      requestAnimationFrame(() => {
-        el.style.opacity = '1';
-      });
-    }, 600);
-  }, 1000);
+  _cnTimers.push(setTimeout(() => {
+    greet.style.opacity = '0';
+    _cnTimers.push(setTimeout(() => show(name, true), 600));
+  }, 1000));
 }
 
 // ─── DRAWER ───
@@ -4062,7 +4070,7 @@ function exportCSV() {
   const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a'); a.href=url;
-  a.download=`AMS_${className}_${todayStr()}.csv`; a.click();
+  a.download=`abSense_${className}_${todayStr()}.csv`; a.click();
   URL.revokeObjectURL(url);
   showToast('CSVを書き出しました', 'table_chart');
 }
@@ -4865,7 +4873,7 @@ async function initShareView(token) {
 
     // ヘッダーのクラス名を更新
     const cnEl = document.getElementById('headerClassName');
-    if (cnEl) cnEl.textContent = shareViewData.className || shareViewData.displayName || '';
+    if (cnEl) { _cnTimers.forEach(clearTimeout); _cnTimers = []; cnEl.textContent = shareViewData.className || shareViewData.displayName || ''; }
 
     buildTimetable();
   } catch(e) {
